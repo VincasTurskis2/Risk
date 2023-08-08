@@ -34,7 +34,7 @@ public class PlayerSelectorMenu : MonoBehaviour
             }
         }
         _playerTypeSelection.AddOptions(list);
-        _playerTypeSelection.value = gsm.playerMenus.IndexOf(this);
+        _playerTypeSelection.value = gsm.PlayerMenus.IndexOf(this);
     }
     public PlayerData ReadData()
     {
