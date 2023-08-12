@@ -14,7 +14,14 @@ public class GameLoader : MonoBehaviour
         _playerActions = gameObject.GetComponent<PlayerActions>();
         _UIManager = gameObject.GetComponent<UIManager>();
         PlayerSelectionManager psm = GameObject.FindObjectOfType<PlayerSelectionManager>();
-        _gameState.Setup(psm.playerData);
+        if(psm == null)
+        {
+            _gameState.Setup();
+        }
+        else
+        {
+            _gameState.Setup(psm.playerData);
+        }
         _playerActions.Setup();
         _UIManager.Setup();
         _gameState.Players[0].StartTurn();
