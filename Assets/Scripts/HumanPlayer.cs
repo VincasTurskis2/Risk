@@ -44,6 +44,13 @@ public class HumanPlayer : MonoBehaviour, Player
                 bool success = false;
                 SelectTerritory(hit.collider.gameObject.GetComponent<Territory>());
                 switch(_gameState.turnStage){
+                    case TurnStage.Setup:
+                        if((Object)_selectedTerritory.Owner == null)
+                        {
+                            _selectedTerritory.SetOwner(this);
+                            _selectedTerritory.TroopCount++;
+                        }
+                        break;
                     case TurnStage.Deploy:
                         if((Object)_selectedTerritory.Owner == this)
                         {

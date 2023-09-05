@@ -74,9 +74,12 @@ public class GameState : MonoBehaviour
         {
             territories[i] = territoryObjects[i].GetComponent<Territory>();
             territories[i].Setup();
+
             territories[i].SetOwner(Players[0]);
+
             ContinentCount[(int) territories[i].Continent]++;
         }
+        
         territories[0].SetOwner(Players[1]);
     }
 
