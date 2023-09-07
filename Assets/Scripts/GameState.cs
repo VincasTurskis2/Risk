@@ -21,6 +21,8 @@ public class GameState : MonoBehaviour
     public static readonly int[] ContinentValues = {2, 3, 7, 5, 5, 2};
     public static int[] ContinentCount = {0, 0, 0, 0, 0, 0};
 
+    public bool allTerritoriesClaimed = false;
+
     public void Setup(PlayerData[] playerData)
     {
         uiManager = gameObject.GetComponent<UIManager>();
@@ -63,7 +65,7 @@ public class GameState : MonoBehaviour
             Players[i].Setup(this, players[i]);
         }
         currentPlayerNo = 0;
-        turnStage = TurnStage.Deploy;
+        turnStage = TurnStage.Setup;
     }
 
     public void SetupTerritories()
@@ -75,12 +77,13 @@ public class GameState : MonoBehaviour
             territories[i] = territoryObjects[i].GetComponent<Territory>();
             territories[i].Setup();
 
-            territories[i].SetOwner(Players[0]);
+            territories[i].SetOwner(null);
+            territories[i].TroopCount = 0;
 
             ContinentCount[(int) territories[i].Continent]++;
         }
         
-        territories[0].SetOwner(Players[1]);
+        //territories[0].SetOwner(Players[1]);
     }
 
     // Function called by the player scripts when they end their turn.
@@ -88,7 +91,29 @@ public class GameState : MonoBehaviour
     {
         currentPlayerNo++;
         if(currentPlayerNo >= Players.Length) currentPlayerNo = 0;
-        turnStage = TurnStage.Deploy;
+        if(turnStage == TurnStage.Setup)
+        {
+            if(!allTerritoriesClaimed)
+            {
+                bool endOfClaimingPhase = true;
+                foreach(Territory t in territories)
+                {
+                    if(t.Owner == null)
+                    {
+                        endOfClaimingPhase = false;
+                        break;
+                    }
+                }
+                if(endOfClaimingPhase)
+                {
+                    allTerritoriesClaimed = true;
+                }
+            }
+        }
+        else
+        {
+            turnStage = TurnStage.Deploy;
+        }
         Players[currentPlayerNo].StartTurn();
     }
 

@@ -49,6 +49,12 @@ public class HumanPlayer : MonoBehaviour, Player
                         {
                             _selectedTerritory.SetOwner(this);
                             _selectedTerritory.TroopCount++;
+                            EndTurn();
+                        }
+                        else if((Object)_selectedTerritory.Owner == this && _gameState.allTerritoriesClaimed)
+                        {
+                            _selectedTerritory.TroopCount++;
+                            EndTurn();
                         }
                         break;
                     case TurnStage.Deploy:

@@ -107,7 +107,6 @@ public class PlayerActions : MonoBehaviour
                 result.Add((Continent) i);
             }
         }
-        Debug.Log(Helpers.IntArrayToString(continentCountLocal));
         return result;
     }
 

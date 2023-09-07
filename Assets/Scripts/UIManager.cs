@@ -107,6 +107,9 @@ public class UIManager : MonoBehaviour
     public void UpdateCurrentStageText()
     {
         switch(_gameState.turnStage){
+            case TurnStage.Setup:
+                _currentStageText.SetText("Current Stage: Setup");
+                break;
             case TurnStage.Deploy:
                 _currentStageText.SetText("Current Stage: Deploy");
                 break;
