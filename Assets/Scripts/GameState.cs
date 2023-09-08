@@ -83,7 +83,6 @@ public class GameState : MonoBehaviour
             ContinentCount[(int) territories[i].Continent]++;
         }
         
-        //territories[0].SetOwner(Players[1]);
     }
 
     // Function called by the player scripts when they end their turn.

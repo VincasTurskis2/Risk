@@ -25,8 +25,16 @@ public class HumanPlayer : MonoBehaviour, Player
 
     public void Setup(GameState state, PlayerData data)
     {
-        _placeableTroops = 0;
-        _gameState = (GameState) FindAnyObjectByType(typeof(GameState));
+        _gameState = state;
+        if(_gameState.Players.Length >= 2 && _gameState.Players.Length <= 6)
+        {
+            _placeableTroops = 40 - ((_gameState.Players.Length - 2) * 5);
+        }
+        else
+        {
+            Debug.Log("Error in player count: there are " + _gameState.Players.Length + " players, should be between 2 and 6");
+            return;
+        }
         _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
         _uiManager = (UIManager) FindAnyObjectByType(typeof(UIManager));
         _ownedTerritories = new HashSet<Territory>();
@@ -45,17 +53,7 @@ public class HumanPlayer : MonoBehaviour, Player
                 SelectTerritory(hit.collider.gameObject.GetComponent<Territory>());
                 switch(_gameState.turnStage){
                     case TurnStage.Setup:
-                        if((Object)_selectedTerritory.Owner == null)
-                        {
-                            _selectedTerritory.SetOwner(this);
-                            _selectedTerritory.TroopCount++;
-                            EndTurn();
-                        }
-                        else if((Object)_selectedTerritory.Owner == this && _gameState.allTerritoriesClaimed)
-                        {
-                            _selectedTerritory.TroopCount++;
-                            EndTurn();
-                        }
+                        _actions.SetupDeploy(_selectedTerritory, this);
                         break;
                     case TurnStage.Deploy:
                         if((Object)_selectedTerritory.Owner == this)
@@ -94,7 +92,7 @@ public class HumanPlayer : MonoBehaviour, Player
     // Function called when a player's turn should start
     public void StartTurn()
     {
-         Debug.Log(_data.playerName + " starting turn");
+        Debug.Log(_data.playerName + " starting turn");
         _placeableTroops = _actions.CalculatePlaceableTroops(this);
         _isMyTurn = true;
     }

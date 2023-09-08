@@ -27,6 +27,32 @@ public class PlayerActions : MonoBehaviour
         return true;
     }
 
+    public bool SetupDeploy(Territory territory, Player player)
+    {
+        //Guards
+        if(territory == null) return false;
+        if(_gameState.turnStage != TurnStage.Setup) return false;
+        if(!player.IsMyTurn()) return false;
+        if(player.GetPlaceableTroopNumber() < 1) return false;
+
+        if((Object)territory.Owner == null)
+        {
+            territory.SetOwner(player);
+            territory.TroopCount++;
+            player.DecrementPlaceableTroops();
+            player.EndTurn();
+            return true;
+        }
+        else if((Object)territory.Owner == (Object) player && _gameState.allTerritoriesClaimed)
+        {
+            territory.TroopCount++;
+            player.DecrementPlaceableTroops();
+            player.EndTurn();
+            return true;
+        }
+        else return false;
+    }
+
     public bool Attack(Territory from, Territory to)
     {
         // Guards
@@ -81,6 +107,14 @@ public class PlayerActions : MonoBehaviour
     }
     public int CalculatePlaceableTroops(Player player)
     {
+        if(_gameState.turnStage == TurnStage.Setup)
+        {
+            if(player.GetPlaceableTroopNumber() == 0)
+            {
+                _gameState.turnStage = TurnStage.Deploy;
+            }
+            else return player.GetPlaceableTroopNumber();
+        }
         int result = 0;
         result = player.GetOwnedTerritories().Count / 3;
         List<Continent> ownedContinents = GetOwnedContinents(player);

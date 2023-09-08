@@ -127,7 +127,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateHelperPanelText()
     {
-        _helperPanel.SetActive(_gameState.turnStage == TurnStage.Deploy);
+        _helperPanel.SetActive(_gameState.turnStage == TurnStage.Deploy || _gameState.turnStage == TurnStage.Setup);
         _helperPanelText.SetText("Troops left to deploy: " + _gameState.CurrentPlayer().GetPlaceableTroopNumber());
     }
     public void DisplayAttackPanel(Territory from, Territory to)
@@ -191,6 +191,7 @@ public class UIManager : MonoBehaviour
             _resultText.SetText("Defeat!");
             _resultText.gameObject.SetActive(true);
             _attackButton.interactable = false;
+            _retreatButton.interactable = true;
         }
         if(to.TroopCount == 0)
         {
