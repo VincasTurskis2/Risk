@@ -12,8 +12,8 @@ public class GameState : MonoBehaviour
     [field: SerializeField]
     public Territory[] territories {get; set;}
 
-    [SerializeField]
-    private int currentPlayerNo;
+    [field: SerializeField]
+    public int currentPlayerNo{get; private set;}
     [field: SerializeField]
     public TurnStage turnStage {get; set;}
     public UIManager uiManager {get; set;}

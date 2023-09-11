@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class HumanPlayer : MonoBehaviour, Player
 {
@@ -22,6 +23,8 @@ public class HumanPlayer : MonoBehaviour, Player
 
     private int _cardSetRewardStage = 0;
     private List<TerritoryCard> _hand;
+
+    private bool _cardEligible;
 
     public void Setup(GameState state, PlayerData data)
     {
@@ -102,7 +105,7 @@ public class HumanPlayer : MonoBehaviour, Player
     {
         Debug.Log(_data.playerName + " ending turn");
         _isMyTurn = false;
-        _gameState.EndTurn();
+        _actions.EndTurn(this);
     }
     public void EndTurnStage()
     {
@@ -166,6 +169,24 @@ public class HumanPlayer : MonoBehaviour, Player
                 _hand.Remove(cardsToDiscard[i]);
             }
         }
+    }
+
+    public List<TerritoryCard> GetCardHand()
+    {
+        return _hand;
+    }
+    public void AddCardsToHand(List<TerritoryCard> cards)
+    {
+        _hand = Enumerable.Concat(_hand, cards).ToList();
+    }
+
+    public void SetCardEligible(bool set)
+    {
+        _cardEligible = set;
+    }
+    public bool IsCardEligible()
+    {
+        return _cardEligible;
     }
 
     private void SelectTerritory(Territory tr)

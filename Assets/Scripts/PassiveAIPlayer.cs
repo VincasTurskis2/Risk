@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 // An "AI" player class which does nothing. On turn start, immediately ends its turn.
 public class PassiveAIPlayer : MonoBehaviour, Player
@@ -16,6 +17,7 @@ public class PassiveAIPlayer : MonoBehaviour, Player
     private int _cardSetRewardStage = 0;
     private List<TerritoryCard> _hand;
     private PlayerActions _actions;
+    private bool _cardEligible;
     public void Setup(GameState state, PlayerData data)
     {
         _gameState = state;
@@ -65,7 +67,7 @@ public class PassiveAIPlayer : MonoBehaviour, Player
     {
         Debug.Log(_data.playerName + " ending turn");
         _isMyTurn = false;
-        _gameState.EndTurn();
+        _actions.EndTurn(this);
     }
     public void EndTurnStage()
     {
@@ -104,7 +106,10 @@ public class PassiveAIPlayer : MonoBehaviour, Player
     {
         return _cardSetRewardStage;
     }
-
+    public void AddCardsToHand(List<TerritoryCard> cards)
+    {
+        _hand = Enumerable.Concat(_hand, cards).ToList();
+    }
     public void DiscardCards(TerritoryCard[] cardsToDiscard)
     {
         for(int i = 0; i < cardsToDiscard.Length; i++)
@@ -115,5 +120,19 @@ public class PassiveAIPlayer : MonoBehaviour, Player
                 _hand.Remove(cardsToDiscard[i]);
             }
         }
+    }
+
+    public void SetCardEligible(bool set)
+    {
+        _cardEligible = set;
+    }
+    public bool IsCardEligible()
+    {
+        return _cardEligible;
+    }
+
+    public List<TerritoryCard> GetCardHand()
+    {
+        return _hand;
     }
 }

@@ -14,6 +14,11 @@ public interface Player
     public void Setup(GameState state,PlayerData data);
     public void IncrementCardSetReward();
     public int GetCardSetRewardStage();
+    public List<TerritoryCard> GetCardHand();
+    public void AddCardsToHand(List<TerritoryCard> cards);
     public void DiscardCards(TerritoryCard[] cardsToDiscard);
     public PlayerData GetData();
+
+    public void SetCardEligible(bool set);
+    public bool IsCardEligible();
 }

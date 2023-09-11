@@ -47,6 +47,10 @@ public class Territory : MonoBehaviour
         {
             Owner.GetOwnedTerritories().Remove(this);
         }
+        if(newOwner != null && Owner != newOwner && _gameState.turnStage != TurnStage.Setup)
+        {
+            newOwner.SetCardEligible(true);
+        }
         Owner = newOwner;
         if(Owner != null)
         {
