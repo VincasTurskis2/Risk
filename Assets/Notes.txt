@@ -1,0 +1,2 @@
+Template design pattern (should be) used for the different types of players (human and different AI's)
+Started in Unity, considering moving to another engine due to Unity's fuckups.
