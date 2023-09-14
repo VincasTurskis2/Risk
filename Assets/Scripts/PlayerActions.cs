@@ -18,6 +18,7 @@ public class PlayerActions : MonoBehaviour
         if(territory == null) return false;
         if(!territory.Owner.IsMyTurn()) return false;
         if(_gameState.turnStage != TurnStage.Deploy) return false;
+        if(territory.Owner.GetPlaceableTroopNumber() <= 0) return false;
 
         territory.Owner.DecrementPlaceableTroops();
         territory.TroopCount++;
@@ -264,10 +265,19 @@ public class PlayerActions : MonoBehaviour
         if(_gameState.Players[_gameState.currentPlayerNo] != player) return;
         if(player.IsCardEligible() == true)
         {
-            List<TerritoryCard> newCard = new List<TerritoryCard>();
-            newCard.Add(_gameState.cardDeck.DrawCard());
+            List<TerritoryCard> newCard = new()
+            {
+                _gameState.cardDeck.DrawCard()
+            };
             player.AddCardsToHand(newCard);
-            Debug.Log("Card added to " + player.GetData().playerName +"'s hand: " + newCard[0].ReferencedTerritory.TerritoryName + ", " + newCard[0].Type + ";");
+            if(newCard[0].Type != TroopType.WildCard)
+            {
+                Debug.Log("Card added to " + player.GetData().playerName +"'s hand: " + newCard[0].ReferencedTerritory.TerritoryName + ", " + newCard[0].Type + ";");
+            }
+            else
+            {
+                Debug.Log("Card added to " + player.GetData().playerName +"'s hand: " + newCard[0].Type + ";");
+            }
             player.SetCardEligible(false);
         }
         _gameState.EndTurn();

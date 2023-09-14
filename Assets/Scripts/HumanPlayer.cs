@@ -110,7 +110,10 @@ public class HumanPlayer : MonoBehaviour, Player
     public void EndTurnStage()
     {
         switch(_gameState.turnStage){
+            case TurnStage.Setup:
+                break;
             case TurnStage.Deploy:
+                if(_hand.Count >= 5) return;
                 _gameState.turnStage = TurnStage.Attack;
                 break;
             case TurnStage.Attack:
