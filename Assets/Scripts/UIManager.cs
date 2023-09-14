@@ -68,6 +68,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField _occupyTroopInputField;
 
+
     [SerializeField]
     private GameObject _fortifySliderPanel;
     [SerializeField]
@@ -78,6 +79,10 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI _fortifySliderMaxText;
     [SerializeField]
     private Button _fortifySliderConfirmButton;
+
+
+    [SerializeField]
+    private CardUIManager _cardUIManager;
 
 
 
@@ -138,6 +143,7 @@ public class UIManager : MonoBehaviour
         _resultText.gameObject.SetActive(false);
         _endStageButton.gameObject.SetActive(false);
         _occupyTroopSlider.gameObject.SetActive(false);
+        _cardUIManager.gameObject.SetActive(false);
         _attackButton.interactable = true;
         _attackPanelTitle.SetText("Battle for " + to.name);
         _attackButtonText.SetText("Attack!");
@@ -166,6 +172,7 @@ public class UIManager : MonoBehaviour
         _currentPlayerText.transform.parent.gameObject.SetActive(true);
         _currentStageText.transform.parent.gameObject.SetActive(true);
         _endStageButton.gameObject.SetActive(true);
+        _cardUIManager.gameObject.SetActive(true);
         PanelOverlayIsDisplayed = false;
         _attackPanel.SetActive(false);
     }
@@ -230,5 +237,10 @@ public class UIManager : MonoBehaviour
         _fortifySliderConfirmButton.onClick.AddListener(delegate {_playerActions.Fortify(from, to, (int)_fortifySlider.value);});
         _fortifySliderConfirmButton.onClick.AddListener(delegate {HideFortifyPanel();});
         PanelOverlayIsDisplayed = true;
+    }
+
+    public void AddCardToPanel(TerritoryCard card)
+    {
+        _cardUIManager.AddCard(card);
     }
 }

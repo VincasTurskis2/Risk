@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class HumanPlayer : MonoBehaviour, Player
 {
@@ -50,7 +51,24 @@ public class HumanPlayer : MonoBehaviour, Player
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 15);
-            if(hit.collider != null)
+
+
+            //Check if the mouse is over a UI element
+            bool isOnUI = false;
+            PointerEventData eventData = new PointerEventData(EventSystem.current);
+            eventData.position = Input.mousePosition;
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, raycastResults);
+            for(int i = 0; i < raycastResults.Count; i++)
+            {
+                RaycastResult curRaysastResult = raycastResults[i];
+                if (curRaysastResult.gameObject.layer == LayerMask.NameToLayer("InteractableUI"))
+                {
+                    isOnUI = true;
+                }
+            }
+
+            if(hit.collider != null && isOnUI == false)
             {
                 bool success = false;
                 SelectTerritory(hit.collider.gameObject.GetComponent<Territory>());
@@ -180,7 +198,12 @@ public class HumanPlayer : MonoBehaviour, Player
     }
     public void AddCardsToHand(List<TerritoryCard> cards)
     {
+        if(cards == null) return;
         _hand = Enumerable.Concat(_hand, cards).ToList();
+        for(int i = 0; i < cards.Count; i++)
+        {
+            _uiManager.AddCardToPanel(cards[i]);
+        }
     }
 
     public void SetCardEligible(bool set)

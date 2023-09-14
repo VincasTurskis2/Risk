@@ -70,4 +70,8 @@ public class Territory : MonoBehaviour
             _renderer.color = Owner.GetData().playerColor;
         }
     }
+    public Sprite GetSprite()
+    {
+        return _renderer.sprite;
+    }
 }
