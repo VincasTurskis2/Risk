@@ -41,6 +41,11 @@ public class HumanPlayer : MonoBehaviour, Player
         }
         _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
         _uiManager = (UIManager) FindAnyObjectByType(typeof(UIManager));
+
+        // Set the "trade in cards" button to call a function from this class
+        // Needs to be done in script, because an object with this class attached does not exist in the scene before running it
+        _uiManager.GetCardUIManager().GetTradeInCardsButton().onClick.AddListener(TradeInCards);
+
         _ownedTerritories = new HashSet<Territory>();
         _hand = new List<TerritoryCard>();
         _data = data;
@@ -190,6 +195,7 @@ public class HumanPlayer : MonoBehaviour, Player
                 _hand.Remove(cardsToDiscard[i]);
             }
         }
+        _uiManager.RedrawCardPanel(this);
     }
 
     public List<TerritoryCard> GetCardHand()
@@ -228,4 +234,14 @@ public class HumanPlayer : MonoBehaviour, Player
         _previouslySelectedTerritory = _selectedTerritory;
         _selectedTerritory = tr;
     }
+
+    public void TradeInCards()
+    {
+        if(_gameState.turnStage != TurnStage.Deploy) 
+        {
+            Debug.Log("wrong stage of the game to trade in cards");
+            return;
+        }
+        _placeableTroops += _uiManager.GetCardUIManager().TradeInCards(this);
+    }    
 }

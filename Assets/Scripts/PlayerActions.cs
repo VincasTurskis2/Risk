@@ -188,6 +188,7 @@ public class PlayerActions : MonoBehaviour
         int result = 0;
         if(cards.Length != 3) return 0;
         if(player == null) return 0;
+        if(_gameState.turnStage != TurnStage.Deploy) return 0;
         bool matching3 = false, different3 = false;
         TroopType[] typesFound = new TroopType[3];
         for(int i = 0; i < 3; i++)
@@ -220,6 +221,7 @@ public class PlayerActions : MonoBehaviour
             }
         }
         player.DiscardCards(cards);
+        player.IncrementCardSetReward();
         return result;
     }
 

@@ -243,4 +243,12 @@ public class UIManager : MonoBehaviour
     {
         _cardUIManager.AddCard(card);
     }
+    public void RedrawCardPanel(Player player)
+    {
+        _cardUIManager.RedrawCardHand(player);
+    }
+    public CardUIManager GetCardUIManager()
+    {
+        return _cardUIManager;
+    }
 }

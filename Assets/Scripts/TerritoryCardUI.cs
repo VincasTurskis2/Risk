@@ -60,7 +60,7 @@ public class TerritoryCardUI : MonoBehaviour
     {
         if(!_selected)
         {
-            if(_manager.SelectCard(this))
+            if(_manager.SelectCard(_cardData))
             {
                 _selected = !_selected;
                 _background.color = _selectedColor;
@@ -68,7 +68,7 @@ public class TerritoryCardUI : MonoBehaviour
         }
         else
         {
-            if(_manager.UnselectCard(this))
+            if(_manager.UnselectCard(_cardData))
             {
                 _selected = !_selected;
                 _background.color = Color.white;
