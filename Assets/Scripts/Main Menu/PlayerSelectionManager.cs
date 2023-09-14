@@ -48,7 +48,7 @@ public class PlayerSelectionManager : MonoBehaviour
     public void AddNewMenu()
     {
         Vector3 newPosition = PlayerMenus[PlayerMenus.Count - 1].transform.position;
-        newPosition.y = newPosition.y - (60 * _canvas.scaleFactor);
+        newPosition.y -= 60 * _canvas.scaleFactor;
         GameObject instantiatedMenu = Instantiate(_playerMenuPrefab, newPosition, Quaternion.identity, _playerSelectionPanel.transform);
         PlayerSelectorMenu newMenu = instantiatedMenu.GetComponent<PlayerSelectorMenu>();
         newMenu.Setup(this);
