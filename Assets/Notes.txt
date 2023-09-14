@@ -1,2 +1,3 @@
 Template design pattern (should be) used for the different types of players (human and different AI's)
 Started in Unity, considering moving to another engine due to Unity's fuckups.
+Issue: the rewards of trading in cards are not correct: the reward increases globally when any player trades their cards in, instead of each player being on a different reward stage.
