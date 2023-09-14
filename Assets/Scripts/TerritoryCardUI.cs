@@ -16,14 +16,23 @@ public class TerritoryCardUI : MonoBehaviour
     private GameObject _wildcardText;
     [SerializeField]
     private TerritoryCard _cardData;
+
+    private Color _selectedColor;
+
+    private bool _selected;
+
+    private Image _background;
+
+    private CardUIManager _manager;
     
-    public void Setup(TerritoryCard cardData)
+    public void Setup(TerritoryCard cardData, CardUIManager manager)
     {
-        if(cardData == null)
+        if(cardData == null || manager == null)
         {
             return;
         }
         _cardData = cardData;
+        _manager = manager;
         if(_cardData.Type == TroopType.WildCard)
         {
             _territoryNameText.gameObject.SetActive(false);
@@ -42,11 +51,28 @@ public class TerritoryCardUI : MonoBehaviour
             _troopTypeText.gameObject.SetActive(true);
             _wildcardText.SetActive(false);
         }
+        _selected = false;
+        _selectedColor = new Color(200f/255f, 1, 200f/255f, 1);
+        _background = GetComponent<Image>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleSelect()
     {
-        
+        if(!_selected)
+        {
+            if(_manager.SelectCard(this))
+            {
+                _selected = !_selected;
+                _background.color = _selectedColor;
+            }
+        }
+        else
+        {
+            if(_manager.UnselectCard(this))
+            {
+                _selected = !_selected;
+                _background.color = Color.white;
+            }
+        }
     }
 }

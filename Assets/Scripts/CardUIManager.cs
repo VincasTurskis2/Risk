@@ -8,6 +8,7 @@ public class CardUIManager : MonoBehaviour
     private GameObject _territoryCardPrefab;
 
     private List<TerritoryCardUI> _cardsDisplayed;
+    private List<TerritoryCardUI> _cardsSelected;
 
     [SerializeField]
     private GameObject _centerCardPosition;
@@ -17,6 +18,7 @@ public class CardUIManager : MonoBehaviour
     void Start()
     {
         _cardsDisplayed = new();
+        _cardsSelected = new();
     }
 
     public void AddCard(TerritoryCard cardToAdd)
@@ -40,20 +42,32 @@ public class CardUIManager : MonoBehaviour
         newPosition.x += (_territoryCardPrefab.GetComponent<RectTransform>().rect.width + 10) * _canvas.scaleFactor;
         GameObject instantiatedCard = Instantiate(_territoryCardPrefab, newPosition, Quaternion.identity, gameObject.transform);
         TerritoryCardUI newCard = instantiatedCard.GetComponent<TerritoryCardUI>();
-        newCard.Setup(cardToAdd);
+        newCard.Setup(cardToAdd, this);
         _cardsDisplayed.Add(newCard);
     }
-    /*public void AddNewMenu()
+    public void RedrawCardHand(Player player)
     {
-        Vector3 newPosition = PlayerMenus[PlayerMenus.Count - 1].transform.position;
-        newPosition.y -= 60 * _canvas.scaleFactor;
-        GameObject instantiatedMenu = Instantiate(_playerMenuPrefab, newPosition, Quaternion.identity, _playerSelectionPanel.transform);
-        PlayerSelectorMenu newMenu = instantiatedMenu.GetComponent<PlayerSelectorMenu>();
-        newMenu.Setup(this);
-        PlayerMenus.Add(newMenu);
-        _addPlayerButton.transform.Translate(new Vector3(0, -60 * _canvas.scaleFactor, 0));
-        _playerCountText.text = "Players (" + PlayerMenus.Count + "/6)";
-        CheckButtonEnable();
-        
-    }*/
+        _cardsDisplayed.Clear();
+        for(int i = 0; i < player.GetCardHand().Count; i++)
+        {
+            AddCard(player.GetCardHand()[i]);
+        }
+    }
+    public bool SelectCard(TerritoryCardUI card)
+    {
+        if(card == null) return false;
+        if(_cardsSelected.Count >= 3) return false;
+        if(_cardsSelected.Contains(card)) return false;
+
+        _cardsSelected.Add(card);
+        return true;
+    }
+    public bool UnselectCard(TerritoryCardUI card)
+    {
+        if(card == null) return false;
+        if(!_cardsSelected.Contains(card)) return true;
+
+        _cardsSelected.Remove(card);
+        return true;
+    }
 }
