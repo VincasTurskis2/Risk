@@ -270,14 +270,6 @@ public class PlayerActions : MonoBehaviour
                 _gameState.cardDeck.DrawCard()
             };
             player.AddCardsToHand(newCard);
-            if(newCard[0].Type != TroopType.WildCard)
-            {
-                Debug.Log("Card added to " + player.GetData().playerName +"'s hand: " + newCard[0].ReferencedTerritory.TerritoryName + ", " + newCard[0].Type + ";");
-            }
-            else
-            {
-                Debug.Log("Card added to " + player.GetData().playerName +"'s hand: " + newCard[0].Type + ";");
-            }
             player.SetCardEligible(false);
         }
         _gameState.EndTurn();
