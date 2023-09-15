@@ -1,3 +1,16 @@
 Template design pattern (should be) used for the different types of players (human and different AI's)
 Started in Unity, considering moving to another engine due to Unity's fuckups.
 Issue: the rewards of trading in cards are not correct: the reward increases globally when any player trades their cards in, instead of each player being on a different reward stage.
+Solved!
+
+Still to do:
+Saving system
+
+Camera control/zoom
+
+Make sure player classes do not have access to other player's hands (currently can be done by territory.Owner.GetCardHand()).
+Instead, make the hand fully private, and write a function like ShowCardHandOnScreen(Player p), which would display p's hand on the UI panel. Called by human players at start of round and after trade-in.
+
+2-player game (neutral army setup)
+
+PassiveAI deploy troops (randomly)
