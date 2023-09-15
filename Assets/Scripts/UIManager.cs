@@ -144,6 +144,7 @@ public class UIManager : MonoBehaviour
         _endStageButton.gameObject.SetActive(false);
         _occupyTroopSlider.gameObject.SetActive(false);
         _cardUIManager.gameObject.SetActive(false);
+        _retreatButton.interactable = true;
         _attackButton.interactable = true;
         _attackPanelTitle.SetText("Battle for " + to.name);
         _attackButtonText.SetText("Attack!");
