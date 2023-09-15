@@ -120,6 +120,7 @@ public class HumanPlayer : MonoBehaviour, Player
         Debug.Log(_data.playerName + " starting turn");
         _placeableTroops = _actions.CalculatePlaceableTroops(this);
         _isMyTurn = true;
+        _uiManager.RedrawCardPanel(this);
     }
 
     // Function called by other objects when a player's turn should end (eg. they make a non-attacking troop move)
