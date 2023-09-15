@@ -11,9 +11,7 @@ public interface Player
     public int GetPlaceableTroopNumber();
     public void SetPlaceableTroopNumber(int newNumber);
     public void DecrementPlaceableTroops();
-    public void Setup(GameState state,PlayerData data);
-    public void IncrementCardSetReward();
-    public int GetCardSetRewardStage();
+    public void Setup(GameState state, PlayerData data);
     public List<TerritoryCard> GetCardHand();
     public void AddCardsToHand(List<TerritoryCard> cards);
     public void DiscardCards(TerritoryCard[] cardsToDiscard);

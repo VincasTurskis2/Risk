@@ -14,7 +14,6 @@ public class PassiveAIPlayer : MonoBehaviour, Player
     private bool _isMyTurn = false;
     [SerializeField]
     private int _placeableTroops;
-    private int _cardSetRewardStage = 0;
     private List<TerritoryCard> _hand;
     private PlayerActions _actions;
     private bool _cardEligible;
@@ -96,15 +95,6 @@ public class PassiveAIPlayer : MonoBehaviour, Player
     public PlayerData GetData()
     {
         return _data;
-    }
-    public void IncrementCardSetReward()
-    {
-        _cardSetRewardStage++;
-    }
-
-    public int GetCardSetRewardStage()
-    {
-        return _cardSetRewardStage;
     }
     public void AddCardsToHand(List<TerritoryCard> cards)
     {

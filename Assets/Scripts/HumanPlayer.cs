@@ -22,7 +22,6 @@ public class HumanPlayer : MonoBehaviour, Player
     private Territory _previouslySelectedTerritory = null;
     private PlayerActions _actions;
 
-    private int _cardSetRewardStage = 0;
     private List<TerritoryCard> _hand;
 
     private bool _cardEligible;
@@ -173,16 +172,6 @@ public class HumanPlayer : MonoBehaviour, Player
     public PlayerData GetData()
     {
         return _data;
-    }
-
-    public void IncrementCardSetReward()
-    {
-        _cardSetRewardStage++;
-    }
-
-    public int GetCardSetRewardStage()
-    {
-        return _cardSetRewardStage;
     }
 
     public void DiscardCards(TerritoryCard[] cardsToDiscard)

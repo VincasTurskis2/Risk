@@ -23,6 +23,8 @@ public class GameState : MonoBehaviour
 
     public bool allTerritoriesClaimed = false;
 
+    public int cardSetRewardStage = 0;
+
     public void Setup(PlayerData[] playerData)
     {
         uiManager = gameObject.GetComponent<UIManager>();
@@ -116,6 +118,38 @@ public class GameState : MonoBehaviour
         Players[currentPlayerNo].StartTurn();
     }
 
+    public void OnPlayerLoss(Player player)
+    {
+        if(player.GetOwnedTerritories().Count != 0) return;
+        Debug.Log(player.GetData().playerName + " has lost!");
+        if(player.IsMyTurn())
+        {
+            player.EndTurn();
+        }
+        List<Player> newPlayers = new();
+        int loserNo = 0;
+        for(int i = 0; i < Players.Length; i++)
+        {
+            if(Players[i] != player)
+            {
+                newPlayers.Add(Players[i]);
+            }
+            else
+            {
+                loserNo = i;
+            }
+        }
+        Players = newPlayers.ToArray();
+        if(currentPlayerNo >= loserNo)
+        {
+            currentPlayerNo--;
+        }
+        if(Players.Length == 1)
+        {
+            Debug.Log(Players[0].GetData().playerName + " Has won!");
+        }
+    }
+    
     // This says "0 references", but it's used by the UI button to end stage! Don't delete!
     public void EndTurnStage()
     {

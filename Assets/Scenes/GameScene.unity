@@ -2027,6 +2027,7 @@ MonoBehaviour:
   <currentPlayerNo>k__BackingField: 0
   <turnStage>k__BackingField: 0
   allTerritoriesClaimed: 0
+  cardSetRewardStage: 0
 --- !u!4 &163652654
 Transform:
   m_ObjectHideFlags: 0
@@ -19393,7 +19394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1267352402329141435, guid: 6429c59b6abe7ef4297784fe6e956fb4, type: 3}
       propertyPath: <Neighbors>k__BackingField.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1267352402329141435, guid: 6429c59b6abe7ef4297784fe6e956fb4, type: 3}
       propertyPath: <Neighbors>k__BackingField.Array.data[0]
@@ -19415,6 +19416,10 @@ PrefabInstance:
       propertyPath: <Neighbors>k__BackingField.Array.data[4]
       value: 
       objectReference: {fileID: 1528407330}
+    - target: {fileID: 1267352402329141435, guid: 6429c59b6abe7ef4297784fe6e956fb4, type: 3}
+      propertyPath: <Neighbors>k__BackingField.Array.data[5]
+      value: 
+      objectReference: {fileID: 1474574818}
     - target: {fileID: 4171738365843780618, guid: 6429c59b6abe7ef4297784fe6e956fb4, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -28996,7 +29001,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1632839199}
   m_OnClick:
     m_PersistentCalls:

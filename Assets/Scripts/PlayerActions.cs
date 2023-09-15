@@ -71,7 +71,14 @@ public class PlayerActions : MonoBehaviour
         to.TroopCount -= results[1];
         if(to.TroopCount <= 0)
         {
+            Player loser = to.Owner;
             to.SetOwner(from.Owner);
+            if(loser.GetOwnedTerritories().Count == 0)
+            {
+                from.Owner.AddCardsToHand(loser.GetCardHand());
+                loser.DiscardCards(loser.GetCardHand().ToArray());
+                _gameState.OnPlayerLoss(loser);
+            }
         }
         _gameState.uiManager.UpdateAttackPanelResults(from, to);
         return true;
@@ -208,7 +215,7 @@ public class PlayerActions : MonoBehaviour
         }
         if(!matching3 && !different3) return 0;
 
-        result += TerritoryCard.CardSetRewards[player.GetCardSetRewardStage()];
+        result += TerritoryCard.CardSetRewards[_gameState.cardSetRewardStage++];
         for(int i = 0; i < 3; i++)
         {
             if(cards[i].ReferencedTerritory != null)
@@ -221,17 +228,19 @@ public class PlayerActions : MonoBehaviour
             }
         }
         player.DiscardCards(cards);
-        player.IncrementCardSetReward();
+        _gameState.cardSetRewardStage++;
         return result;
     }
 
+
+    // A convenience function for the player/ai's to trade in cards without specifying which cards
     public int TradeInAnyCards(Player player)
     {
         if(player == null) return 0;
         if(player.GetCardHand().Count < 3) return 0;
 
         TerritoryCard[] cardsToTradeIn = new TerritoryCard[3];
-        List<TerritoryCard> possibleCards = new List<TerritoryCard>();
+        List<TerritoryCard> possibleCards;
         if(player.GetCardHand().Count > 5)
         {
             possibleCards = player.GetCardHand().Take(5).ToList();
