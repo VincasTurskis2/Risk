@@ -53,7 +53,6 @@ public class PlayerSelectionManager : MonoBehaviour
         PlayerSelectorMenu newMenu = instantiatedMenu.GetComponent<PlayerSelectorMenu>();
         newMenu.Setup(this);
         PlayerMenus.Add(newMenu);
-        _addPlayerButton.transform.Translate(new Vector3(0, -60 * _canvas.scaleFactor, 0));
         _playerCountText.text = "Players (" + PlayerMenus.Count + "/6)";
         CheckButtonEnable();
         
@@ -66,7 +65,6 @@ public class PlayerSelectionManager : MonoBehaviour
         {
             PlayerMenus[i].transform.Translate(new Vector3(0, 60 * _canvas.scaleFactor, 0));
         }
-        _addPlayerButton.transform.Translate(new Vector3(0, 60 * _canvas.scaleFactor, 0));
         PlayerMenus.Remove(toDelete);
         Destroy(toDelete.gameObject);
 
