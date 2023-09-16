@@ -52,21 +52,10 @@ public class PassiveAIPlayer : Player
             EndTurn();
         }
     }
-    public override void EndTurnStage()
-    {
-        EndTurn();
-    }
     
     public override void DiscardCards(TerritoryCard[] cardsToDiscard)
     {
-        for(int i = 0; i < cardsToDiscard.Length; i++)
-        {
-            if(_hand.Contains(cardsToDiscard[i]))
-            {
-                _gameState.cardDeck.DiscardCard(cardsToDiscard[i]);
-                _hand.Remove(cardsToDiscard[i]);
-            }
-        }
+        _actions.DiscardCards(cardsToDiscard, this);
     }
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {

@@ -10,7 +10,7 @@ public abstract class Player : MonoBehaviour
     protected int _placeableTroops;
     [SerializeField]
     protected HashSet<Territory> _ownedTerritories;
-    protected GameState _gameState;
+    protected IGameStatePlayerView _gameState;
     [SerializeField]
     protected bool _isMyTurn = false;
     protected List<TerritoryCard> _hand;
@@ -18,10 +18,14 @@ public abstract class Player : MonoBehaviour
     protected bool _cardEligible;
 
     public abstract void StartTurn();
-    public abstract void EndTurnStage();
     public abstract void Setup(GameState state, PlayerData data);
     public abstract void DiscardCards(TerritoryCard[] cardsToDiscard);
     public abstract void AddCardsToHand(List<TerritoryCard> cards);
+
+    public void EndTurnStage()
+    {
+        _actions.EndTurnStage(this);
+    }
 
     public void SetCardEligible(bool set)
     {

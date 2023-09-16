@@ -271,6 +271,21 @@ public class PlayerActions : MonoBehaviour
         return 0;
     }
 
+    public void DiscardCards(TerritoryCard[] cardsToDiscard, Player player)
+    {
+        if(player == null) return;
+        if(!player.IsMyTurn()) return;
+        for(int i = 0; i < cardsToDiscard.Length; i++)
+        {
+            if(player.GetCardHand().Contains(cardsToDiscard[i]))
+            {
+                _gameState.cardDeck.DiscardCard(cardsToDiscard[i]);
+                player.GetCardHand().Remove(cardsToDiscard[i]);
+            }
+        }
+        _gameState.uiManager.RedrawCardPanel(player);
+    }
+
     public void EndTurn(Player player)
     {
         if(_gameState.Players[_gameState.currentPlayerNo] != player) return;
@@ -285,155 +300,23 @@ public class PlayerActions : MonoBehaviour
         }
         _gameState.EndTurn();
     }
-    /*public int TradeInAnyCards(Player player)
+
+    public void EndTurnStage(Player player)
     {
-        if(player == null) return 0;
-        if(player.GetCardHand().Count < 3) return 0;
-        
-        List<TerritoryCard> cardsToTradeIn = new List<TerritoryCard>();
-        
-        int InfantryCount = 0, CavalryCount = 0, ArtilleryCount = 0, WildcardCount = 0;
-        for(int i = 0; i < player.GetCardHand().Count; i++)
-        {
-            switch(player.GetCardHand()[i].Type)
-            {
-                case TroopType.Infantry:
-                    InfantryCount++;
-                    break;
-                case TroopType.Cavalry:
-                    CavalryCount++;
-                    break;
-                case TroopType.Artillery:
-                    ArtilleryCount++;
-                    break;
-                case TroopType.WildCard:
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    WildcardCount++;
-                    break;
-            }
+        switch(_gameState.turnStage){
+            case TurnStage.Setup:
+                break;
+            case TurnStage.Deploy:
+                if(player.GetCardHand().Count >= 5) return;
+                _gameState.turnStage = TurnStage.Attack;
+                break;
+            case TurnStage.Attack:
+                _gameState.turnStage = TurnStage.Reinforce;
+                break;
+            case TurnStage.Reinforce:
+                player.EndTurn();
+                break;
         }
+    }
 
-        if(WildcardCount >= 2)
-        {
-            for(int i = 0; i < player.GetCardHand().Count; i++)
-            {
-                if(player.GetCardHand()[i].Type != TroopType.WildCard)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    break;
-                }
-            }
-        }
-        else if(InfantryCount + WildcardCount >= 3)
-        {
-            for(int i = 0; i < player.GetCardHand().Count; i++)
-            {
-                if(player.GetCardHand()[i].Type != TroopType.Infantry)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        else if(CavalryCount + WildcardCount >= 3)
-        {
-            for(int i = 0; i < player.GetCardHand().Count; i++)
-            {
-                if(player.GetCardHand()[i].Type != TroopType.Cavalry)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        else if(ArtilleryCount + WildcardCount >= 3)
-        {
-            for(int i = 0; i < player.GetCardHand().Count; i++)
-            {
-                if(player.GetCardHand()[i].Type != TroopType.Artillery)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        else if(InfantryCount > 0 && CavalryCount > 0 && ArtilleryCount > 0)
-        {
-            for(int i = 0; i < player.GetCardHand().Count; i++)
-            {
-                if(player.GetCardHand()[i].Type != TroopType.Infantry && InfantryCount != 0)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    InfantryCount = 0;
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-                else if(player.GetCardHand()[i].Type != TroopType.Cavalry && CavalryCount != 0)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    CavalryCount = 0;
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-                else if(player.GetCardHand()[i].Type != TroopType.Artillery && ArtilleryCount != 0)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    ArtilleryCount = 0;
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        else if(WildcardCount > 0 && InfantryCount + CavalryCount + ArtilleryCount >= 2)
-        {
-            for(int i = 0; i < player.GetCardHand().Count; i++)
-            {
-                if(player.GetCardHand()[i].Type != TroopType.Infantry && InfantryCount != 0)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    InfantryCount = 0;
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-                else if(player.GetCardHand()[i].Type != TroopType.Cavalry && CavalryCount != 0)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    CavalryCount = 0;
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-                else if(player.GetCardHand()[i].Type != TroopType.Artillery && ArtilleryCount != 0)
-                {
-                    cardsToTradeIn.Add(player.GetCardHand()[i]);
-                    ArtilleryCount = 0;
-                    if(cardsToTradeIn.Count >= 3)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        else return 0;
-
-        return TradeInCards(cardsToTradeIn.ToArray(), player);
-    }*/
 }

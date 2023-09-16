@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // A class that keeps track of game state elements
-public class GameState : MonoBehaviour
+public class GameState : MonoBehaviour, IGameStatePlayerView
 {
     [field: SerializeField]
     public CardDeck cardDeck {get; set;}
@@ -21,9 +21,9 @@ public class GameState : MonoBehaviour
     public static readonly int[] ContinentValues = {2, 3, 7, 5, 5, 2};
     public static int[] ContinentCount = {0, 0, 0, 0, 0, 0};
 
-    public bool allTerritoriesClaimed = false;
+    public bool allTerritoriesClaimed {get; set;} = false;
 
-    public int cardSetRewardStage = 0;
+    public int cardSetRewardStage {get; set;} = 0;
 
     public void Setup(PlayerData[] playerData)
     {

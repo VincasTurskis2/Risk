@@ -107,35 +107,12 @@ public class HumanPlayer :  Player
         _uiManager.RedrawCardPanel(this);
     }
 
-    public override void EndTurnStage()
-    {
-        switch(_gameState.turnStage){
-            case TurnStage.Setup:
-                break;
-            case TurnStage.Deploy:
-                if(_hand.Count >= 5) return;
-                _gameState.turnStage = TurnStage.Attack;
-                break;
-            case TurnStage.Attack:
-                _gameState.turnStage = TurnStage.Reinforce;
-                break;
-            case TurnStage.Reinforce:
-                EndTurn();
-                break;
-        }
-    }
+    
     
 
     public override void DiscardCards(TerritoryCard[] cardsToDiscard)
     {
-        for(int i = 0; i < cardsToDiscard.Length; i++)
-        {
-            if(_hand.Contains(cardsToDiscard[i]))
-            {
-                _gameState.cardDeck.DiscardCard(cardsToDiscard[i]);
-                _hand.Remove(cardsToDiscard[i]);
-            }
-        }
+        _actions.DiscardCards(cardsToDiscard, this);
         _uiManager.RedrawCardPanel(this);
     }
     public override void AddCardsToHand(List<TerritoryCard> cards)
