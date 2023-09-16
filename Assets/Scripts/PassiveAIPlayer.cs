@@ -6,17 +6,7 @@ using System.Linq;
 // An "AI" player class which does nothing. On turn start, immediately ends its turn.
 public class PassiveAIPlayer : Player
 {
-    [SerializeField]
-    private PlayerData _data;
-    private HashSet<Territory> _ownedTerritories;
-    private GameState _gameState;
-    [SerializeField]
-    private bool _isMyTurn = false;
-    [SerializeField]
-    private int _placeableTroops;
-    private List<TerritoryCard> _hand;
-    private PlayerActions _actions;
-    private bool _cardEligible;
+    
     public override void Setup(GameState state, PlayerData data)
     {
         _gameState = state;
@@ -62,44 +52,11 @@ public class PassiveAIPlayer : Player
             EndTurn();
         }
     }
-    public override void EndTurn()
-    {
-        Debug.Log(_data.playerName + " ending turn");
-        _isMyTurn = false;
-        _actions.EndTurn(this);
-    }
     public override void EndTurnStage()
     {
         EndTurn();
     }
-    public override bool IsMyTurn()
-    {
-        return _isMyTurn;
-    }
-    public override HashSet<Territory> GetOwnedTerritories()
-    {
-        return _ownedTerritories;
-    }
-    public override int GetPlaceableTroopNumber()
-    {
-        return _placeableTroops;
-    }
-    public override void SetPlaceableTroopNumber(int newNumber)
-    {
-        _placeableTroops = newNumber;
-    }
-    public override void DecrementPlaceableTroops()
-    {
-        _placeableTroops--;
-    }
-    public override PlayerData GetData()
-    {
-        return _data;
-    }
-    public override void AddCardsToHand(List<TerritoryCard> cards)
-    {
-        _hand = Enumerable.Concat(_hand, cards).ToList();
-    }
+    
     public override void DiscardCards(TerritoryCard[] cardsToDiscard)
     {
         for(int i = 0; i < cardsToDiscard.Length; i++)
@@ -111,18 +68,9 @@ public class PassiveAIPlayer : Player
             }
         }
     }
-
-    public override void SetCardEligible(bool set)
+    public override void AddCardsToHand(List<TerritoryCard> cards)
     {
-        _cardEligible = set;
-    }
-    public override bool IsCardEligible()
-    {
-        return _cardEligible;
-    }
-
-    public override List<TerritoryCard> GetCardHand()
-    {
-        return _hand;
+        if(cards == null) return;
+        _hand = Enumerable.Concat(_hand, cards).ToList();
     }
 }

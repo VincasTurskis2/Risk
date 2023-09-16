@@ -7,24 +7,8 @@ using UnityEngine.EventSystems;
 public class HumanPlayer :  Player
 {
     private UIManager _uiManager;
-    [SerializeField]
-    private PlayerData _data;
-    [SerializeField]
-    private int _placeableTroops;
-    [SerializeField]
-    private HashSet<Territory> _ownedTerritories;
-    private GameState _gameState;
-
-    [SerializeField]
-    private bool _isMyTurn = false;
-    [SerializeField]
     private Territory _selectedTerritory = null;
     private Territory _previouslySelectedTerritory = null;
-    private PlayerActions _actions;
-
-    private List<TerritoryCard> _hand;
-
-    private bool _cardEligible;
 
     public override void Setup(GameState state, PlayerData data)
     {
@@ -123,13 +107,6 @@ public class HumanPlayer :  Player
         _uiManager.RedrawCardPanel(this);
     }
 
-    // Function called by other objects when a player's turn should end (eg. they make a non-attacking troop move)
-    public override void EndTurn()
-    {
-        Debug.Log(_data.playerName + " ending turn");
-        _isMyTurn = false;
-        _actions.EndTurn(this);
-    }
     public override void EndTurnStage()
     {
         switch(_gameState.turnStage){
@@ -147,33 +124,7 @@ public class HumanPlayer :  Player
                 break;
         }
     }
-    public override bool IsMyTurn()
-    {
-        return _isMyTurn;
-    }
-    public override HashSet<Territory> GetOwnedTerritories()
-    {
-        return _ownedTerritories;
-    }
-
-
-    public override int GetPlaceableTroopNumber()
-    {
-        return _placeableTroops;
-    }
-    public override void SetPlaceableTroopNumber(int newNumber)
-    {
-        _placeableTroops = newNumber;
-    }
-    public override void DecrementPlaceableTroops()
-    {
-        _placeableTroops--;
-    }
-
-    public override PlayerData GetData()
-    {
-        return _data;
-    }
+    
 
     public override void DiscardCards(TerritoryCard[] cardsToDiscard)
     {
@@ -187,28 +138,15 @@ public class HumanPlayer :  Player
         }
         _uiManager.RedrawCardPanel(this);
     }
-
-    public override List<TerritoryCard> GetCardHand()
-    {
-        return _hand;
-    }
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
         if(cards == null) return;
         _hand = Enumerable.Concat(_hand, cards).ToList();
+        
         for(int i = 0; i < cards.Count; i++)
         {
             _uiManager.AddCardToPanel(cards[i]);
         }
-    }
-
-    public override void SetCardEligible(bool set)
-    {
-        _cardEligible = set;
-    }
-    public override bool IsCardEligible()
-    {
-        return _cardEligible;
     }
 
     private void SelectTerritory(Territory tr)

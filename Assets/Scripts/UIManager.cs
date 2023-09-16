@@ -107,6 +107,7 @@ public class UIManager : MonoBehaviour
         _cumulativeDefenderLoss = 0;
         HideAttackPanel();
         HideFortifyPanel();
+        _cardUIManager.Setup();
         
     }
     public void UpdateCurrentStageText()

@@ -18,8 +18,9 @@ public class CardUIManager : MonoBehaviour
     [SerializeField]
     private Button _tradeInCardsButton;
     private PlayerActions _playerActions;
-    // Start is called before the first frame update
-    void Start()
+
+
+    public void Setup()
     {
         _cardsDisplayed = new();
         _cardsSelected = new();
