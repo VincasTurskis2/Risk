@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.EventSystems;
 
-public class HumanPlayer : MonoBehaviour, Player
+public class HumanPlayer :  Player
 {
     private UIManager _uiManager;
     [SerializeField]
@@ -26,7 +26,7 @@ public class HumanPlayer : MonoBehaviour, Player
 
     private bool _cardEligible;
 
-    public void Setup(GameState state, PlayerData data)
+    public override void Setup(GameState state, PlayerData data)
     {
         _gameState = state;
         if(_gameState.Players.Length >= 2 && _gameState.Players.Length <= 6)
@@ -115,7 +115,7 @@ public class HumanPlayer : MonoBehaviour, Player
         }
     }
     // Function called when a player's turn should start
-    public void StartTurn()
+    public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
         _placeableTroops = _actions.CalculatePlaceableTroops(this);
@@ -124,13 +124,13 @@ public class HumanPlayer : MonoBehaviour, Player
     }
 
     // Function called by other objects when a player's turn should end (eg. they make a non-attacking troop move)
-    public void EndTurn()
+    public override void EndTurn()
     {
         Debug.Log(_data.playerName + " ending turn");
         _isMyTurn = false;
         _actions.EndTurn(this);
     }
-    public void EndTurnStage()
+    public override void EndTurnStage()
     {
         switch(_gameState.turnStage){
             case TurnStage.Setup:
@@ -147,35 +147,35 @@ public class HumanPlayer : MonoBehaviour, Player
                 break;
         }
     }
-    public bool IsMyTurn()
+    public override bool IsMyTurn()
     {
         return _isMyTurn;
     }
-    public HashSet<Territory> GetOwnedTerritories()
+    public override HashSet<Territory> GetOwnedTerritories()
     {
         return _ownedTerritories;
     }
 
 
-    public int GetPlaceableTroopNumber()
+    public override int GetPlaceableTroopNumber()
     {
         return _placeableTroops;
     }
-    public void SetPlaceableTroopNumber(int newNumber)
+    public override void SetPlaceableTroopNumber(int newNumber)
     {
         _placeableTroops = newNumber;
     }
-    public void DecrementPlaceableTroops()
+    public override void DecrementPlaceableTroops()
     {
         _placeableTroops--;
     }
 
-    public PlayerData GetData()
+    public override PlayerData GetData()
     {
         return _data;
     }
 
-    public void DiscardCards(TerritoryCard[] cardsToDiscard)
+    public override void DiscardCards(TerritoryCard[] cardsToDiscard)
     {
         for(int i = 0; i < cardsToDiscard.Length; i++)
         {
@@ -188,11 +188,11 @@ public class HumanPlayer : MonoBehaviour, Player
         _uiManager.RedrawCardPanel(this);
     }
 
-    public List<TerritoryCard> GetCardHand()
+    public override List<TerritoryCard> GetCardHand()
     {
         return _hand;
     }
-    public void AddCardsToHand(List<TerritoryCard> cards)
+    public override void AddCardsToHand(List<TerritoryCard> cards)
     {
         if(cards == null) return;
         _hand = Enumerable.Concat(_hand, cards).ToList();
@@ -202,11 +202,11 @@ public class HumanPlayer : MonoBehaviour, Player
         }
     }
 
-    public void SetCardEligible(bool set)
+    public override void SetCardEligible(bool set)
     {
         _cardEligible = set;
     }
-    public bool IsCardEligible()
+    public override bool IsCardEligible()
     {
         return _cardEligible;
     }

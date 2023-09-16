@@ -1,22 +1,22 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public interface Player
+public abstract class Player : MonoBehaviour
 {
-    public void EndTurn();
-    public void StartTurn();
-    public void EndTurnStage();
-    public bool IsMyTurn();
-    public HashSet<Territory> GetOwnedTerritories();
-    public int GetPlaceableTroopNumber();
-    public void SetPlaceableTroopNumber(int newNumber);
-    public void DecrementPlaceableTroops();
-    public void Setup(GameState state, PlayerData data);
-    public List<TerritoryCard> GetCardHand();
-    public void AddCardsToHand(List<TerritoryCard> cards);
-    public void DiscardCards(TerritoryCard[] cardsToDiscard);
-    public PlayerData GetData();
+    public abstract void EndTurn();
+    public abstract void StartTurn();
+    public abstract void EndTurnStage();
+    public abstract bool IsMyTurn();
+    public abstract HashSet<Territory> GetOwnedTerritories();
+    public abstract int GetPlaceableTroopNumber();
+    public abstract void SetPlaceableTroopNumber(int newNumber);
+    public abstract void DecrementPlaceableTroops();
+    public abstract void Setup(GameState state, PlayerData data);
+    public abstract List<TerritoryCard> GetCardHand();
+    public abstract void AddCardsToHand(List<TerritoryCard> cards);
+    public abstract void DiscardCards(TerritoryCard[] cardsToDiscard);
+    public abstract PlayerData GetData();
 
-    public void SetCardEligible(bool set);
-    public bool IsCardEligible();
+    public abstract void SetCardEligible(bool set);
+    public abstract bool IsCardEligible();
 }

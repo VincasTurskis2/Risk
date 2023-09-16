@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 
 // An "AI" player class which does nothing. On turn start, immediately ends its turn.
-public class PassiveAIPlayer : MonoBehaviour, Player
+public class PassiveAIPlayer : Player
 {
     [SerializeField]
     private PlayerData _data;
@@ -17,7 +17,7 @@ public class PassiveAIPlayer : MonoBehaviour, Player
     private List<TerritoryCard> _hand;
     private PlayerActions _actions;
     private bool _cardEligible;
-    public void Setup(GameState state, PlayerData data)
+    public override void Setup(GameState state, PlayerData data)
     {
         _gameState = state;
         if(_gameState.Players.Length >= 2 && _gameState.Players.Length <= 6)
@@ -34,7 +34,7 @@ public class PassiveAIPlayer : MonoBehaviour, Player
         _hand = new List<TerritoryCard>();
         _data = data;
     }
-    public void StartTurn()
+    public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
@@ -62,45 +62,45 @@ public class PassiveAIPlayer : MonoBehaviour, Player
             EndTurn();
         }
     }
-    public void EndTurn()
+    public override void EndTurn()
     {
         Debug.Log(_data.playerName + " ending turn");
         _isMyTurn = false;
         _actions.EndTurn(this);
     }
-    public void EndTurnStage()
+    public override void EndTurnStage()
     {
         EndTurn();
     }
-    public bool IsMyTurn()
+    public override bool IsMyTurn()
     {
         return _isMyTurn;
     }
-    public HashSet<Territory> GetOwnedTerritories()
+    public override HashSet<Territory> GetOwnedTerritories()
     {
         return _ownedTerritories;
     }
-    public int GetPlaceableTroopNumber()
+    public override int GetPlaceableTroopNumber()
     {
         return _placeableTroops;
     }
-    public void SetPlaceableTroopNumber(int newNumber)
+    public override void SetPlaceableTroopNumber(int newNumber)
     {
         _placeableTroops = newNumber;
     }
-    public void DecrementPlaceableTroops()
+    public override void DecrementPlaceableTroops()
     {
         _placeableTroops--;
     }
-    public PlayerData GetData()
+    public override PlayerData GetData()
     {
         return _data;
     }
-    public void AddCardsToHand(List<TerritoryCard> cards)
+    public override void AddCardsToHand(List<TerritoryCard> cards)
     {
         _hand = Enumerable.Concat(_hand, cards).ToList();
     }
-    public void DiscardCards(TerritoryCard[] cardsToDiscard)
+    public override void DiscardCards(TerritoryCard[] cardsToDiscard)
     {
         for(int i = 0; i < cardsToDiscard.Length; i++)
         {
@@ -112,16 +112,16 @@ public class PassiveAIPlayer : MonoBehaviour, Player
         }
     }
 
-    public void SetCardEligible(bool set)
+    public override void SetCardEligible(bool set)
     {
         _cardEligible = set;
     }
-    public bool IsCardEligible()
+    public override bool IsCardEligible()
     {
         return _cardEligible;
     }
 
-    public List<TerritoryCard> GetCardHand()
+    public override List<TerritoryCard> GetCardHand()
     {
         return _hand;
     }
