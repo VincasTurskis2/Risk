@@ -3,6 +3,8 @@ Started in Unity, considering moving to another engine due to Unity's fuckups.
 Issue: the rewards of trading in cards are not correct: the reward increases globally when any player trades their cards in, instead of each player being on a different reward stage.
 Solved!
 
+Notes on player class restrictions: I did this because i'm not sure how machine learning works. However, as I imagine it, a machine learning algorithm would have to be given a set of possible actions, and somehow trained how to choose between them. I am hoping that the set of possible actions I can give it will be "you can use whatever this class has access to", thus the reason for my defensive programming and restrictions on what the player classes can access/modify.
+
 Still to do:
 Saving system
 
@@ -12,8 +14,9 @@ Make sure player classes do not have access to other player's hands (currently c
 Instead, make the hand fully private, and write a function like ShowCardHandOnScreen(Player p), which would display p's hand on the UI panel. Called by human players at start of round and after trade-in.
 Nevermind, there are actually a lot of these. Not to mention classes can just Territory.SetOwner(this) for all territories.
 Solved this by adding interfaces between many major classes to limit what the player can access
+DONE
 
-2-player game (neutral army setup)
+2-player game (neutral army setup) DONE
 
 PassiveAI deploy troops (randomly)
 
