@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,15 +18,29 @@ public class CardUIManager : MonoBehaviour
     private Canvas _canvas;
     [SerializeField]
     private Button _tradeInCardsButton;
+    [SerializeField]
+    private Button _showHideCardsButton;
+    [SerializeField]
+    private TextMeshProUGUI _showHideCardsButtonText;
+    [SerializeField]
+    private GameObject _cardsHiddenText;
     private PlayerActions _playerActions;
 
+    private GameState _gameState;
 
-    public void Setup()
+    private bool _cardsHidden;
+
+
+    public void Setup(GameState state)
     {
+        _cardsHidden = false;
+        _cardsHiddenText.SetActive(false);
+        _showHideCardsButtonText.text = "Hide Cards";
         _cardsDisplayed = new();
         _cardsSelected = new();
         _tradeInCardsButton.interactable = false;
         _playerActions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
+        _gameState = state;
     }
 
     public void AddCard(TerritoryCard cardToAdd)
@@ -59,12 +74,23 @@ public class CardUIManager : MonoBehaviour
             Destroy(card.gameObject);
         }
         _cardsDisplayed.Clear();
-        for(int i = 0; i < player.GetCardHand().Count; i++)
+        _cardsSelected.Clear();
+        if(_cardsHidden)
         {
-            AddCard(player.GetCardHand()[i]);
+            _cardsHiddenText.SetActive(true);
+        }
+        else
+        {
+            _cardsHiddenText.SetActive(false);
+            for(int i = 0; i < player.GetCardHand().Count; i++)
+            {
+                AddCard(player.GetCardHand()[i]);
+            }
         }
         _tradeInCardsButton.interactable = false;
     }
+
+
     public bool SelectCard(TerritoryCard card)
     {
         if(card == null) return false;
@@ -106,5 +132,20 @@ public class CardUIManager : MonoBehaviour
             RedrawCardHand(player);
         }
         return result;
+    }
+
+    public void ToggleShowCards()
+    {
+        if(_cardsHidden)
+        {
+            _showHideCardsButtonText.text = "Hide Cards";
+            _cardsHidden = false;
+        }
+        else
+        {
+            _showHideCardsButtonText.text = "Show Cards";
+            _cardsHidden = true;
+        }
+        RedrawCardHand(_gameState.CurrentPlayer());
     }
 }

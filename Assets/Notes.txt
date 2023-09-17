@@ -20,4 +20,6 @@ DONE
 
 PassiveAI deploy troops (randomly) DONE
 
+Add show/hide cards button for hotseat games DONE
+
 Better deploy system (with -/+ on each territory, and confirm at the end)
