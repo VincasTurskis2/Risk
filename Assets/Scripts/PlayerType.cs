@@ -1,4 +1,4 @@
 public enum PlayerType
 {
-    Human, PassiveAI
+    Human, PassiveAI, Neutral
 }

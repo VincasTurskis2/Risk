@@ -10,24 +10,24 @@ public class CardDeck : MonoBehaviour
     private Stack<TerritoryCard> _discardDeck;
     public void SetupDeck()
     {
-        int infantryRem = 14, cavarlyRem = 14, artilleryRem = 14;
+        int infantryRem = 14, cavalryRem = 14, artilleryRem = 14;
         GameObject[] territoryObjects = GameObject.FindGameObjectsWithTag("Territory");
         _deck = new Stack<TerritoryCard>(territoryObjects.Length + 2);
         _discardDeck = new Stack<TerritoryCard>(territoryObjects.Length + 2);
         for(int i = 0; i < territoryObjects.Length; i++)
         {
             Territory t = territoryObjects[i].GetComponent<Territory>();
-            int rand = Random.Range(1, infantryRem + cavarlyRem + artilleryRem + 1);
+            int rand = Random.Range(1, infantryRem + cavalryRem + artilleryRem + 1);
             TroopType type;
             if(rand - artilleryRem <= 0)
             {
                 type = TroopType.Artillery;
                 artilleryRem--;
             }
-            else if(rand - artilleryRem - cavarlyRem < 0)
+            else if(rand - artilleryRem - cavalryRem < 0)
             {
                 type = TroopType.Cavalry;
-                cavarlyRem--;
+                cavalryRem--;
             }
             else
             {

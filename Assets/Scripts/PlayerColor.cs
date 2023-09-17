@@ -8,6 +8,8 @@ public static class ColorPreset
     public static readonly Color Magenta = new Color(1, 200f/255f, 1, 1);
     public static readonly Color Yellow = new Color(1, 1, 200f/255f, 1);
 
+    public static readonly Color White = new Color(0.9f, 0.9f, 0.9f, 1);
+
     public static Color GetColorPreset(PlayerColor colorEnum)
     {
         switch(colorEnum)
@@ -24,6 +26,8 @@ public static class ColorPreset
                 return Magenta;
             case PlayerColor.Yellow:
                 return Yellow;
+            case PlayerColor.White:
+                return White;
             default:
                 return Color.white;
         }
@@ -44,6 +48,8 @@ public static class ColorPreset
                 return Magenta;
             case 5:
                 return Yellow;
+            case 6:
+                return White;
             default:
                 return Color.white;
         }
@@ -54,5 +60,5 @@ public static class ColorPreset
 
 public enum PlayerColor
 {
-    Green, Pink, Purple, Cyan, Magenta, Yellow
+    Green, Pink, Purple, Cyan, Magenta, Yellow, White
 }

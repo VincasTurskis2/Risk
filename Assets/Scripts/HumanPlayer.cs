@@ -13,7 +13,11 @@ public class HumanPlayer :  Player
     public override void Setup(GameState state, PlayerData data)
     {
         _gameState = state;
-        if(_gameState.Players.Length >= 2 && _gameState.Players.Length <= 6)
+        if(_gameState.is2PlayerGame)
+        {
+            _placeableTroops = 26;
+        }
+        else if(_gameState.Players.Length >= 3 && _gameState.Players.Length <= 6)
         {
             _placeableTroops = 40 - ((_gameState.Players.Length - 2) * 5);
         }

@@ -25,8 +25,11 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
 
     public int cardSetRewardStage {get; set;} = 0;
 
+    public bool is2PlayerGame {get; set;}
+
     public void Setup(PlayerData[] playerData)
     {
+        is2PlayerGame = false;
         uiManager = gameObject.GetComponent<UIManager>();
         cardDeck = gameObject.GetComponent<CardDeck>();
         SetupPlayers(playerData);
@@ -35,6 +38,7 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
     }
     public void Setup()
     {
+        is2PlayerGame = false;
         PlayerData[] players = new PlayerData[2];
         players[0] = new PlayerData("Vince", PlayerType.Human, ColorPreset.Green);
         players[1] = new PlayerData("JohnGPT", PlayerType.PassiveAI, ColorPreset.Pink);
@@ -46,8 +50,20 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
     }
     public void SetupPlayers(PlayerData[] players)
     {
-        Players = new Player[players.Length];
         GameObject playerObject, playerObjectInstance;
+        if(players.Length == 2)
+        {
+            is2PlayerGame = true;
+            Players = new Player[players.Length + 1];
+            playerObject = (GameObject)Resources.Load("prefabs/NeutralArmyPlayer", typeof(GameObject));
+            playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
+            Players[players.Length] = playerObjectInstance.GetComponent<NeutralArmyPlayer>();
+            Players[players.Length].Setup(this, null);
+        }
+        else
+        {
+            Players = new Player[players.Length];
+        }
         for(int i = 0; i < players.Length; i++)
         {
             switch(players[i].playerType){
@@ -74,17 +90,48 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
     {
         GameObject[] territoryObjects = GameObject.FindGameObjectsWithTag("Territory");
         territories = new Territory[territoryObjects.Length];
-        for(int i = 0; i < territories.Length; i++)
+        if(is2PlayerGame)
         {
-            territories[i] = territoryObjects[i].GetComponent<Territory>();
-            territories[i].Setup();
+            int player1Rem = 14, player2Rem = 14, player3Rem = 14;
+            for(int i = 0; i < territories.Length; i++)
+            {
+                territories[i] = territoryObjects[i].GetComponent<Territory>();
+                territories[i].Setup();
 
-            territories[i].SetOwner(null);
-            territories[i].TroopCount = 0;
-
-            ContinentCount[(int) territories[i].Continent]++;
+                int rand = Random.Range(1, player1Rem + player2Rem + player3Rem + 1);
+                if(rand - player3Rem <= 0)
+                {
+                    territories[i].SetOwner(Players[2]);
+                    player3Rem--;
+                }
+                else if(rand - player3Rem - player2Rem < 0)
+                {
+                    territories[i].SetOwner(Players[1]);
+                    player2Rem--;
+                }
+                else
+                {
+                    territories[i].SetOwner(Players[0]);
+                    player1Rem--;
+                }
+                territories[i].TroopCount = 1;
+                ContinentCount[(int) territories[i].Continent]++;
+            }
+            allTerritoriesClaimed = true;
         }
-        
+        else
+        {
+            for(int i = 0; i < territories.Length; i++)
+            {
+                territories[i] = territoryObjects[i].GetComponent<Territory>();
+                territories[i].Setup();
+
+                territories[i].SetOwner(null);
+                territories[i].TroopCount = 0;
+
+                ContinentCount[(int) territories[i].Continent]++;
+            }
+        }   
     }
 
     // Function called by the player scripts when they end their turn.

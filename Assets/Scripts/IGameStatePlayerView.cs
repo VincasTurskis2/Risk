@@ -1,6 +1,7 @@
 
 public interface IGameStatePlayerView
 {
+    public bool is2PlayerGame{get;}
     public Player[] Players{get;}
     public Territory[] territories{get;}
     public int currentPlayerNo{get;}

@@ -37,7 +37,14 @@ public static class Helpers{
     {
         float h, s, v;
         Color.RGBToHSV(baseColor, out h, out s, out v);
-        s += 0.2f;
+        if(baseColor != ColorPreset.White)
+        {
+            s += 0.2f;
+        }
+        else
+        {
+            return Color.white;
+        }
         return Color.HSVToRGB(h, s, v);
     }
 }
