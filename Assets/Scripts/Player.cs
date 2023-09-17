@@ -57,9 +57,9 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
     {
         _placeableTroops = newNumber;
     }
-    public void DecrementPlaceableTroops()
+    public void DecrementPlaceableTroops(int number)
     {
-        _placeableTroops--;
+        _placeableTroops -= number;
     }
 
     public PlayerData GetData()

@@ -51,6 +51,16 @@ public class PassiveAIPlayer : Player
             int randomTerritoryNumber = Random.Range(0, possibleTerritories.Count);
             bool success = _actions.SetupDeploy(possibleTerritories[randomTerritoryNumber], this);
         }
+        else if(_gameState.turnStage == TurnStage.Deploy)
+        {
+            int randomTerritoryNumber = Random.Range(0, _ownedTerritories.Count);
+            List<ITerritoryPlayerView> territoryList = _ownedTerritories.ToList();
+            ITerritoryPlayerView territoryToDeploy = territoryList[randomTerritoryNumber];
+            ITerritoryPlayerView[] territoryToDeployArray = {territoryToDeploy};
+            int[] amounts = { _placeableTroops };
+            _actions.DeployMultiple(territoryToDeployArray, amounts);
+            EndTurn();
+        }
         else
         {
             EndTurn();

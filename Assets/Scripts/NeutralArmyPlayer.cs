@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+
+// a class representing neutral territories that appear in a 2 player game
 public class NeutralArmyPlayer : Player
 {
     

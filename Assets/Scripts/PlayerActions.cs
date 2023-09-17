@@ -24,11 +24,48 @@ public class PlayerActions : MonoBehaviour
         if(_gameState.turnStage != TurnStage.Deploy) return false;
         if(territory.Owner.GetPlaceableTroopNumber() <= 0) return false;
 
-        territory.Owner.DecrementPlaceableTroops();
+        territory.Owner.DecrementPlaceableTroops(1);
         territory.TroopCount++;
         if(territory.Owner.GetPlaceableTroopNumber() <= 0)
         {
             territory.Owner.EndTurnStage();
+        }
+        return true;
+    }
+    public bool DeployMultiple(ITerritoryPlayerView[] ITerritories, int[] amounts)
+    {
+        // Guards
+        if(ITerritories == null || amounts == null) return false;
+        if(amounts.Length != ITerritories.Length) return false;
+        Territory[] territories = new Territory[ITerritories.Length];
+
+        if(_gameState.turnStage != TurnStage.Deploy) return false;
+        int totalToDeploy = 0;
+        Player owner = null;
+        for(int i = 0; i < ITerritories.Length; i++)
+        {
+            territories[i] = (Territory) ITerritories[i];
+            if(owner == null)
+            {
+                if(!territories[i].Owner.IsMyTurn()) return false;
+                owner = territories[i].Owner;
+            }
+            else 
+            {
+                if(territories[i].Owner == owner) return false;
+            }
+            totalToDeploy += amounts[i];
+        }
+        if(owner == null) return false;
+        if(totalToDeploy > owner.GetPlaceableTroopNumber()) return false;
+        for(int i = 0; i < territories.Length; i++)
+        {
+            territories[i].Owner.DecrementPlaceableTroops(amounts[i]);
+            territories[i].TroopCount += amounts[i];
+        }
+        if(owner.GetPlaceableTroopNumber() <= 0)
+        {
+            owner.EndTurnStage();
         }
         return true;
     }
@@ -49,14 +86,14 @@ public class PlayerActions : MonoBehaviour
         {
             territory.SetOwner(player);
             territory.TroopCount++;
-            player.DecrementPlaceableTroops();
+            player.DecrementPlaceableTroops(1);
             player.EndTurn();
             return true;
         }
         else if((Object)territory.Owner == (Object) player && _gameState.allTerritoriesClaimed)
         {
             territory.TroopCount++;
-            player.DecrementPlaceableTroops();
+            player.DecrementPlaceableTroops(1);
             player.EndTurn();
             return true;
         }

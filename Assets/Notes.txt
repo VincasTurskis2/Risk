@@ -18,6 +18,6 @@ DONE
 
 2-player game (neutral army setup) DONE
 
-PassiveAI deploy troops (randomly)
+PassiveAI deploy troops (randomly) DONE
 
 Better deploy system (with -/+ on each territory, and confirm at the end)
