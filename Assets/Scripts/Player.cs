@@ -2,14 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class Player : MonoBehaviour
+public abstract class Player : MonoBehaviour, IOtherPlayer
 {
     [SerializeField]
     protected PlayerData _data;
     [SerializeField]
     protected int _placeableTroops;
     [SerializeField]
-    protected HashSet<Territory> _ownedTerritories;
+    protected HashSet<ITerritoryPlayerView> _ownedTerritories;
     protected IGameStatePlayerView _gameState;
     [SerializeField]
     protected bool _isMyTurn = false;
@@ -43,7 +43,7 @@ public abstract class Player : MonoBehaviour
     {
         return _isMyTurn;
     }
-    public HashSet<Territory> GetOwnedTerritories()
+    public HashSet<ITerritoryPlayerView> GetOwnedTerritories()
     {
         return _ownedTerritories;
     }

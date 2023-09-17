@@ -20,7 +20,7 @@ public class PassiveAIPlayer : Player
             return;
         }
         _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
-        _ownedTerritories = new HashSet<Territory>();
+        _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _hand = new List<TerritoryCard>();
         _data = data;
     }
@@ -31,14 +31,14 @@ public class PassiveAIPlayer : Player
         _placeableTroops = _actions.CalculatePlaceableTroops(this);
         if(_gameState.turnStage == TurnStage.Setup)
         {
-            List<Territory> possibleTerritories = new List<Territory>(_ownedTerritories);
+            List<ITerritoryPlayerView> possibleTerritories = new List<ITerritoryPlayerView>(_ownedTerritories);
             if(!_gameState.allTerritoriesClaimed)
             {
-                possibleTerritories = new List<Territory>();
-                foreach(Territory t in _gameState.territories)
+                possibleTerritories = new List<ITerritoryPlayerView>();
+                foreach(ITerritoryPlayerView t in _gameState.territories)
                 {
                     
-                    if(t.Owner == null)
+                    if(t.GetOwner() == null)
                     {
                         possibleTerritories.Add(t);
                     }

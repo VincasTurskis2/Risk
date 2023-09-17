@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 // A class to represent a single territory
-public class Territory : MonoBehaviour
+public class Territory : MonoBehaviour, ITerritoryPlayerView
 {
 
     private GameState _gameState;
@@ -30,6 +30,22 @@ public class Territory : MonoBehaviour
     }
     public bool IsANeighbor(Territory other)
     {
+        bool contains = false;
+        for(int i = 0;+ i < Neighbors.Length; i++)
+        {
+            if(Neighbors[i] == other) 
+            {
+                contains = true;
+                break;
+            }
+        }
+        return contains;
+    }
+    public bool IsANeighbor(ITerritoryPlayerView IOther)
+    {
+        if(IOther == null) return false;
+        Territory other = (Territory) IOther;
+        if(other == null) return false;
         bool contains = false;
         for(int i = 0;+ i < Neighbors.Length; i++)
         {
@@ -73,5 +89,15 @@ public class Territory : MonoBehaviour
     public Sprite GetSprite()
     {
         return _renderer.sprite;
+    }
+
+    public ITerritoryPlayerView[] GetNeighbors()
+    {
+        return Neighbors;
+    }
+
+    public IOtherPlayer GetOwner()
+    {
+        return Owner;
     }
 }

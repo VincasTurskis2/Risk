@@ -136,7 +136,7 @@ public class UIManager : MonoBehaviour
         _helperPanel.SetActive(_gameState.turnStage == TurnStage.Deploy || _gameState.turnStage == TurnStage.Setup);
         _helperPanelText.SetText("Troops left to deploy: " + _gameState.CurrentPlayer().GetPlaceableTroopNumber());
     }
-    public void DisplayAttackPanel(Territory from, Territory to)
+    public void DisplayAttackPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
         _attackPanel.SetActive(true);
         _cumulativeAttackerLoss = 0;
@@ -147,14 +147,14 @@ public class UIManager : MonoBehaviour
         _cardUIManager.gameObject.SetActive(false);
         _retreatButton.interactable = true;
         _attackButton.interactable = true;
-        _attackPanelTitle.SetText("Battle for " + to.name);
+        _attackPanelTitle.SetText("Battle for " + to.TerritoryName);
         _attackButtonText.SetText("Attack!");
 
-        _attackerName.SetText("Attacker: " + from.Owner.GetData().playerName);
-        _attackerOrigin.SetText("(" + from.name + ")");
+        _attackerName.SetText("Attacker: " + from.GetOwner().GetData().playerName);
+        _attackerOrigin.SetText("(" + from.TerritoryName + ")");
         _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
 
-        _defenderName.SetText("Defender: " + to.Owner.GetData().playerName);
+        _defenderName.SetText("Defender: " + to.GetOwner().GetData().playerName);
         _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
 
         _attackerDice.SetText("Dice rolled: {}");
@@ -191,7 +191,7 @@ public class UIManager : MonoBehaviour
         _defenderTotalLoss.SetText("Total troops lost: " + _cumulativeDefenderLoss);
         _occupyTroopSlider.minValue = diceRollResults[2];
     }
-    public void UpdateAttackPanelResults(Territory from, Territory to)
+    public void UpdateAttackPanelResults(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
         _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
         _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
@@ -228,7 +228,7 @@ public class UIManager : MonoBehaviour
         _fortifySliderPanel.SetActive(false);
         PanelOverlayIsDisplayed = false;
     }
-    public void DisplayFortifyPanel(Territory from, Territory to)
+    public void DisplayFortifyPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
         _fortifySliderPanel.SetActive(true);
         _fortifySlider.maxValue = from.TroopCount - 1;

@@ -12,8 +12,12 @@ public class PlayerActions : MonoBehaviour
     {
         _gameState = gameObject.GetComponent<GameState>();
     }
-    public bool Deploy(Territory territory)
+    public bool Deploy(ITerritoryPlayerView ITerritory)
     {
+        
+        if(ITerritory == null) return false;
+        Territory territory = (Territory) ITerritory;
+
         // Guards
         if(territory == null) return false;
         if(!territory.Owner.IsMyTurn()) return false;
@@ -29,8 +33,12 @@ public class PlayerActions : MonoBehaviour
         return true;
     }
 
-    public bool SetupDeploy(Territory territory, Player player)
+    public bool SetupDeploy(ITerritoryPlayerView ITerritory, Player player)
     {
+        if(ITerritory == null) return false;
+        Territory territory = (Territory) ITerritory;
+
+
         //Guards
         if(territory == null) return false;
         if(_gameState.turnStage != TurnStage.Setup) return false;
@@ -55,8 +63,10 @@ public class PlayerActions : MonoBehaviour
         else return false;
     }
 
-    public bool Attack(Territory from, Territory to)
+    public bool Attack(ITerritoryPlayerView IFrom, ITerritoryPlayerView ITo)
     {
+        if(IFrom == null || ITo == null) return false;
+        Territory from = (Territory) IFrom, to = (Territory) ITo;
         // Guards
         if(from == null || to == null || from.TroopCount <= 1) return false;
         if(!from.Owner.IsMyTurn()) return false;
@@ -83,8 +93,11 @@ public class PlayerActions : MonoBehaviour
         _gameState.uiManager.UpdateAttackPanelResults(from, to);
         return true;
     }
-    public bool Fortify(Territory from, Territory to, int numberOfTroops)
+    public bool Fortify(ITerritoryPlayerView IFrom, ITerritoryPlayerView ITo, int numberOfTroops)
     {
+        if(IFrom == null || ITo == null) return false;
+        Territory from = (Territory) IFrom, to = (Territory) ITo;
+
         // Guards
         if(from == null || to == null || numberOfTroops < 1) return false;
         if(!from.Owner.IsMyTurn()) return false;
@@ -99,8 +112,11 @@ public class PlayerActions : MonoBehaviour
         from.Owner.EndTurnStage(); // Only 1 reinforcement can be done per turn
         return true;
     }
-    public bool Occupy(Territory from, Territory to, int numberOfTroops)
+    public bool Occupy(ITerritoryPlayerView IFrom, ITerritoryPlayerView ITo, int numberOfTroops)
     {
+        if(IFrom == null || ITo == null) return false;
+        Territory from = (Territory) IFrom, to = (Territory) ITo;
+
         // Guards
         if(from == null || to == null || numberOfTroops < 1) return false;
         if(!from.Owner.IsMyTurn()) return false;

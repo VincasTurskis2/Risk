@@ -7,8 +7,8 @@ using UnityEngine.EventSystems;
 public class HumanPlayer :  Player
 {
     private UIManager _uiManager;
-    private Territory _selectedTerritory = null;
-    private Territory _previouslySelectedTerritory = null;
+    private ITerritoryPlayerView _selectedTerritory = null;
+    private ITerritoryPlayerView _previouslySelectedTerritory = null;
 
     public override void Setup(GameState state, PlayerData data)
     {
@@ -29,7 +29,7 @@ public class HumanPlayer :  Player
         // Needs to be done in script, because an object with this class attached does not exist in the scene before running it
         _uiManager.GetCardUIManager().GetTradeInCardsButton().onClick.AddListener(TradeInCards);
 
-        _ownedTerritories = new HashSet<Territory>();
+        _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _hand = new List<TerritoryCard>();
         _data = data;
     }
@@ -59,13 +59,13 @@ public class HumanPlayer :  Player
             if(hit.collider != null && isOnUI == false)
             {
                 bool success = false;
-                SelectTerritory(hit.collider.gameObject.GetComponent<Territory>());
+                SelectTerritory(hit.collider.gameObject.GetComponent<ITerritoryPlayerView>());
                 switch(_gameState.turnStage){
                     case TurnStage.Setup:
                         _actions.SetupDeploy(_selectedTerritory, this);
                         break;
                     case TurnStage.Deploy:
-                        if((Object)_selectedTerritory.Owner == this)
+                        if((Object)_selectedTerritory.GetOwner() == this)
                         {
                             success = _actions.Deploy(_selectedTerritory);
                         }
@@ -73,7 +73,7 @@ public class HumanPlayer :  Player
                     case TurnStage.Attack:
                         if(_selectedTerritory != null && _previouslySelectedTerritory != null)
                         {
-                            if((Object)_previouslySelectedTerritory.Owner == this && (Object)_selectedTerritory.Owner != this && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory) && _previouslySelectedTerritory.TroopCount > 1)
+                            if((Object)_previouslySelectedTerritory.GetOwner() == this && (Object)_selectedTerritory.GetOwner() != this && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory) && _previouslySelectedTerritory.TroopCount > 1)
                             {
                                 _uiManager.DisplayAttackPanel(_previouslySelectedTerritory, _selectedTerritory);
                                 SelectTerritory(null);
@@ -83,7 +83,7 @@ public class HumanPlayer :  Player
                     case TurnStage.Reinforce:
                         if(_selectedTerritory != null && _previouslySelectedTerritory != null)
                         {
-                            if(_selectedTerritory.Owner == _previouslySelectedTerritory.Owner && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory))
+                            if(_selectedTerritory.GetOwner() == _previouslySelectedTerritory.GetOwner() && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory))
                             {
                                 _uiManager.DisplayFortifyPanel(_previouslySelectedTerritory, _selectedTerritory);
                                 SelectTerritory(null);
@@ -126,7 +126,7 @@ public class HumanPlayer :  Player
         }
     }
 
-    private void SelectTerritory(Territory tr)
+    private void SelectTerritory(ITerritoryPlayerView tr)
     {
         if(_selectedTerritory != null)
         {
