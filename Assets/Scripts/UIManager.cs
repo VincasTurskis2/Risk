@@ -101,6 +101,7 @@ public class UIManager : MonoBehaviour
     }
     public void Setup()
     {
+        _cardUIManager.gameObject.SetActive(true);
         _gameState = gameObject.GetComponent<GameState>();
         _playerActions = gameObject.GetComponent<PlayerActions>();
         _cumulativeAttackerLoss = 0;
