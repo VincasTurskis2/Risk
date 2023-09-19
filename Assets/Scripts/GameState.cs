@@ -27,6 +27,10 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
 
     public bool is2PlayerGame {get; set;}
 
+    public float gameTimeElapsedSeconds {get; private set;} = 0;
+
+    public int turnCount {get; private set;}= 1;
+
     public void Setup(PlayerData[] playerData)
     {
         is2PlayerGame = false;
@@ -138,7 +142,11 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
     public void EndTurn()
     {
         currentPlayerNo++;
-        if(currentPlayerNo >= Players.Length) currentPlayerNo = 0;
+        if(currentPlayerNo >= Players.Length)
+        {
+            currentPlayerNo = 0;
+            turnCount++;
+        }
         if(turnStage == TurnStage.Setup)
         {
             if(!allTerritoriesClaimed)
@@ -205,5 +213,10 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
     public Player CurrentPlayer()
     {
         return Players[currentPlayerNo];
+    }
+
+    void Update()
+    {
+        gameTimeElapsedSeconds += Time.deltaTime;
     }
 }

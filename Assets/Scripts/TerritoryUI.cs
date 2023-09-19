@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class TerritoryUI : MonoBehaviour
 {
     private Territory _territory;
-    [field: SerializeField]
-    public TextMeshProUGUI TroopCountText {get; private set;}
+    [SerializeField]
+    private TextMeshProUGUI _troopCountText;
+    [SerializeField]
+    private TextMeshProUGUI _territoryNameText;
     void Start()
     {
         _territory = this.gameObject.GetComponent<Territory>();
+        _territoryNameText.text = _territory.TerritoryName;
+        
     }
 
     void Update()
     {
-        TroopCountText.SetText(_territory.TroopCount.ToString());
+        _troopCountText.SetText(_territory.TroopCount.ToString());
     }
 }
