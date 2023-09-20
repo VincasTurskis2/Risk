@@ -21,6 +21,8 @@ PassiveAI deploy troops (randomly) DONE
 
 Add show/hide cards button for hotseat games DONE
 
+Proper victory/defeat screens DONE
+
 UI information panels on territories appear based on zoom DONE (wasn't necessary)
 
 Still to do:
@@ -28,7 +30,4 @@ Saving system
 
 Better deploy system (with -/+ on each territory, and confirm at the end)
 
-
 Bonus info panel appear on selecting a territory?
-
-Proper victory/defeat screens

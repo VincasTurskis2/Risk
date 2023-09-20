@@ -29,7 +29,8 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
 
     public float gameTimeElapsedSeconds {get; private set;} = 0;
 
-    public int turnCount {get; private set;}= 1;
+    public int turnCount {get; private set;} = 1;
+
 
     public void Setup(PlayerData[] playerData)
     {
@@ -199,9 +200,10 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
         {
             currentPlayerNo--;
         }
-        if(Players.Length == 1)
+        if(Players.Length == 1 || (Players.Length == 2 && is2PlayerGame))
         {
             Debug.Log(Players[0].GetData().playerName + " Has won!");
+            uiManager.DisplayVictoryPanel(Players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
         }
     }
     
@@ -213,6 +215,13 @@ public class GameState : MonoBehaviour, IGameStatePlayerView
     public Player CurrentPlayer()
     {
         return Players[currentPlayerNo];
+    }
+
+    public void EndSetupStage()
+    {
+        if(turnStage != TurnStage.Setup) return;
+        turnStage = TurnStage.Deploy;
+        turnCount = 1;
     }
 
     void Update()

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
+using System;
 
 // A class 
 public class UIManager : MonoBehaviour
@@ -84,6 +86,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private CardUIManager _cardUIManager;
 
+    [SerializeField]
+    private GameObject _winLosePanel;
+    [SerializeField]
+    private TextMeshProUGUI _turnCount;
+    [SerializeField]
+    private TextMeshProUGUI _gameTimeText;
+    [SerializeField]
+    private TextMeshProUGUI _winnerText;
+
 
 
     private GameState _gameState;
@@ -102,6 +113,7 @@ public class UIManager : MonoBehaviour
     public void Setup()
     {
         _cardUIManager.gameObject.SetActive(true);
+        _winLosePanel.SetActive(false);
         _gameState = gameObject.GetComponent<GameState>();
         _playerActions = gameObject.GetComponent<PlayerActions>();
         _cumulativeAttackerLoss = 0;
@@ -253,5 +265,30 @@ public class UIManager : MonoBehaviour
     public CardUIManager GetCardUIManager()
     {
         return _cardUIManager;
+    }
+
+    public void DisplayVictoryPanel(string winnerName, int turnCount, float gameTimeSeconds)
+    {
+        HideAttackPanel();
+        HideFortifyPanel();
+        _currentPlayerText.transform.parent.gameObject.SetActive(false);
+        _currentStageText.transform.parent.gameObject.SetActive(false);
+        _endStageButton.gameObject.SetActive(false);
+        _cardUIManager.gameObject.SetActive(false);
+        PanelOverlayIsDisplayed = true;
+
+        _winnerText.text = winnerName + " wins!";
+
+        _turnCount.text = "" + turnCount;
+
+        string timeString = String.Format("{0:00}:{1:00}:{2:00}", (int) gameTimeSeconds / 3600, (int) gameTimeSeconds/60, (int) gameTimeSeconds % 60);
+
+        _gameTimeText.text = timeString;
+
+        _winLosePanel.SetActive(true);
+    }
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }

@@ -173,7 +173,7 @@ public class PlayerActions : MonoBehaviour
         {
             if(player.GetPlaceableTroopNumber() == 0)
             {
-                _gameState.turnStage = TurnStage.Deploy;
+                _gameState.EndSetupStage();
             }
             else return player.GetPlaceableTroopNumber();
         }
