@@ -2188,7 +2188,7 @@ MonoBehaviour:
   _fortifySliderMaxText: {fileID: 2043612308}
   _fortifySliderConfirmButton: {fileID: 450417345}
   _cardUIManager: {fileID: 942675990}
-  _winLosePanel: {fileID: 0}
+  _winLosePanel: {fileID: 1099617517}
   _turnCount: {fileID: 1554529741}
   _gameTimeText: {fileID: 345216027}
   _winnerText: {fileID: 405924424}
