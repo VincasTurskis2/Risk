@@ -32,8 +32,10 @@ Better deploy system (with -/+ on each territory, and confirm at the end)
 
 Bonus info panel appear on selecting a territory?
 
-Bugs:
+Fixed Bugs:
 
-On smaller screens, the card panel blocks the reinforce slider panel "confirm" and "cancel" buttons.
+On smaller screens, the card panel blocks the reinforce slider panel "confirm" and "cancel" buttons. DONE
 
-clicking the "End turn" button with the reinforce slider open (and possibly other panels) does not close the panel. Turn off end turn button while the panels are open? 
+clicking the "End turn" button with the reinforce slider open (and possibly other panels) does not close the panel. Turn off end turn button while the panels are open? DONE
+
+To-do Bugs:

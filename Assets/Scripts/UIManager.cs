@@ -238,11 +238,13 @@ public class UIManager : MonoBehaviour
     }
     public void HideFortifyPanel()
     {
+        _endStageButton.interactable = true;
         _fortifySliderPanel.SetActive(false);
         PanelOverlayIsDisplayed = false;
     }
     public void DisplayFortifyPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
+        _endStageButton.interactable = false;
         _fortifySliderPanel.SetActive(true);
         _fortifySlider.maxValue = from.TroopCount - 1;
         _fortifySlider.value = _fortifySlider.maxValue;
