@@ -1,7 +1,5 @@
 Template design pattern (should be) used for the different types of players (human and different AI's)
 Started in Unity, considering moving to another engine due to Unity's fuckups.
-Issue: the rewards of trading in cards are not correct: the reward increases globally when any player trades their cards in, instead of each player being on a different reward stage.
-Solved!
 
 Notes on player class restrictions: I did this because i'm not sure how machine learning works. However, as I imagine it, a machine learning algorithm would have to be given a set of possible actions, and somehow trained how to choose between them. I am hoping that the set of possible actions I can give it will be "you can use whatever this class has access to", thus the reason for my defensive programming and restrictions on what the player classes can access/modify.
 
@@ -33,6 +31,8 @@ Better deploy system (with -/+ on each territory, and confirm at the end)
 Bonus info panel appear on selecting a territory?
 
 Fixed Bugs:
+
+The rewards of trading in cards are not correct: the reward increases globally when any player trades their cards in, instead of each player being on a different reward stage. DONE
 
 On smaller screens, the card panel blocks the reinforce slider panel "confirm" and "cancel" buttons. DONE
 
