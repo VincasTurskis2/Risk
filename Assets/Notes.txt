@@ -26,6 +26,10 @@ UI information panels on territories appear based on zoom DONE (wasn't necessary
 Still to do:
 Saving system
 
+Simulation system (bypass the UI, run many games in succession with same/slightly changing parameters, record results)
+
+Logging system
+
 Better deploy system (with -/+ on each territory, and confirm at the end)
 
 Bonus info panel appear on selecting a territory?
