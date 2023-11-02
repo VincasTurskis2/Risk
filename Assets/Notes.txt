@@ -27,12 +27,17 @@ Still to do:
 Saving system
 
 Simulation system (bypass the UI, run many games in succession with same/slightly changing parameters, record results)
+	For this, an idea - separate monobehaviour classes from the action classes. At least for territory. Maybe use the monobehaviour class to make use of the drag and drop in editor, and then on start, call constructor of the underlying class and pass as parameters. If game is started as simulation, initialize only the first time from the monobehaviour classes. All in all, try to avoid using Instantiate() when doing the simulation
 
 Logging system
 
 Better deploy system (with -/+ on each territory, and confirm at the end)
 
 Bonus info panel appear on selecting a territory?
+
+Add black line between alaska and russia
+
+
 
 Fixed Bugs:
 
