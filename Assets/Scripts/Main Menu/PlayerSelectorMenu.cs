@@ -31,6 +31,11 @@ public class PlayerSelectorMenu : MonoBehaviour
                 case PlayerType.PassiveAI:
                     list.Add(new TMP_Dropdown.OptionData("Passive AI"));
                     break;
+                case PlayerType.MCTS:
+                    list.Add(new TMP_Dropdown.OptionData("MCTS AI"));
+                    break;
+                default:
+                    break;
             }
         }
         _playerTypeSelection.AddOptions(list);

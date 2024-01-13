@@ -1,0 +1,44 @@
+Things to ask fabio:
+if the UCB1 formula selects a leaf that already exists, should i run the UCB1 formula again on that leaf? (Probably yes)
+Ideas for a playout policy?
+MCTS returns an action - how to do that in OOP/C#? Delegates? Func<>? Make an action into a class or interface
+
+Multiply the heuristic value of a state by the probability of getting to that state for the purposes of backpropagating the value
+
+rule-based for troop placement and reinforcement
+1 mtcs search for the attacks.
+
+finding possible attacks and executing them are different!
+Can have a bunch of checks and decisions during execution in case something goes wrong
+
+MCTS(State state){
+    new tree;
+    tree.addNode(state, {root})
+    while isTimeRemaining(){
+        State leaf = select(tree)
+        State child = expand(leaf)
+        tree.addNode(child, leaf)
+        result = simulate(child)
+        back_propagate(result, child)
+    }
+    return {Action that has the highest number of playouts}
+}
+
+needed for this - a way to represent a state (that could be copied)?, selection policy, playout policy, heuristic
+
+playout policy - some simple decision making process for making moves. Could be "attack if possible" or "place troops near the border". Could also be random
+more possibilites - attack when much more attackers than defenders
+
+possible good selection policy - "upper confidence bounds applied to trees" ("UCT"). 
+It ranks all moves based on an upper confidence bound formula called UCB1. For node n:
+
+UCB1(n) = U(n)/N(n) + C * root(log N(Parent(n))/N(n))
+
+U(n) - total utility of all playouts that went through n
+N(n) - number of playouts that went through N
+C - a constant. usually square root of 2, but can be experimented with
+
+run this formula on all possible moves from a child node, select the node with the balanced result. If it already exists, run the formula again(?)
+on the child node. If not, run create a new node and run a simulation choosing moves based on the playout policy
+
+finally, update all parent nodes with the information.
