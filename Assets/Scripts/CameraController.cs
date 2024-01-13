@@ -24,11 +24,20 @@ public class CameraController : MonoBehaviour
         float zoomAmount = zoomAction.ReadValue<float>();
         transform.Translate(new Vector3(moveAmount.x, moveAmount.y, 0) * moveSpeed * Time.deltaTime * (mainCamera.orthographicSize / 10));
 
-        if(transform.position.x < leftBound.position.x) transform.position = new Vector3(leftBound.position.x, transform.position.y, transform.position.z);
-        else if(transform.position.x > rightBound.position.x) transform.position = new Vector3(rightBound.position.x, transform.position.y, transform.position.z);
+        Debug.Log(mainCamera.orthographicSize);
+        if(transform.position.x < leftBound.position.x + mainCamera.orthographicSize * mainCamera.aspect && transform.position.x > rightBound.position.x - mainCamera.orthographicSize * mainCamera.aspect)
+        {
+            transform.position = new Vector3(0, transform.position.y, transform.position.z);
+        }
+        else if(transform.position.x < leftBound.position.x + mainCamera.orthographicSize * mainCamera.aspect) transform.position = new Vector3(leftBound.position.x + mainCamera.orthographicSize * mainCamera.aspect, transform.position.y, transform.position.z);
+        else if(transform.position.x > rightBound.position.x - mainCamera.orthographicSize * mainCamera.aspect) transform.position = new Vector3(rightBound.position.x - mainCamera.orthographicSize * mainCamera.aspect, transform.position.y, transform.position.z);
 
-        if(transform.position.y < lowerBound.position.y) transform.position = new Vector3(transform.position.x, lowerBound.position.y, transform.position.z);
-        else if(transform.position.y > upperBound.position.y) transform.position = new Vector3(transform.position.x, upperBound.position.y, transform.position.z);
+        if(transform.position.y < lowerBound.position.y + mainCamera.orthographicSize && transform.position.y > upperBound.position.y - mainCamera.orthographicSize)
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+        else if(transform.position.y < lowerBound.position.y + mainCamera.orthographicSize) transform.position = new Vector3(transform.position.x, lowerBound.position.y + mainCamera.orthographicSize, transform.position.z);
+        else if(transform.position.y > upperBound.position.y - mainCamera.orthographicSize) transform.position = new Vector3(transform.position.x, upperBound.position.y - mainCamera.orthographicSize, transform.position.z);
 
         if((zoomAmount > 0 && mainCamera.orthographicSize < zoomMaxValue) || (zoomAmount < 0 && mainCamera.orthographicSize > zoomMinValue))
         {
