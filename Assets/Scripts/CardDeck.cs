@@ -4,11 +4,12 @@ using UnityEngine;
 
 
 // A class that manages the territory cards and their discard
-public class CardDeck : MonoBehaviour
+public class CardDeck
 {
     private Stack<TerritoryCard> _deck;
     private Stack<TerritoryCard> _discardDeck;
-    public void SetupDeck()
+
+    public CardDeck()
     {
         int infantryRem = 14, cavalryRem = 14, artilleryRem = 14;
         GameObject[] territoryObjects = GameObject.FindGameObjectsWithTag("Territory");

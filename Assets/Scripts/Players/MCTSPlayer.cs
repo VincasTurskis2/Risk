@@ -33,6 +33,12 @@ public class MCTSPlayer : Player
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
         _placeableTroops = _actions.CalculatePlaceableTroops(this);
+        
+        // TODO: Add rule-based troop deployment
+
+        _actions.EndTurnStage(this);
+        //GameStateTreeNode root = new GameStateTreeNode(_gameState)
+
     }
     
     public override void DiscardCards(TerritoryCard[] cardsToDiscard)

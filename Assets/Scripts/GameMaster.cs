@@ -22,16 +22,15 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
 
     public void Setup(PlayerData[] playerData)
     {
-        state = new GameState(gameObject.GetComponent<CardDeck>());
+        state = new GameState();
         is2PlayerGame = false;
         uiManager = gameObject.GetComponent<UIManager>();
         SetupPlayers(playerData);
         SetupTerritories();
-        state.cardDeck.SetupDeck();
     }
     public void Setup()
     {
-        state = new GameState(gameObject.GetComponent<CardDeck>());
+        state = new GameState();
         is2PlayerGame = false;
         PlayerData[] players = new PlayerData[2];
         players[0] = new PlayerData("Vince", PlayerType.Human, ColorPreset.Green);
@@ -39,7 +38,6 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
         uiManager = gameObject.GetComponent<UIManager>();
         SetupPlayers(players);
         SetupTerritories();
-        state.cardDeck.SetupDeck();
     }
     public void SetupPlayers(PlayerData[] players)
     {
