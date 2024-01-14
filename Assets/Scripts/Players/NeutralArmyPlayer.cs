@@ -6,10 +6,10 @@ using UnityEngine;
 public class NeutralArmyPlayer : Player
 {
     
-    public override void Setup(GameState state, PlayerData data)
+    public override void Setup(GameMaster state, PlayerData data)
     {
         _gameState = state;
-        if(_gameState.Players.Length == 3)
+        if(_gameState.Players().Length == 3)
         {
             _placeableTroops = 26;
         }

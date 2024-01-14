@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// An implementation of Monte Carlo tree search.
+// An implementation of a player using Monte Carlo tree search.
 public class MCTSPlayer : Player
 {
     
-    public override void Setup(GameState state, PlayerData data)
+    public override void Setup(GameMaster state, PlayerData data)
     {
         _gameState = state;
         if(_gameState.is2PlayerGame)
         {
             _placeableTroops = 26;
         }
-        else if(_gameState.Players.Length >= 3 && _gameState.Players.Length <= 6)
+        else if(_gameState.Players().Length >= 3 && _gameState.Players().Length <= 6)
         {
-            _placeableTroops = 40 - ((_gameState.Players.Length - 2) * 5);
+            _placeableTroops = 40 - ((_gameState.Players().Length - 2) * 5);
         }
         else
         {
-            Debug.Log("Error in player count: there are " + _gameState.Players.Length + " players, should be between 2 and 6");
+            Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
             return;
         }
         _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));

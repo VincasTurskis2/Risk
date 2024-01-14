@@ -10,20 +10,20 @@ public class HumanPlayer :  Player
     private ITerritoryPlayerView _selectedTerritory = null;
     private ITerritoryPlayerView _previouslySelectedTerritory = null;
 
-    public override void Setup(GameState state, PlayerData data)
+    public override void Setup(GameMaster state, PlayerData data)
     {
         _gameState = state;
         if(_gameState.is2PlayerGame)
         {
             _placeableTroops = 26;
         }
-        else if(_gameState.Players.Length >= 3 && _gameState.Players.Length <= 6)
+        else if(_gameState.Players().Length >= 3 && _gameState.Players().Length <= 6)
         {
-            _placeableTroops = 40 - ((_gameState.Players.Length - 2) * 5);
+            _placeableTroops = 40 - ((_gameState.Players().Length - 2) * 5);
         }
         else
         {
-            Debug.Log("Error in player count: there are " + _gameState.Players.Length + " players, should be between 2 and 6");
+            Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
             return;
         }
         _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
@@ -64,7 +64,7 @@ public class HumanPlayer :  Player
             {
                 bool success = false;
                 SelectTerritory(hit.collider.gameObject.GetComponent<ITerritoryPlayerView>());
-                switch(_gameState.turnStage){
+                switch(_gameState.turnStage()){
                     case TurnStage.Setup:
                         _actions.SetupDeploy(_selectedTerritory, this);
                         break;
@@ -146,7 +146,7 @@ public class HumanPlayer :  Player
 
     public void TradeInCards()
     {
-        if(_gameState.turnStage != TurnStage.Deploy) 
+        if(_gameState.turnStage() != TurnStage.Deploy) 
         {
             Debug.Log("wrong stage of the game to trade in cards");
             return;

@@ -26,12 +26,12 @@ public class CardUIManager : MonoBehaviour
     private GameObject _cardsHiddenText;
     private PlayerActions _playerActions;
 
-    private GameState _gameState;
+    private GameMaster _gameState;
 
     private bool _cardsHidden;
 
 
-    public void Setup(GameState state)
+    public void Setup(GameMaster state)
     {
         _cardsHidden = false;
         _cardsHiddenText.SetActive(false);

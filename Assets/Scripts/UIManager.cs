@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
 
 
 
-    private GameState _gameState;
+    private GameMaster _gameState;
     private PlayerActions _playerActions;
 
     public bool PanelOverlayIsDisplayed {get; private set;} = false;
@@ -114,7 +114,7 @@ public class UIManager : MonoBehaviour
     {
         _cardUIManager.gameObject.SetActive(true);
         _winLosePanel.SetActive(false);
-        _gameState = gameObject.GetComponent<GameState>();
+        _gameState = gameObject.GetComponent<GameMaster>();
         _playerActions = gameObject.GetComponent<PlayerActions>();
         _cumulativeAttackerLoss = 0;
         _cumulativeDefenderLoss = 0;
@@ -125,7 +125,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateCurrentStageText()
     {
-        switch(_gameState.turnStage){
+        switch(_gameState.turnStage()){
             case TurnStage.Setup:
                 _currentStageText.SetText("Current Stage: Setup");
                 break;
@@ -146,7 +146,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateHelperPanelText()
     {
-        _helperPanel.SetActive(_gameState.turnStage == TurnStage.Deploy || _gameState.turnStage == TurnStage.Setup);
+        _helperPanel.SetActive(_gameState.turnStage() == TurnStage.Deploy || _gameState.turnStage() == TurnStage.Setup);
         _helperPanelText.SetText("Troops left to deploy: " + _gameState.CurrentPlayer().GetPlaceableTroopNumber());
     }
     public void DisplayAttackPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)

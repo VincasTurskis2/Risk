@@ -18,7 +18,7 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
     protected bool _cardEligible;
 
     public abstract void StartTurn();
-    public abstract void Setup(GameState state, PlayerData data);
+    public abstract void Setup(GameMaster state, PlayerData data);
     public abstract void DiscardCards(TerritoryCard[] cardsToDiscard);
     public abstract void AddCardsToHand(List<TerritoryCard> cards);
 

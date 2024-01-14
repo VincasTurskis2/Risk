@@ -5,12 +5,12 @@ using UnityEngine;
 // A script that's responsible for setting up the game
 public class GameLoader : MonoBehaviour
 {
-    private GameState _gameState;
+    private GameMaster _gameState;
     private PlayerActions _playerActions;
     private UIManager _UIManager;
     void Start()
     {
-        _gameState = gameObject.GetComponent<GameState>();
+        _gameState = gameObject.GetComponent<GameMaster>();
         _playerActions = gameObject.GetComponent<PlayerActions>();
         _UIManager = gameObject.GetComponent<UIManager>();
         PlayerSelectionManager psm = GameObject.FindObjectOfType<PlayerSelectionManager>();
@@ -24,6 +24,6 @@ public class GameLoader : MonoBehaviour
         }
         _playerActions.Setup();
         _UIManager.Setup();
-        _gameState.Players[0].StartTurn();
+        _gameState.Players()[0].StartTurn();
     }
 }

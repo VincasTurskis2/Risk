@@ -2,12 +2,12 @@
 public interface IGameStatePlayerView
 {
     public bool is2PlayerGame{get;}
-    public Player[] Players{get;}
-    public Territory[] territories{get;}
-    public int currentPlayerNo{get;}
-    public TurnStage turnStage {get;}
+    public Player[] Players();
+    public Territory[] territories();
+    public int currentPlayerNo();
+    public TurnStage turnStage();
     public UIManager uiManager {get;}
     public bool allTerritoriesClaimed {get;}
-    public int cardSetRewardStage {get;}
+    public int cardSetRewardStage();
     public Player CurrentPlayer();
 }

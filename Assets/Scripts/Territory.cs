@@ -5,7 +5,7 @@ using UnityEngine;
 public class Territory : MonoBehaviour, ITerritoryPlayerView
 {
 
-    private GameState _gameState;
+    private GameMaster _gameState;
 
     private SpriteRenderer _renderer;
 
@@ -25,7 +25,7 @@ public class Territory : MonoBehaviour, ITerritoryPlayerView
 
     public void Setup()
     {
-        _gameState = (GameState) FindAnyObjectByType(typeof(GameState));
+        _gameState = (GameMaster) FindAnyObjectByType(typeof(GameMaster));
         _renderer = GetComponent<SpriteRenderer>();
     }
     public bool IsANeighbor(Territory other)
@@ -63,7 +63,7 @@ public class Territory : MonoBehaviour, ITerritoryPlayerView
         {
             Owner.GetOwnedTerritories().Remove(this);
         }
-        if(newOwner != null && Owner != newOwner && _gameState.turnStage != TurnStage.Setup)
+        if(newOwner != null && Owner != newOwner && _gameState.turnStage() != TurnStage.Setup)
         {
             newOwner.SetCardEligible(true);
         }
