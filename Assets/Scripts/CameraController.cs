@@ -24,7 +24,6 @@ public class CameraController : MonoBehaviour
         float zoomAmount = zoomAction.ReadValue<float>();
         transform.Translate(new Vector3(moveAmount.x, moveAmount.y, 0) * moveSpeed * Time.deltaTime * (mainCamera.orthographicSize / 10));
 
-        Debug.Log(mainCamera.orthographicSize);
         if(transform.position.x < leftBound.position.x + mainCamera.orthographicSize * mainCamera.aspect && transform.position.x > rightBound.position.x - mainCamera.orthographicSize * mainCamera.aspect)
         {
             transform.position = new Vector3(0, transform.position.y, transform.position.z);

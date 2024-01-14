@@ -10,12 +10,12 @@ public class TerritoryCard
     [field: SerializeField]
     public TroopType Type {get; set;}
     [field: SerializeField]
-    public Territory ReferencedTerritory {get; set;}
+    public TerritoryData ReferencedTerritory {get; set;}
 
 
     public static readonly int[] CardSetRewards = {4, 6, 8, 10, 12, 15};
 
-    public TerritoryCard(TroopType type, Territory reference)
+    public TerritoryCard(TroopType type, TerritoryData reference)
     {
         Type = type;
         ReferencedTerritory = reference;

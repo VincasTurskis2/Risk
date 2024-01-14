@@ -1,34 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// A class to represent a single territory
-public class Territory : MonoBehaviour, ITerritoryPlayerView
-{
 
+public class TerritoryData : ITerritoryPlayerView
+{
     private GameMaster _gameState;
 
     private SpriteRenderer _renderer;
 
     // Immutable properties of the territory
-    [field: SerializeField]
     public string TerritoryName {get; private set;}
-    [field: SerializeField]
-    public Territory[] Neighbors {get; private set;}
-    [field: SerializeField]
+    public TerritoryData[] Neighbors {get; private set;}
     public Continent Continent {get; private set;}
 
     // Mutable properties of the territory
     
-    [field: SerializeField]
     public int TroopCount {get; set;}
     public Player Owner {get; private set;}
 
-    public void Setup()
+    public TerritoryData(GameMaster gameState, SpriteRenderer renderer, string territoryName, Territory[] neighbors, Continent continent, int troopCount, Player owner)
     {
-        _gameState = (GameMaster) FindAnyObjectByType(typeof(GameMaster));
-        _renderer = GetComponent<SpriteRenderer>();
+        _gameState = gameState;
+        _renderer = renderer;
+        TerritoryName = territoryName;
+        Neighbors = new TerritoryData[neighbors.Length];
+        Continent = continent;
+        TroopCount = troopCount;
+        Owner = owner;
     }
-    public bool IsANeighbor(Territory other)
+    public void SetupNeighbors(Territory[] neighbors)
+    {
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            Neighbors[i] = neighbors[i].data;
+        }
+    }
+
+    public bool IsANeighbor(TerritoryData other)
     {
         bool contains = false;
         for(int i = 0;+ i < Neighbors.Length; i++)
@@ -44,7 +52,7 @@ public class Territory : MonoBehaviour, ITerritoryPlayerView
     public bool IsANeighbor(ITerritoryPlayerView IOther)
     {
         if(IOther == null) return false;
-        Territory other = (Territory) IOther;
+        TerritoryData other = (TerritoryData) IOther;
         if(other == null) return false;
         bool contains = false;
         for(int i = 0;+ i < Neighbors.Length; i++)

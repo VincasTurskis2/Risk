@@ -8,7 +8,7 @@ public class GameLoader : MonoBehaviour
     private GameMaster _gameState;
     private PlayerActions _playerActions;
     private UIManager _UIManager;
-    void Start()
+    void Awake()
     {
         _gameState = gameObject.GetComponent<GameMaster>();
         _playerActions = gameObject.GetComponent<PlayerActions>();

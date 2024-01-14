@@ -16,7 +16,7 @@ public class PlayerActions : MonoBehaviour
     {
         
         if(ITerritory == null) return false;
-        Territory territory = (Territory) ITerritory;
+        TerritoryData territory = (TerritoryData) ITerritory;
 
         // Guards
         if(territory == null) return false;
@@ -37,14 +37,14 @@ public class PlayerActions : MonoBehaviour
         // Guards
         if(ITerritories == null || amounts == null) return false;
         if(amounts.Length != ITerritories.Length) return false;
-        Territory[] territories = new Territory[ITerritories.Length];
+        TerritoryData[] territories = new TerritoryData[ITerritories.Length];
 
         if(_gameState.turnStage() != TurnStage.Deploy) return false;
         int totalToDeploy = 0;
         Player owner = null;
         for(int i = 0; i < ITerritories.Length; i++)
         {
-            territories[i] = (Territory) ITerritories[i];
+            territories[i] = (TerritoryData) ITerritories[i];
             if(owner == null)
             {
                 if(!territories[i].Owner.IsMyTurn()) return false;
@@ -73,7 +73,7 @@ public class PlayerActions : MonoBehaviour
     public bool SetupDeploy(ITerritoryPlayerView ITerritory, Player player)
     {
         if(ITerritory == null) return false;
-        Territory territory = (Territory) ITerritory;
+        TerritoryData territory = (TerritoryData) ITerritory;
 
 
         //Guards
@@ -103,7 +103,7 @@ public class PlayerActions : MonoBehaviour
     public bool Attack(ITerritoryPlayerView IFrom, ITerritoryPlayerView ITo)
     {
         if(IFrom == null || ITo == null) return false;
-        Territory from = (Territory) IFrom, to = (Territory) ITo;
+        TerritoryData from = (TerritoryData) IFrom, to = (TerritoryData) ITo;
         // Guards
         if(from == null || to == null || from.TroopCount <= 1) return false;
         if(!from.Owner.IsMyTurn()) return false;
@@ -133,7 +133,7 @@ public class PlayerActions : MonoBehaviour
     public bool Fortify(ITerritoryPlayerView IFrom, ITerritoryPlayerView ITo, int numberOfTroops)
     {
         if(IFrom == null || ITo == null) return false;
-        Territory from = (Territory) IFrom, to = (Territory) ITo;
+        TerritoryData from = (TerritoryData) IFrom, to = (TerritoryData) ITo;
 
         // Guards
         if(from == null || to == null || numberOfTroops < 1) return false;
@@ -152,7 +152,7 @@ public class PlayerActions : MonoBehaviour
     public bool Occupy(ITerritoryPlayerView IFrom, ITerritoryPlayerView ITo, int numberOfTroops)
     {
         if(IFrom == null || ITo == null) return false;
-        Territory from = (Territory) IFrom, to = (Territory) ITo;
+        TerritoryData from = (TerritoryData) IFrom, to = (TerritoryData) ITo;
 
         // Guards
         if(from == null || to == null || numberOfTroops < 1) return false;
@@ -192,7 +192,7 @@ public class PlayerActions : MonoBehaviour
         List<Continent> result = new List<Continent>();
         int[] continentCountLocal = new int[GameMaster.ContinentCount.Length];
         GameMaster.ContinentCount.CopyTo(continentCountLocal, 0);
-        foreach(Territory t in player.GetOwnedTerritories())
+        foreach(TerritoryData t in player.GetOwnedTerritories())
         {
             continentCountLocal[(int) t.Continent]--;
         }
@@ -208,7 +208,7 @@ public class PlayerActions : MonoBehaviour
 
     // A helper function to calculate dice results
     // Returns an int array of {Attacker losses, Defender losses, Attacker no. of dice rolled, Defender no. of dice rolled} in this combat
-    private int[] RollDice(Territory from, Territory to)
+    private int[] RollDice(TerritoryData from, TerritoryData to)
     {
         int attackerDiceNo = Mathf.Min(from.TroopCount - 1, 3), defenderDiceNo = Mathf.Min(to.TroopCount, 2);
         int[] attackerDice = new int[attackerDiceNo], defenderDice = new int[defenderDiceNo];

@@ -7,7 +7,7 @@ public class GameState
 {
     public CardDeck cardDeck {get; private set;}
     public Player[] Players {get; set;}
-    public Territory[] territories {get; set;}
+    public TerritoryData[] territories {get; set;}
     public int currentPlayerNo{get; set;}
     public TurnStage turnStage {get; set;}
     public int cardSetRewardStage {get; set;} = 0;

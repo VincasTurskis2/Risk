@@ -63,7 +63,7 @@ public class HumanPlayer :  Player
             if(hit.collider != null && isOnUI == false)
             {
                 bool success = false;
-                SelectTerritory(hit.collider.gameObject.GetComponent<ITerritoryPlayerView>());
+                SelectTerritory(hit.collider.gameObject.GetComponent<Territory>().data);
                 switch(_gameState.turnStage()){
                     case TurnStage.Setup:
                         _actions.SetupDeploy(_selectedTerritory, this);

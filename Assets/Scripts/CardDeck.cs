@@ -9,15 +9,15 @@ public class CardDeck
     private Stack<TerritoryCard> _deck;
     private Stack<TerritoryCard> _discardDeck;
 
-    public CardDeck()
+    public void Setup(TerritoryData[] territories)
     {
         int infantryRem = 14, cavalryRem = 14, artilleryRem = 14;
-        GameObject[] territoryObjects = GameObject.FindGameObjectsWithTag("Territory");
-        _deck = new Stack<TerritoryCard>(territoryObjects.Length + 2);
-        _discardDeck = new Stack<TerritoryCard>(territoryObjects.Length + 2);
-        for(int i = 0; i < territoryObjects.Length; i++)
+        _deck = new Stack<TerritoryCard>(territories.Length + 2);
+        _discardDeck = new Stack<TerritoryCard>(territories.Length + 2);
+        for(int i = 0; i < territories.Length; i++)
         {
-            Territory t = territoryObjects[i].GetComponent<Territory>();
+            TerritoryData t = territories[i];
+            Debug.Log(t);
             int rand = Random.Range(1, infantryRem + cavalryRem + artilleryRem + 1);
             TroopType type;
             if(rand - artilleryRem <= 0)
