@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class TerritoryData : ITerritoryPlayerView
 {
-    private GameMaster _gameState;
-
-    private SpriteRenderer _renderer;
+    private readonly SpriteRenderer _renderer;
 
     // Immutable properties of the territory
-    public string TerritoryName {get; private set;}
-    public TerritoryData[] Neighbors {get; private set;}
-    public Continent Continent {get; private set;}
+    public string TerritoryName {get;}
+    public TerritoryData[] Neighbors {get;}
+    public Continent Continent {get;}
 
     // Mutable properties of the territory
     
@@ -20,7 +18,6 @@ public class TerritoryData : ITerritoryPlayerView
 
     public TerritoryData(GameMaster gameState, SpriteRenderer renderer, string territoryName, Territory[] neighbors, Continent continent, int troopCount, Player owner)
     {
-        _gameState = gameState;
         _renderer = renderer;
         TerritoryName = territoryName;
         Neighbors = new TerritoryData[neighbors.Length];
@@ -65,13 +62,13 @@ public class TerritoryData : ITerritoryPlayerView
         }
         return contains;
     }
-    public void SetOwner(Player newOwner)
+    public void SetOwner(Player newOwner, bool setCardEligible)
     {
         if(Owner != null)
         {
             Owner.GetOwnedTerritories().Remove(this);
         }
-        if(newOwner != null && Owner != newOwner && _gameState.turnStage() != TurnStage.Setup)
+        if(newOwner != null && Owner != newOwner && setCardEligible)
         {
             newOwner.SetCardEligible(true);
         }

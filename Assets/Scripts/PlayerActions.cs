@@ -84,7 +84,7 @@ public class PlayerActions : MonoBehaviour
 
         if((Object)territory.Owner == null)
         {
-            territory.SetOwner(player);
+            territory.SetOwner(player, false);
             territory.TroopCount++;
             player.DecrementPlaceableTroops(1);
             player.EndTurn();
@@ -119,7 +119,7 @@ public class PlayerActions : MonoBehaviour
         if(to.TroopCount <= 0)
         {
             Player loser = to.Owner;
-            to.SetOwner(from.Owner);
+            to.SetOwner(from.Owner, true);
             if(loser.GetOwnedTerritories().Count == 0)
             {
                 from.Owner.AddCardsToHand(loser.GetCardHand());

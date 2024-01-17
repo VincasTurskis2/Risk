@@ -96,17 +96,17 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
                 int rand = Random.Range(1, player1Rem + player2Rem + player3Rem + 1);
                 if(rand - player3Rem <= 0)
                 {
-                    state.territories[i].SetOwner(state.Players[2]);
+                    state.territories[i].SetOwner(state.Players[2], false);
                     player3Rem--;
                 }
                 else if(rand - player3Rem - player2Rem < 0)
                 {
-                    state.territories[i].SetOwner(state.Players[1]);
+                    state.territories[i].SetOwner(state.Players[1], false);
                     player2Rem--;
                 }
                 else
                 {
-                    state.territories[i].SetOwner(state.Players[0]);
+                    state.territories[i].SetOwner(state.Players[0], false);
                     player1Rem--;
                 }
                 state.territories[i].TroopCount = 1;
@@ -121,7 +121,7 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
                 Territory curTerritory = territoryObjects[i].GetComponent<Territory>();
                 curTerritory.Setup();
                 state.territories[i] = curTerritory.data;
-                state.territories[i].SetOwner(null);
+                state.territories[i].SetOwner(null, false);
                 state.territories[i].TroopCount = 0;
 
                 ContinentCount[(int) state.territories[i].Continent]++;
