@@ -4,7 +4,7 @@ using UnityEngine;
 public interface ITerritoryPlayerView
 {
     public string TerritoryName {get;}
-    public ITerritoryPlayerView[] GetNeighbors();
+    public string[] GetNeighbors();
     public Continent Continent{get;}
     public bool IsANeighbor(ITerritoryPlayerView other);
     public void Highlight(bool toHighlight);

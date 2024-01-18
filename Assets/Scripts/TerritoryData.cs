@@ -8,7 +8,7 @@ public class TerritoryData : ITerritoryPlayerView
 
     // Immutable properties of the territory
     public string TerritoryName {get;}
-    public TerritoryData[] Neighbors {get;}
+    public string[] Neighbors {get;}
     public Continent Continent {get;}
 
     // Mutable properties of the territory
@@ -20,17 +20,14 @@ public class TerritoryData : ITerritoryPlayerView
     {
         _renderer = renderer;
         TerritoryName = territoryName;
-        Neighbors = new TerritoryData[neighbors.Length];
+        Neighbors = new string[neighbors.Length];
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            Neighbors[i] = neighbors[i].TerritoryName;
+        }
         Continent = continent;
         TroopCount = troopCount;
         Owner = owner;
-    }
-    public void SetupNeighbors(Territory[] neighbors)
-    {
-        for (int i = 0; i < neighbors.Length; i++)
-        {
-            Neighbors[i] = neighbors[i].data;
-        }
     }
 
     public bool IsANeighbor(TerritoryData other)
@@ -38,7 +35,7 @@ public class TerritoryData : ITerritoryPlayerView
         bool contains = false;
         for(int i = 0;+ i < Neighbors.Length; i++)
         {
-            if(Neighbors[i] == other) 
+            if(Neighbors[i] == other.TerritoryName) 
             {
                 contains = true;
                 break;
@@ -54,7 +51,7 @@ public class TerritoryData : ITerritoryPlayerView
         bool contains = false;
         for(int i = 0;+ i < Neighbors.Length; i++)
         {
-            if(Neighbors[i] == other) 
+            if(Neighbors[i] == other.TerritoryName) 
             {
                 contains = true;
                 break;
@@ -96,7 +93,7 @@ public class TerritoryData : ITerritoryPlayerView
         return _renderer.sprite;
     }
 
-    public ITerritoryPlayerView[] GetNeighbors()
+    public string[] GetNeighbors()
     {
         return Neighbors;
     }

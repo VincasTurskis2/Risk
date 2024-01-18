@@ -27,7 +27,7 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
         uiManager = gameObject.GetComponent<UIManager>();
         SetupPlayers(playerData);
         SetupTerritories();
-        state.cardDeck.Setup(state.territories);
+        state.cardDeck.Setup(state.map.Territories);
     }
     public void Setup()
     {
@@ -39,7 +39,7 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
         uiManager = gameObject.GetComponent<UIManager>();
         SetupPlayers(players);
         SetupTerritories();
-        state.cardDeck.Setup(state.territories);
+        state.cardDeck.Setup(state.map.Territories);
 
     }
     public void SetupPlayers(PlayerData[] players)
@@ -83,53 +83,47 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
     public void SetupTerritories()
     {
         GameObject[] territoryObjects = GameObject.FindGameObjectsWithTag("Territory");
-        state.territories = new TerritoryData[territoryObjects.Length];
+        Territory[] territoryWrappers = new Territory[territoryObjects.Length];
+        for(int i = 0; i < territoryObjects.Length; i++)
+        {
+            territoryWrappers[i] = territoryObjects[i].GetComponent<Territory>();
+        }
+        state.map = new Map(territoryWrappers);
         if(is2PlayerGame)
         {
             int player1Rem = 14, player2Rem = 14, player3Rem = 14;
-            for(int i = 0; i < state.territories.Length; i++)
+            for(int i = 0; i < state.map.Territories.Length; i++)
             {
-                Territory curTerritory = territoryObjects[i].GetComponent<Territory>();
-                curTerritory.Setup();
-                state.territories[i] = curTerritory.data;
-
                 int rand = Random.Range(1, player1Rem + player2Rem + player3Rem + 1);
                 if(rand - player3Rem <= 0)
                 {
-                    state.territories[i].SetOwner(state.Players[2], false);
+                    state.map.Territories[i].SetOwner(state.Players[2], false);
                     player3Rem--;
                 }
                 else if(rand - player3Rem - player2Rem < 0)
                 {
-                    state.territories[i].SetOwner(state.Players[1], false);
+                    state.map.Territories[i].SetOwner(state.Players[1], false);
                     player2Rem--;
                 }
                 else
                 {
-                    state.territories[i].SetOwner(state.Players[0], false);
+                    state.map.Territories[i].SetOwner(state.Players[0], false);
                     player1Rem--;
                 }
-                state.territories[i].TroopCount = 1;
-                ContinentCount[(int) state.territories[i].Continent]++;
+                state.map.Territories[i].TroopCount = 1;
+                ContinentCount[(int) state.map.Territories[i].Continent]++;
             }
             allTerritoriesClaimed = true;
         }
         else
         {
-            for(int i = 0; i < state.territories.Length; i++)
+            for(int i = 0; i < state.map.Territories.Length; i++)
             {
-                Territory curTerritory = territoryObjects[i].GetComponent<Territory>();
-                curTerritory.Setup();
-                state.territories[i] = curTerritory.data;
-                state.territories[i].SetOwner(null, false);
-                state.territories[i].TroopCount = 0;
+                state.map.Territories[i].SetOwner(null, false);
+                state.map.Territories[i].TroopCount = 0;
 
-                ContinentCount[(int) state.territories[i].Continent]++;
+                ContinentCount[(int) state.map.Territories[i].Continent]++;
             }
-        }
-        for (int i = 0; i < state.territories.Length; i++)
-        {
-            territoryObjects[i].GetComponent<Territory>().SetupNeighbors();
         }
     }
 
@@ -147,7 +141,7 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
             if(!allTerritoriesClaimed)
             {
                 bool endOfClaimingPhase = true;
-                foreach(TerritoryData t in state.territories)
+                foreach(TerritoryData t in state.map.Territories)
                 {
                     if(t.Owner == null)
                     {
@@ -235,7 +229,7 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
     }
     public TerritoryData[] territories()
     {
-        return state.territories;
+        return state.map.Territories;
     }
     public int currentPlayerNo()
     {
@@ -248,5 +242,10 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
     public int cardSetRewardStage()
     {
         return state.cardSetRewardStage;
+    }
+
+    public IMapPlayerView GetMap()
+    {
+        return state.map;
     }
 }

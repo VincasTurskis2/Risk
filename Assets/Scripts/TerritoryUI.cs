@@ -13,6 +13,7 @@ public class TerritoryUI : MonoBehaviour
     {
         _territory = gameObject.GetComponent<Territory>().data;
         _territoryNameText.text = _territory.TerritoryName;
+        Debug.Log(_territory);
         
     }
 

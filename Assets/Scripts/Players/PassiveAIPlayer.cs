@@ -39,7 +39,7 @@ public class PassiveAIPlayer : Player
             if(!_gameState.allTerritoriesClaimed)
             {
                 possibleTerritories = new List<ITerritoryPlayerView>();
-                foreach(ITerritoryPlayerView t in _gameState.territories())
+                foreach(ITerritoryPlayerView t in _gameState.GetMap().GetTerritories())
                 {
                     
                     if(t.GetOwner() == null)

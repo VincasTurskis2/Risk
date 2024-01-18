@@ -7,7 +7,8 @@ public class GameState
 {
     public CardDeck cardDeck {get; private set;}
     public Player[] Players {get; set;}
-    public TerritoryData[] territories {get; set;}
+    public Map map {get; set;}
+    //public TerritoryData[] territories {get; set;}
     public int currentPlayerNo{get; set;}
     public TurnStage turnStage {get; set;}
     public int cardSetRewardStage {get; set;} = 0;
@@ -21,5 +22,6 @@ public class GameState
         cardSetRewardStage = oldState.cardSetRewardStage;
         currentPlayerNo = oldState.currentPlayerNo;
         turnStage = oldState.turnStage;
+        map = oldState.map;
     }
 }

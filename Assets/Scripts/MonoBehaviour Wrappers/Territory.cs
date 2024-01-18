@@ -28,8 +28,4 @@ public class Territory : MonoBehaviour
         data = new TerritoryData(_renderer, TerritoryName, Neighbors, Continent, TroopCount, Owner);
 
     }
-    public void SetupNeighbors()
-    {
-        data.SetupNeighbors(Neighbors);
-    }
 }
