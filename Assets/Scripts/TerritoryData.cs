@@ -16,7 +16,7 @@ public class TerritoryData : ITerritoryPlayerView
     public int TroopCount {get; set;}
     public Player Owner {get; private set;}
 
-    public TerritoryData(GameMaster gameState, SpriteRenderer renderer, string territoryName, Territory[] neighbors, Continent continent, int troopCount, Player owner)
+    public TerritoryData(SpriteRenderer renderer, string territoryName, Territory[] neighbors, Continent continent, int troopCount, Player owner)
     {
         _renderer = renderer;
         TerritoryName = territoryName;

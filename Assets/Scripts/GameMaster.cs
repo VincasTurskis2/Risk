@@ -129,7 +129,7 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
         }
         for (int i = 0; i < state.territories.Length; i++)
         {
-            territoryObjects[i].GetComponent<Territory>().SetupNeighbors();
+            //territoryObjects[i].GetComponent<Territory>().SetupNeighbors();
         }
     }
 
