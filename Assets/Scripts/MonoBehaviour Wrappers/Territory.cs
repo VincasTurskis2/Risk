@@ -20,7 +20,7 @@ public class Territory : MonoBehaviour
     public int TroopCount {get; set;}
     public Player Owner {get; private set;}
 
-    public TerritoryData data;
+    public TerritoryData data {get; set;}
 
     public void Setup()
     {
