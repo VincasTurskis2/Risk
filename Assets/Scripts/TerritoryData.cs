@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class TerritoryData : ITerritoryPlayerView
 {
-    private readonly SpriteRenderer _renderer;
+    public Color territoryColor {get; set;}
+
+    public readonly Sprite sprite;
 
     // Immutable properties of the territory
     public string TerritoryName {get;}
@@ -16,9 +18,10 @@ public class TerritoryData : ITerritoryPlayerView
     public int TroopCount {get; set;}
     public Player Owner {get; private set;}
 
-    public TerritoryData(SpriteRenderer renderer, string territoryName, Territory[] neighbors, Continent continent, int troopCount, Player owner)
+    public TerritoryData(Sprite newSprite, string territoryName, Territory[] neighbors, Continent continent, int troopCount, Player owner)
     {
-        _renderer = renderer;
+        territoryColor = new Color(1, 1, 1, 1);
+        sprite = newSprite;
         TerritoryName = territoryName;
         Neighbors = new string[neighbors.Length];
         for (int i = 0; i < neighbors.Length; i++)
@@ -73,7 +76,7 @@ public class TerritoryData : ITerritoryPlayerView
         if(Owner != null)
         {
             Owner.GetOwnedTerritories().Add(this);
-            _renderer.color = Owner.GetData().playerColor;
+            territoryColor = Owner.GetData().playerColor;
         }
     }
     public void Highlight(bool toHighlight)
@@ -81,18 +84,13 @@ public class TerritoryData : ITerritoryPlayerView
         if(Owner == null) return;
         if(toHighlight)
         {
-            _renderer.color = Helpers.GetHighlighedColorVersion(Owner.GetData().playerColor);
+            territoryColor = Helpers.GetHighlighedColorVersion(Owner.GetData().playerColor);
         }
         else
         {
-            _renderer.color = Owner.GetData().playerColor;
+            territoryColor = Owner.GetData().playerColor;
         }
     }
-    public Sprite GetSprite()
-    {
-        return _renderer.sprite;
-    }
-
     public string[] GetNeighbors()
     {
         return Neighbors;

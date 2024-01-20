@@ -4,7 +4,6 @@ using UnityEngine;
 // A class to represent a single territory
 public class Territory : MonoBehaviour
 {
-    private SpriteRenderer _renderer;
 
     // Immutable properties of the territory
     [field: SerializeField]
@@ -24,8 +23,6 @@ public class Territory : MonoBehaviour
 
     public void Setup()
     {
-        _renderer = GetComponent<SpriteRenderer>();
-        data = new TerritoryData(_renderer, TerritoryName, Neighbors, Continent, TroopCount, Owner);
-
+        data = new TerritoryData(gameObject.GetComponent<SpriteRenderer>().sprite, TerritoryName, Neighbors, Continent, TroopCount, Owner);
     }
 }

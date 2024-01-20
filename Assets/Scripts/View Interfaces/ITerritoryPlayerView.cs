@@ -8,7 +8,6 @@ public interface ITerritoryPlayerView
     public Continent Continent{get;}
     public bool IsANeighbor(ITerritoryPlayerView other);
     public void Highlight(bool toHighlight);
-    public Sprite GetSprite();
     public int TroopCount{get;}
     public IOtherPlayer GetOwner();
 }

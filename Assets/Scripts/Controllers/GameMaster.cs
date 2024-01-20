@@ -71,6 +71,16 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
                     playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
                     state.Players[i] = playerObjectInstance.GetComponent<PassiveAIPlayer>();
                     break;
+                case PlayerType.Neutral:
+                    playerObject = (GameObject)Resources.Load("prefabs/NeutralArmyPlayer", typeof(GameObject));
+                    playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
+                    state.Players[i] = playerObjectInstance.GetComponent<NeutralArmyPlayer>();
+                    break;
+                case PlayerType.MCTS:
+                    playerObject = (GameObject)Resources.Load("prefabs/MCTSPlayer", typeof(GameObject));
+                    playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
+                    state.Players[i] = playerObjectInstance.GetComponent<MCTSPlayer>();
+                    break;
                 default:
                     break;
             }
@@ -187,6 +197,10 @@ public class GameMaster : MonoBehaviour, IGameStatePlayerView
         if(state.currentPlayerNo >= loserNo)
         {
             state.currentPlayerNo--;
+        }
+        if(player is NeutralArmyPlayer)
+        {
+            return;
         }
         if(state.Players.Length == 1 || (state.Players.Length == 2 && is2PlayerGame))
         {

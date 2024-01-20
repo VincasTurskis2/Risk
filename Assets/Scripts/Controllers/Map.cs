@@ -16,6 +16,11 @@ public class Map : IMapPlayerView
         }
     }
 
+    public Map(Map oldMap)
+    {
+        
+    }
+
     public TerritoryData[] GetRawTerritories(string[] territories)
     {
         IEnumerable<TerritoryData> result = from t in Territories

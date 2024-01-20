@@ -16,6 +16,7 @@ public class TerritoryCardUI : MonoBehaviour
     private GameObject _wildcardText;
     [SerializeField]
     private TerritoryCard _cardData;
+    private TerritoryUI _territoryUI;
 
     private Color _selectedColor;
 
@@ -43,7 +44,7 @@ public class TerritoryCardUI : MonoBehaviour
         else
         {
             _territoryNameText.text = _cardData.ReferencedTerritory.TerritoryName;
-            _territoryImage.sprite = _cardData.ReferencedTerritory.GetSprite();
+            _territoryImage.sprite = _cardData.ReferencedTerritory.sprite;
             _troopTypeText.text = "" + _cardData.Type;
 
             _territoryNameText.gameObject.SetActive(true);

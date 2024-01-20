@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 public class TerritoryUI : MonoBehaviour
 {
+
+    private SpriteRenderer _renderer;
     private TerritoryData _territory;
     [SerializeField]
     private TextMeshProUGUI _troopCountText;
@@ -11,6 +13,7 @@ public class TerritoryUI : MonoBehaviour
     private TextMeshProUGUI _territoryNameText;
     void Start()
     {
+        _renderer = gameObject.GetComponent<SpriteRenderer>();
         _territory = gameObject.GetComponent<Territory>().data;
         _territoryNameText.text = _territory.TerritoryName;
         Debug.Log(_territory);
@@ -20,5 +23,6 @@ public class TerritoryUI : MonoBehaviour
     void Update()
     {
         _troopCountText.SetText(_territory.TroopCount.ToString());
+        _renderer.color = _territory.territoryColor;
     }
 }
