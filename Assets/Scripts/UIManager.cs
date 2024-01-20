@@ -98,7 +98,6 @@ public class UIManager : MonoBehaviour
 
 
     private GameMaster _gameState;
-    private PlayerActions _playerActions;
 
     public bool PanelOverlayIsDisplayed {get; private set;} = false;
 
@@ -115,7 +114,6 @@ public class UIManager : MonoBehaviour
         _cardUIManager.gameObject.SetActive(true);
         _winLosePanel.SetActive(false);
         _gameState = gameObject.GetComponent<GameMaster>();
-        _playerActions = gameObject.GetComponent<PlayerActions>();
         _cumulativeAttackerLoss = 0;
         _cumulativeDefenderLoss = 0;
         HideAttackPanel();
@@ -179,7 +177,7 @@ public class UIManager : MonoBehaviour
         _defenderTotalLoss.SetText("Total troops lost: " + _cumulativeDefenderLoss);
 
         _attackButton.onClick.RemoveAllListeners();
-        _attackButton.onClick.AddListener(delegate {_playerActions.Attack(from, to);});
+        _attackButton.onClick.AddListener(delegate {Attack(from, to);});
         PanelOverlayIsDisplayed = true;
     }
     public void HideAttackPanel()
@@ -232,7 +230,7 @@ public class UIManager : MonoBehaviour
             _occupyTroopSlider.gameObject.SetActive(true);
 
             _attackButton.onClick.RemoveAllListeners();
-            _attackButton.onClick.AddListener(delegate {_playerActions.Occupy(from, to, (int)_occupyTroopSlider.value);});
+            _attackButton.onClick.AddListener(delegate {Occupy(from, to, (int)_occupyTroopSlider.value);});
             _attackButton.onClick.AddListener(delegate {HideAttackPanel();});
         }
     }
@@ -251,7 +249,7 @@ public class UIManager : MonoBehaviour
         _fortifySliderMaxText.text = _fortifySlider.maxValue.ToString();
         _fortifySliderInputField.text = _fortifySlider.value.ToString();
         _fortifySliderConfirmButton.onClick.RemoveAllListeners();
-        _fortifySliderConfirmButton.onClick.AddListener(delegate {_playerActions.Fortify(from, to, (int)_fortifySlider.value);});
+        _fortifySliderConfirmButton.onClick.AddListener(delegate {Fortify(from, to, (int)_fortifySlider.value);});
         _fortifySliderConfirmButton.onClick.AddListener(delegate {HideFortifyPanel();});
         PanelOverlayIsDisplayed = true;
     }
@@ -292,5 +290,18 @@ public class UIManager : MonoBehaviour
     public void BackToMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public bool Attack(ITerritoryPlayerView from, ITerritoryPlayerView to)
+    {
+        return new Attack((Player)from.GetOwner(), _gameState, from, to).execute();
+    }
+    public bool Fortify(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
+    {
+        return new Fortify((Player)from.GetOwner(), _gameState, from, to, numberOfTroops).execute();
+    }
+    public bool Occupy(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
+    {
+        return new Occupy((Player)from.GetOwner(), _gameState, from, to, numberOfTroops).execute();
     }
 }

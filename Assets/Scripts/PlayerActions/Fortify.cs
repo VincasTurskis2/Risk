@@ -4,7 +4,7 @@ public class Fortify : PlayerAction
     public readonly ITerritoryPlayerView ITo;
     public readonly int numberOfTroops;
 
-    public Fortify(Player Caller, GameMaster GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to, int NumberOfTroops) : base(Caller, GameMaster)
+    public Fortify(Player Caller, IGameStatePlayerView GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to, int NumberOfTroops) : base(Caller, GameMaster)
     {
 
         IFrom = from;

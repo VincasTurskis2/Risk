@@ -14,7 +14,6 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
     [SerializeField]
     protected bool _isMyTurn = false;
     protected List<TerritoryCard> _hand;
-    protected PlayerActions _actions;
     protected bool _cardEligible;
 
     public abstract void StartTurn();
@@ -23,7 +22,7 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
 
     public void EndTurnStage()
     {
-        _actions.EndTurnStage(this);
+        new EndTurnStage(this, _gameState).execute();
     }
 
     public void SetCardEligible(bool set)
@@ -70,6 +69,6 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
     {
         Debug.Log(_data.playerName + " ending turn");
         _isMyTurn = false;
-        _actions.EndTurn(this);
+        new EndTurn(this, _gameState).execute();
     }
 }

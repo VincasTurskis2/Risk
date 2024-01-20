@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using UnityEngine.PlayerLoop;
 
 public class UpdatePlaceableTroops : PlayerAction
 {
-    public UpdatePlaceableTroops(Player Caller, GameMaster GameMaster) : base(Caller, GameMaster)
+    public UpdatePlaceableTroops(Player Caller, IGameStatePlayerView GameMaster) : base(Caller, GameMaster)
     {
 
     }
@@ -13,6 +14,7 @@ public class UpdatePlaceableTroops : PlayerAction
             if(caller.GetPlaceableTroopNumber() == 0)
             {
                 gameMaster.EndSetupStage();
+                new UpdatePlaceableTroops(caller, gameMaster).execute();
             }
             return true;
         }

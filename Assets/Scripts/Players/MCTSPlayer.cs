@@ -23,7 +23,6 @@ public class MCTSPlayer : Player
             Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
             return;
         }
-        _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
         _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _hand = new List<TerritoryCard>();
         _data = data;
@@ -32,11 +31,10 @@ public class MCTSPlayer : Player
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
-        _placeableTroops = _actions.CalculatePlaceableTroops(this);
-        
+        new UpdatePlaceableTroops(this, _gameState).execute();
         // TODO: Add rule-based troop deployment
 
-        _actions.EndTurnStage(this);
+        new EndTurnStage(this, _gameState).execute();
         //GameStateTreeNode root = new GameStateTreeNode(_gameState)
 
     }

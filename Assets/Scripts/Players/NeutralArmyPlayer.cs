@@ -18,7 +18,6 @@ public class NeutralArmyPlayer : Player
             Debug.Log("Error: Neutral player should not appear in non-2 player games");
             return;
         }
-        _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
         _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _hand = new List<TerritoryCard>();
         _data = new PlayerData("Neutral", PlayerType.Neutral, ColorPreset.White);

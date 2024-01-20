@@ -5,7 +5,7 @@ public class Attack : PlayerAction
     public readonly ITerritoryPlayerView IFrom;
     public readonly ITerritoryPlayerView ITo;
 
-    public Attack(Player Caller, GameMaster GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to) : base(Caller, GameMaster)
+    public Attack(Player Caller, IGameStatePlayerView GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to) : base(Caller, GameMaster)
     {
         IFrom = from;
         ITo = to;

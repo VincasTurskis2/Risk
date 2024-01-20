@@ -3,7 +3,7 @@ public class DeployMultiple : PlayerAction
     public readonly ITerritoryPlayerView[] ITerritories;
     int[] amounts;
 
-    public DeployMultiple(Player Caller, GameMaster GameMaster, ITerritoryPlayerView[] Territories, int[] Amounts) : base(Caller, GameMaster)
+    public DeployMultiple(Player Caller, IGameStatePlayerView GameMaster, ITerritoryPlayerView[] Territories, int[] Amounts) : base(Caller, GameMaster)
     {
         ITerritories = Territories;
         amounts = Amounts;

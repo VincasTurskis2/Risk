@@ -26,7 +26,6 @@ public class HumanPlayer :  Player
             Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
             return;
         }
-        _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
         _uiManager = (UIManager) FindAnyObjectByType(typeof(UIManager));
 
         // Set the "trade in cards" button to call a function from this class
@@ -66,12 +65,12 @@ public class HumanPlayer :  Player
                 SelectTerritory(hit.collider.gameObject.GetComponent<Territory>().data);
                 switch(_gameState.turnStage()){
                     case TurnStage.Setup:
-                        _actions.SetupDeploy(_selectedTerritory, this);
+                        new SetupDeploy(this, _gameState, _selectedTerritory).execute();
                         break;
                     case TurnStage.Deploy:
                         if((Object)_selectedTerritory.GetOwner() == this)
                         {
-                            success = _actions.Deploy(_selectedTerritory);
+                            success = new Deploy(this, _gameState, _selectedTerritory).execute();
                         }
                         break;
                     case TurnStage.Attack:
@@ -106,7 +105,7 @@ public class HumanPlayer :  Player
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
-        _placeableTroops = _actions.CalculatePlaceableTroops(this);
+        new UpdatePlaceableTroops(this, _gameState).execute();
         _isMyTurn = true;
         _uiManager.RedrawCardPanel(this);
     }
@@ -142,6 +141,6 @@ public class HumanPlayer :  Player
             Debug.Log("wrong stage of the game to trade in cards");
             return;
         }
-        _placeableTroops += _uiManager.GetCardUIManager().TradeInCards(this);
+        _uiManager.GetCardUIManager().TradeInCards(this);
     }    
 }

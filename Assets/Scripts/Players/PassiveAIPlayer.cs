@@ -23,7 +23,6 @@ public class PassiveAIPlayer : Player
             Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
             return;
         }
-        _actions = (PlayerActions) FindAnyObjectByType(typeof(PlayerActions));
         _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _hand = new List<TerritoryCard>();
         _data = data;
@@ -32,7 +31,7 @@ public class PassiveAIPlayer : Player
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
-        _placeableTroops = _actions.CalculatePlaceableTroops(this);
+        new UpdatePlaceableTroops(this, _gameState).execute();
         if(_gameState.turnStage() == TurnStage.Setup)
         {
             List<ITerritoryPlayerView> possibleTerritories = new List<ITerritoryPlayerView>(_ownedTerritories);
@@ -49,7 +48,7 @@ public class PassiveAIPlayer : Player
                 }
             }
             int randomTerritoryNumber = Random.Range(0, possibleTerritories.Count);
-            bool success = _actions.SetupDeploy(possibleTerritories[randomTerritoryNumber], this);
+            bool success = new SetupDeploy(this, _gameState, possibleTerritories[randomTerritoryNumber]).execute();
         }
         else if(_gameState.turnStage() == TurnStage.Deploy)
         {
@@ -58,7 +57,7 @@ public class PassiveAIPlayer : Player
             ITerritoryPlayerView territoryToDeploy = territoryList[randomTerritoryNumber];
             ITerritoryPlayerView[] territoryToDeployArray = {territoryToDeploy};
             int[] amounts = { _placeableTroops };
-            _actions.DeployMultiple(territoryToDeployArray, amounts);
+            new DeployMultiple(this, _gameState, territoryToDeployArray, amounts);
             EndTurn();
         }
         else

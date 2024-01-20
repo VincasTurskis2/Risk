@@ -2,7 +2,7 @@ public class DiscardCards : PlayerAction
 {
     public readonly TerritoryCard[] cardsToDiscard;
 
-    public DiscardCards(Player Caller, GameMaster GameMaster, TerritoryCard[] CardsToDiscard) : base(Caller, GameMaster)
+    public DiscardCards(Player Caller, IGameStatePlayerView GameMaster, TerritoryCard[] CardsToDiscard) : base(Caller, GameMaster)
     {
         cardsToDiscard = CardsToDiscard;
     }
