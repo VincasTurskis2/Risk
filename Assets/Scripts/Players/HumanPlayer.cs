@@ -110,15 +110,6 @@ public class HumanPlayer :  Player
         _isMyTurn = true;
         _uiManager.RedrawCardPanel(this);
     }
-
-    
-    
-
-    public override void DiscardCards(TerritoryCard[] cardsToDiscard)
-    {
-        _actions.DiscardCards(cardsToDiscard, this);
-        _uiManager.RedrawCardPanel(this);
-    }
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
         if(cards == null) return;

@@ -27,13 +27,9 @@ public class NeutralArmyPlayer : Player
     {
         EndTurn();
     }
-    
-    public override void DiscardCards(TerritoryCard[] cardsToDiscard)
-    {
-        _actions.DiscardCards(cardsToDiscard, this);
-    }
+
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
-        DiscardCards(cards.ToArray());
+        new DiscardCards(this, (GameMaster) _gameState, cards.ToArray()).execute();
     }
 }

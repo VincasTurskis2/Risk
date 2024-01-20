@@ -66,11 +66,6 @@ public class PassiveAIPlayer : Player
             EndTurn();
         }
     }
-    
-    public override void DiscardCards(TerritoryCard[] cardsToDiscard)
-    {
-        _actions.DiscardCards(cardsToDiscard, this);
-    }
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
         if(cards == null) return;

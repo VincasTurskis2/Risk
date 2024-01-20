@@ -19,7 +19,6 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
 
     public abstract void StartTurn();
     public abstract void Setup(GameMaster state, PlayerData data);
-    public abstract void DiscardCards(TerritoryCard[] cardsToDiscard);
     public abstract void AddCardsToHand(List<TerritoryCard> cards);
 
     public void EndTurnStage()

@@ -7,10 +7,10 @@ using System.Linq;
 // A class that aggregates all the actions a player can take during their turn
 public class PlayerActions : MonoBehaviour
 {
-    private GameMaster _gameState;
+    private GameMaster gameMaster;
     public void Setup()
     {
-        _gameState = gameObject.GetComponent<GameMaster>();
+        gameMaster = gameObject.GetComponent<GameMaster>();
     }
     public bool Deploy(ITerritoryPlayerView ITerritory)
     {
@@ -21,7 +21,7 @@ public class PlayerActions : MonoBehaviour
         // Guards
         if(territory == null) return false;
         if(!territory.Owner.IsMyTurn()) return false;
-        if(_gameState.turnStage() != TurnStage.Deploy) return false;
+        if(gameMaster.turnStage() != TurnStage.Deploy) return false;
         if(territory.Owner.GetPlaceableTroopNumber() <= 0) return false;
 
         territory.Owner.DecrementPlaceableTroops(1);
@@ -39,7 +39,7 @@ public class PlayerActions : MonoBehaviour
         if(amounts.Length != ITerritories.Length) return false;
         TerritoryData[] territories = new TerritoryData[ITerritories.Length];
 
-        if(_gameState.turnStage() != TurnStage.Deploy) return false;
+        if(gameMaster.turnStage() != TurnStage.Deploy) return false;
         int totalToDeploy = 0;
         Player owner = null;
         for(int i = 0; i < ITerritories.Length; i++)
@@ -78,7 +78,7 @@ public class PlayerActions : MonoBehaviour
 
         //Guards
         if(territory == null) return false;
-        if(_gameState.turnStage() != TurnStage.Setup) return false;
+        if(gameMaster.turnStage() != TurnStage.Setup) return false;
         if(!player.IsMyTurn()) return false;
         if(player.GetPlaceableTroopNumber() < 1) return false;
 
@@ -90,7 +90,7 @@ public class PlayerActions : MonoBehaviour
             player.EndTurn();
             return true;
         }
-        else if((Object)territory.Owner == (Object) player && _gameState.allTerritoriesClaimed)
+        else if((Object)territory.Owner == (Object) player && gameMaster.allTerritoriesClaimed)
         {
             territory.TroopCount++;
             player.DecrementPlaceableTroops(1);
@@ -109,7 +109,7 @@ public class PlayerActions : MonoBehaviour
         if(!from.Owner.IsMyTurn()) return false;
         if(!from.IsANeighbor(to)) return false;
         if(to.Owner == from.Owner) return false;
-        if(_gameState.turnStage() != TurnStage.Attack) return false;
+        if(gameMaster.turnStage() != TurnStage.Attack) return false;
 
         // Note: technically, a player may choose to roll less dice in an attack; However, in reality, rolling less dice is not a good strategy for either player.
         // This function assumes both players will roll the maximum allowed amount of dice.
@@ -123,11 +123,11 @@ public class PlayerActions : MonoBehaviour
             if(loser.GetOwnedTerritories().Count == 0)
             {
                 from.Owner.AddCardsToHand(loser.GetCardHand());
-                loser.DiscardCards(loser.GetCardHand().ToArray());
-                _gameState.OnPlayerLoss(loser);
+                new DiscardCards(loser, gameMaster, loser.GetCardHand().ToArray()).execute();
+                gameMaster.OnPlayerLoss(loser);
             }
         }
-        _gameState.uiManager.UpdateAttackPanelResults(from, to);
+        gameMaster.uiManager.UpdateAttackPanelResults(from, to);
         return true;
     }
     public bool Fortify(ITerritoryPlayerView IFrom, ITerritoryPlayerView ITo, int numberOfTroops)
@@ -141,7 +141,7 @@ public class PlayerActions : MonoBehaviour
         if(numberOfTroops >= from.TroopCount) return false;
         if(!from.IsANeighbor(to)) return false;
         if(to.Owner != from.Owner) return false;
-        if(_gameState.turnStage() != TurnStage.Reinforce) return false;
+        if(gameMaster.turnStage() != TurnStage.Reinforce) return false;
 
         // If all the guards are passed, move the troops
         from.TroopCount -= numberOfTroops;
@@ -161,7 +161,7 @@ public class PlayerActions : MonoBehaviour
         if(!from.IsANeighbor(to)) return false;
         if(to.Owner != from.Owner) return false;
         if(to.TroopCount != 0) return false;
-        if(_gameState.turnStage() != TurnStage.Attack) return false;
+        if(gameMaster.turnStage() != TurnStage.Attack) return false;
 
         from.TroopCount -= numberOfTroops;
         to.TroopCount += numberOfTroops;
@@ -169,11 +169,11 @@ public class PlayerActions : MonoBehaviour
     }
     public int CalculatePlaceableTroops(Player player)
     {
-        if(_gameState.turnStage() == TurnStage.Setup)
+        if(gameMaster.turnStage() == TurnStage.Setup)
         {
             if(player.GetPlaceableTroopNumber() == 0)
             {
-                _gameState.EndSetupStage();
+                gameMaster.EndSetupStage();
             }
             else return player.GetPlaceableTroopNumber();
         }
@@ -239,7 +239,7 @@ public class PlayerActions : MonoBehaviour
             attackerDice[Helpers.ArrayMaxElementIndex(attackerDice)] = 0;
             defenderDice[Helpers.ArrayMaxElementIndex(defenderDice)] = 0;
         }
-        _gameState.uiManager.UpdateAttackPanelNumbers(diceRolls, result);
+        gameMaster.uiManager.UpdateAttackPanelNumbers(diceRolls, result);
         return result;
     }
 
@@ -248,7 +248,7 @@ public class PlayerActions : MonoBehaviour
         int result = 0;
         if(cards.Length != 3) return 0;
         if(player == null) return 0;
-        if(_gameState.turnStage() != TurnStage.Deploy) return 0;
+        if(gameMaster.turnStage() != TurnStage.Deploy) return 0;
         bool matching3 = false, different3 = false;
         TroopType[] typesFound = new TroopType[3];
         for(int i = 0; i < 3; i++)
@@ -268,7 +268,7 @@ public class PlayerActions : MonoBehaviour
         }
         if(!matching3 && !different3) return 0;
 
-        result += TerritoryCard.CardSetRewards[_gameState.state.cardSetRewardStage++];
+        result += TerritoryCard.CardSetRewards[gameMaster.state.cardSetRewardStage++];
         for(int i = 0; i < 3; i++)
         {
             if(cards[i].ReferencedTerritory != null)
@@ -280,8 +280,8 @@ public class PlayerActions : MonoBehaviour
                 }
             }
         }
-        player.DiscardCards(cards);
-        _gameState.state.cardSetRewardStage++;
+        new DiscardCards(player, gameMaster, cards).execute();
+        gameMaster.state.cardSetRewardStage++;
         return result;
     }
 
@@ -332,39 +332,39 @@ public class PlayerActions : MonoBehaviour
         {
             if(player.GetCardHand().Contains(cardsToDiscard[i]))
             {
-                _gameState.state.cardDeck.DiscardCard(cardsToDiscard[i]);
+                gameMaster.state.cardDeck.DiscardCard(cardsToDiscard[i]);
                 player.GetCardHand().Remove(cardsToDiscard[i]);
             }
         }
-        _gameState.uiManager.RedrawCardPanel(player);
+        gameMaster.uiManager.RedrawCardPanel(player);
     }
 
     public void EndTurn(Player player)
     {
-        if(_gameState.state.Players[_gameState.state.currentPlayerNo] != player) return;
+        if(gameMaster.state.Players[gameMaster.state.currentPlayerNo] != player) return;
         if(player.IsCardEligible() == true)
         {
             List<TerritoryCard> newCard = new()
             {
-                _gameState.state.cardDeck.DrawCard()
+                gameMaster.state.cardDeck.DrawCard()
             };
             player.AddCardsToHand(newCard);
             player.SetCardEligible(false);
         }
-        _gameState.EndTurn();
+        gameMaster.EndTurn();
     }
 
     public void EndTurnStage(Player player)
     {
-        switch(_gameState.turnStage()){
+        switch(gameMaster.turnStage()){
             case TurnStage.Setup:
                 break;
             case TurnStage.Deploy:
                 if(player.GetCardHand().Count >= 5) return;
-                _gameState.state.turnStage = TurnStage.Attack;
+                gameMaster.state.turnStage = TurnStage.Attack;
                 break;
             case TurnStage.Attack:
-                _gameState.state.turnStage = TurnStage.Reinforce;
+                gameMaster.state.turnStage = TurnStage.Reinforce;
                 break;
             case TurnStage.Reinforce:
                 player.EndTurn();
