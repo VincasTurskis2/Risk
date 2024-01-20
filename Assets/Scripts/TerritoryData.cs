@@ -33,6 +33,19 @@ public class TerritoryData : ITerritoryPlayerView
         Owner = owner;
     }
 
+    public TerritoryData(TerritoryData oldData)
+    {
+        territoryColor = oldData.territoryColor;
+        sprite = oldData.sprite;
+        TerritoryName = oldData.TerritoryName;
+        Neighbors = oldData.Neighbors;
+        Continent = oldData.Continent;
+
+        TroopCount = oldData.TroopCount;
+
+        
+    }
+
     public bool IsANeighbor(TerritoryData other)
     {
         bool contains = false;
