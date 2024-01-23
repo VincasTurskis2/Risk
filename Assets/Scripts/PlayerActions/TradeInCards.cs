@@ -32,13 +32,13 @@ public class TradeInCards : PlayerAction
             different3 = true;
         }
         if(!matching3 && !different3) return false;
-        if(gameMaster.state.cardSetRewardStage >= TerritoryCard.CardSetRewards.Length)
+        if(gameMaster.state.cardSetRewardStage >= GameMaster.CardSetRewards.Length)
         {
             result += (gameMaster.state.cardSetRewardStage - 2) * 4;
         }
         else
         {
-            result += TerritoryCard.CardSetRewards[gameMaster.state.cardSetRewardStage];
+            result += GameMaster.CardSetRewards[gameMaster.state.cardSetRewardStage];
         }
         for(int i = 0; i < 3; i++)
         {

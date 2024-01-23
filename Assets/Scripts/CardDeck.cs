@@ -17,10 +17,15 @@ public class CardDeck
     {
         _deck = new Stack<TerritoryCard>(oldDeck._deck.Count);
         _discardDeck = new Stack<TerritoryCard>(oldDeck._discardDeck.Count);
-        foreach(var card in oldDeck._deck)
+        foreach(TerritoryCard card in oldDeck._deck)
         {
-            
+            _deck.Push(new TerritoryCard(card));
         }
+        foreach(TerritoryCard card in oldDeck._discardDeck)
+        {
+            _discardDeck.Push(new TerritoryCard(card));
+        }
+        Shuffle();
     }
 
     public void Setup(TerritoryData[] territories)

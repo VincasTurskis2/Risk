@@ -9,6 +9,7 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
     public UIManager uiManager {get; set;}
 
     public static readonly int[] ContinentValues = {2, 3, 7, 5, 5, 2};
+    public static readonly int[] CardSetRewards = {4, 6, 8, 10, 12, 15};
     public static int[] ContinentCount = {0, 0, 0, 0, 0, 0};
 
     public bool allTerritoriesClaimed {get; set;} = false;

@@ -18,9 +18,11 @@ public class GameState
 
     public GameState(GameState oldState)
     {
-        cardSetRewardStage = oldState.cardSetRewardStage;
+        cardDeck = new CardDeck(oldState.cardDeck);
+        
+        map = new Map(oldState.map);
         currentPlayerNo = oldState.currentPlayerNo;
         turnStage = oldState.turnStage;
-        map = new Map(oldState.map);
+        cardSetRewardStage = oldState.cardSetRewardStage;
     }
 }

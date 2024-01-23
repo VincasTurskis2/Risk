@@ -32,6 +32,8 @@ public static class Helpers{
         return index;
     }
 
+    public static readonly int[] CardSetRewards = {4, 6, 8, 10, 12, 15};
+
     // A helper function to get a highlighed version of a color
     public static Color GetHighlighedColorVersion(Color baseColor)
     {
