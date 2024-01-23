@@ -12,7 +12,7 @@ public class HumanPlayerWrapper : MonoBehaviour
         player = Player;
     }
 
-    // Update is called once per frame
+    // This is necessary in order to check whether the player has clicked on something without making the class inherit from monobehaviour
     void Update()
     {
         if(player != null)
