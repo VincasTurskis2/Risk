@@ -14,7 +14,7 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
 
     public bool allTerritoriesClaimed {get; set;} = false;
 
-    public bool is2PlayerGame {get; set;}
+    public bool is2PlayerGame {get; private set;}
 
     public float gameTimeElapsedSeconds {get; private set;} = 0;
 
