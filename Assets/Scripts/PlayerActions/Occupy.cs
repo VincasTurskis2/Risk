@@ -4,7 +4,7 @@ public class Occupy : PlayerAction
     public readonly ITerritoryPlayerView ITo;
     public readonly int numberOfTroops;
 
-    public Occupy(Player Caller, IGameStatePlayerView GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to, int NumberOfTroops) : base(Caller, GameMaster)
+    public Occupy(Player Caller, IGameMasterPlayerView GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to, int NumberOfTroops) : base(Caller, GameMaster)
     {
 
         IFrom = from;

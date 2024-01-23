@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public class EndTurn : PlayerAction
 {
 
-    public EndTurn(Player Caller, IGameStatePlayerView GameMaster) : base(Caller, GameMaster)
+    public EndTurn(Player Caller, IGameMasterPlayerView GameMaster) : base(Caller, GameMaster)
     {
     }
     public override bool execute()

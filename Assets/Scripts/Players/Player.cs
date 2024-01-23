@@ -10,7 +10,7 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
     protected int _placeableTroops;
     [SerializeField]
     protected HashSet<ITerritoryPlayerView> _ownedTerritories;
-    protected IGameStatePlayerView _gameState;
+    protected IGameMasterPlayerView _gameState;
     [SerializeField]
     protected bool _isMyTurn = false;
     protected List<TerritoryCard> _hand;

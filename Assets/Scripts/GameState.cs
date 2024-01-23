@@ -22,6 +22,6 @@ public class GameState
         cardSetRewardStage = oldState.cardSetRewardStage;
         currentPlayerNo = oldState.currentPlayerNo;
         turnStage = oldState.turnStage;
-        map = oldState.map;
+        //map = oldState.map;
     }
 }

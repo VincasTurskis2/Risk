@@ -4,7 +4,7 @@ public class SetupDeploy : PlayerAction
 {
     public readonly ITerritoryPlayerView ITerritory;
 
-    public SetupDeploy(Player Caller, IGameStatePlayerView GameMaster, ITerritoryPlayerView territory) : base(Caller, GameMaster)
+    public SetupDeploy(Player Caller, IGameMasterPlayerView GameMaster, ITerritoryPlayerView territory) : base(Caller, GameMaster)
     {
         ITerritory = territory;
     }

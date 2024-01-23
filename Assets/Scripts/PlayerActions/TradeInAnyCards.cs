@@ -5,7 +5,7 @@ using System.Linq;
 public class TradeInAnyCards : PlayerAction
 {
 
-    public TradeInAnyCards(Player Caller, IGameStatePlayerView GameMaster) : base(Caller, GameMaster)
+    public TradeInAnyCards(Player Caller, IGameMasterPlayerView GameMaster) : base(Caller, GameMaster)
     {
     }
     public override bool execute()

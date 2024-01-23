@@ -3,7 +3,7 @@ using UnityEngine.PlayerLoop;
 
 public class UpdatePlaceableTroops : PlayerAction
 {
-    public UpdatePlaceableTroops(Player Caller, IGameStatePlayerView GameMaster) : base(Caller, GameMaster)
+    public UpdatePlaceableTroops(Player Caller, IGameMasterPlayerView GameMaster) : base(Caller, GameMaster)
     {
 
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // A class that keeps track of game state elements
-public class GameMaster : MonoBehaviour, IGameStatePlayerView
+public class GameMaster : MonoBehaviour, IGameMasterPlayerView
 {
     public GameState state;
     public UIManager uiManager {get; set;}

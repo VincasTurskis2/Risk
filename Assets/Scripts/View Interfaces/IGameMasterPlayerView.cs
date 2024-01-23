@@ -1,5 +1,5 @@
 
-public interface IGameStatePlayerView
+public interface IGameMasterPlayerView
 {
     public bool is2PlayerGame{get;}
     public Player[] Players();

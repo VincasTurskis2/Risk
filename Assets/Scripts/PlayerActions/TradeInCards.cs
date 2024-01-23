@@ -2,7 +2,7 @@ public class TradeInCards : PlayerAction
 {
     public readonly TerritoryCard[] cards;
 
-    public TradeInCards(Player Caller, IGameStatePlayerView GameMaster, TerritoryCard[] Cards) : base(Caller, GameMaster)
+    public TradeInCards(Player Caller, IGameMasterPlayerView GameMaster, TerritoryCard[] Cards) : base(Caller, GameMaster)
     {
         cards = Cards;
     }
