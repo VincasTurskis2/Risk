@@ -52,4 +52,11 @@ public class Map : IMapPlayerView
     {
         return GetRawTerritory(territory);
     }
+
+    public ITerritoryPlayerView[] GetOwnedTerritories(Player owner)
+    {
+        return  (from t in Territories
+                where t.GetOwner().Equals(owner.GetData().playerName)
+                select t).ToArray();
+    }
 }

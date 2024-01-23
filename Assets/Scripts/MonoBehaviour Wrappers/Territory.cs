@@ -17,7 +17,7 @@ public class Territory : MonoBehaviour
     
     [field: SerializeField]
     public int TroopCount {get; set;}
-    public Player Owner {get; private set;}
+    public string Owner {get; private set;} = null;
 
     public TerritoryData data {get; set;}
 

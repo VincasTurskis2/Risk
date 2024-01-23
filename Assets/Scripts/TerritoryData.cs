@@ -16,9 +16,9 @@ public class TerritoryData : ITerritoryPlayerView
     // Mutable properties of the territory
     
     public int TroopCount {get; set;}
-    public Player Owner {get; private set;}
+    public string Owner {get; private set;}
 
-    public TerritoryData(Sprite newSprite, string territoryName, Territory[] neighbors, Continent continent, int troopCount, Player owner)
+    public TerritoryData(Sprite newSprite, string territoryName, Territory[] neighbors, Continent continent, int troopCount, string owner)
     {
         territoryColor = new Color(1, 1, 1, 1);
         sprite = newSprite;
@@ -43,7 +43,7 @@ public class TerritoryData : ITerritoryPlayerView
 
         TroopCount = oldData.TroopCount;
 
-        
+
     }
 
     public bool IsANeighbor(TerritoryData other)
@@ -77,31 +77,14 @@ public class TerritoryData : ITerritoryPlayerView
     }
     public void SetOwner(Player newOwner, bool setCardEligible)
     {
-        if(Owner != null)
-        {
-            Owner.GetOwnedTerritories().Remove(this);
-        }
-        if(newOwner != null && Owner != newOwner && setCardEligible)
+        if(newOwner != null && Owner != null && !Owner.Equals(newOwner.GetData().playerName) && setCardEligible)
         {
             newOwner.SetCardEligible(true);
         }
-        Owner = newOwner;
+        Owner = newOwner.GetData().playerName;
         if(Owner != null)
         {
-            Owner.GetOwnedTerritories().Add(this);
-            territoryColor = Owner.GetData().playerColor;
-        }
-    }
-    public void Highlight(bool toHighlight)
-    {
-        if(Owner == null) return;
-        if(toHighlight)
-        {
-            territoryColor = Helpers.GetHighlighedColorVersion(Owner.GetData().playerColor);
-        }
-        else
-        {
-            territoryColor = Owner.GetData().playerColor;
+            territoryColor = newOwner.GetData().playerColor;
         }
     }
     public string[] GetNeighbors()
@@ -109,7 +92,7 @@ public class TerritoryData : ITerritoryPlayerView
         return Neighbors;
     }
 
-    public IOtherPlayer GetOwner()
+    public string GetOwner()
     {
         return Owner;
     }

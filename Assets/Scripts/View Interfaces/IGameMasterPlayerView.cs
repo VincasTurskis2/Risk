@@ -10,5 +10,5 @@ public interface IGameMasterPlayerView
     public bool allTerritoriesClaimed {get;}
     public int cardSetRewardStage();
     public Player CurrentPlayer();
-    //
+    public void HighlightTerritory(ITerritoryPlayerView territory, bool toHighlight);
 }

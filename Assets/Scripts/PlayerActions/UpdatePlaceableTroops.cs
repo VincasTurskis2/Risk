@@ -21,7 +21,7 @@ public class UpdatePlaceableTroops : PlayerAction
         else if (gameMaster.turnStage() == TurnStage.Deploy)
         {
             int result = 0;
-            result = caller.GetOwnedTerritories().Count / 3;
+            result = gameMaster.state.map.GetOwnedTerritories(caller).Length / 3;
             List<Continent> ownedContinents = GetOwnedContinents(caller);
             for(int i = 0; i < ownedContinents.Count; i++)
             {
@@ -37,7 +37,7 @@ public class UpdatePlaceableTroops : PlayerAction
         List<Continent> result = new List<Continent>();
         int[] continentCountLocal = new int[GameMaster.ContinentCount.Length];
         GameMaster.ContinentCount.CopyTo(continentCountLocal, 0);
-        foreach(TerritoryData t in player.GetOwnedTerritories())
+        foreach(TerritoryData t in gameMaster.state.map.GetOwnedTerritories(player))
         {
             continentCountLocal[(int) t.Continent]--;
         }

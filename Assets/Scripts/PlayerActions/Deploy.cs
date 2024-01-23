@@ -13,15 +13,15 @@ public class Deploy : PlayerAction
 
         // Guards
         if(territory == null) return false;
-        if(!territory.Owner.IsMyTurn()) return false;
+        if(!gameMaster.getPlayerFromName(territory.Owner).IsMyTurn()) return false;
         if(gameMaster.turnStage() != TurnStage.Deploy) return false;
-        if(territory.Owner.GetPlaceableTroopNumber() <= 0) return false;
+        if(gameMaster.getPlayerFromName(territory.Owner).GetPlaceableTroopNumber() <= 0) return false;
 
-        territory.Owner.DecrementPlaceableTroops(1);
+        gameMaster.getPlayerFromName(territory.Owner).DecrementPlaceableTroops(1);
         territory.TroopCount++;
-        if(territory.Owner.GetPlaceableTroopNumber() <= 0)
+        if(gameMaster.getPlayerFromName(territory.Owner).GetPlaceableTroopNumber() <= 0)
         {
-            territory.Owner.EndTurnStage();
+            gameMaster.getPlayerFromName(territory.Owner).EndTurnStage();
         }
         return true;
     }

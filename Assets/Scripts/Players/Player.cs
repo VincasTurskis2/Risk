@@ -8,8 +8,6 @@ public abstract class Player : IOtherPlayer
     protected PlayerData _data;
     [SerializeField]
     protected int _placeableTroops;
-    [SerializeField]
-    protected HashSet<ITerritoryPlayerView> _ownedTerritories;
     protected IGameMasterPlayerView _gameMaster;
     [SerializeField]
     protected bool _isMyTurn;
@@ -19,7 +17,6 @@ public abstract class Player : IOtherPlayer
     public Player(GameMaster gameMaster, PlayerData data)
     {
         _data = data;
-        _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _gameMaster = gameMaster;
         _isMyTurn = false;
         _hand = new List<TerritoryCard>();
@@ -63,12 +60,6 @@ public abstract class Player : IOtherPlayer
     {
         return _isMyTurn;
     }
-    public HashSet<ITerritoryPlayerView> GetOwnedTerritories()
-    {
-        return _ownedTerritories;
-    }
-
-
     public int GetPlaceableTroopNumber()
     {
         return _placeableTroops;

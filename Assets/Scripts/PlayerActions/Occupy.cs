@@ -18,7 +18,7 @@ public class Occupy : PlayerAction
 
         // Guards
         if(from == null || to == null || numberOfTroops < 1) return false;
-        if(!from.Owner.IsMyTurn()) return false;
+        if(!gameMaster.getPlayerFromName(from.Owner).IsMyTurn()) return false;
         if(numberOfTroops >= from.TroopCount) return false;
         if(!from.IsANeighbor(to)) return false;
         if(to.Owner != from.Owner) return false;

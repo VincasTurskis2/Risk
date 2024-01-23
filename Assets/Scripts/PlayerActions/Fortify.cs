@@ -18,16 +18,16 @@ public class Fortify : PlayerAction
 
         // Guards
         if(from == null || to == null || numberOfTroops < 1) return false;
-        if(!from.Owner.IsMyTurn()) return false;
+        if(!gameMaster.getPlayerFromName(from.Owner).IsMyTurn()) return false;
         if(numberOfTroops >= from.TroopCount) return false;
         if(!from.IsANeighbor(to)) return false;
-        if(to.Owner != from.Owner) return false;
+        if(!to.Owner.Equals(from.Owner)) return false;
         if(gameMaster.turnStage() != TurnStage.Reinforce) return false;
 
         // If all the guards are passed, move the troops
         from.TroopCount -= numberOfTroops;
         to.TroopCount += numberOfTroops;
-        from.Owner.EndTurnStage(); // Only 1 reinforcement can be done per turn
+        gameMaster.getPlayerFromName(from.Owner).EndTurnStage(); // Only 1 reinforcement can be done per turn
         return true;
     }
 }

@@ -17,13 +17,12 @@ public class PassiveAIPlayer : Player
         new UpdatePlaceableTroops(this, _gameMaster).execute();
         if(_gameMaster.turnStage() == TurnStage.Setup)
         {
-            List<ITerritoryPlayerView> possibleTerritories = new List<ITerritoryPlayerView>(_ownedTerritories);
+            List<ITerritoryPlayerView> possibleTerritories = _gameMaster.GetMap().GetOwnedTerritories(this).ToList();
             if(!_gameMaster.allTerritoriesClaimed)
             {
                 possibleTerritories = new List<ITerritoryPlayerView>();
                 foreach(ITerritoryPlayerView t in _gameMaster.GetMap().GetTerritories())
                 {
-                    
                     if(t.GetOwner() == null)
                     {
                         possibleTerritories.Add(t);
@@ -35,8 +34,9 @@ public class PassiveAIPlayer : Player
         }
         else if(_gameMaster.turnStage() == TurnStage.Deploy)
         {
-            int randomTerritoryNumber = Random.Range(0, _ownedTerritories.Count);
-            List<ITerritoryPlayerView> territoryList = _ownedTerritories.ToList();
+            _gameMaster.GetMap().GetOwnedTerritories(this).Count();
+            int randomTerritoryNumber = Random.Range(0, _gameMaster.GetMap().GetOwnedTerritories(this).Length);
+            List<ITerritoryPlayerView> territoryList = _gameMaster.GetMap().GetOwnedTerritories(this).ToList();
             ITerritoryPlayerView territoryToDeploy = territoryList[randomTerritoryNumber];
             ITerritoryPlayerView[] territoryToDeployArray = {territoryToDeploy};
             int[] amounts = { _placeableTroops };

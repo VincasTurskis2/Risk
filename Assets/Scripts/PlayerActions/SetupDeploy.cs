@@ -28,7 +28,7 @@ public class SetupDeploy : PlayerAction
             caller.EndTurn();
             return true;
         }
-        else if(territory.Owner == caller && gameMaster.allTerritoriesClaimed)
+        else if(territory.Owner.Equals(caller.GetData().playerName) && gameMaster.allTerritoriesClaimed)
         {
             territory.TroopCount++;
             caller.DecrementPlaceableTroops(1);

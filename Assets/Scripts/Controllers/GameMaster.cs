@@ -95,8 +95,8 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
             int player1Rem = 14, player2Rem = 14, player3Rem = 14;
             for(int i = 0; i < state.map.Territories.Length; i++)
             {
-                int rand = Random.Range(1, player1Rem + player2Rem + player3Rem + 1);
-                if(rand - player3Rem <= 0)
+                int rand = Random.Range(0, player1Rem + player2Rem + player3Rem + 1);
+                if(rand - player3Rem < 0)
                 {
                     state.map.Territories[i].SetOwner(state.Players[2], false);
                     player3Rem--;
@@ -165,7 +165,7 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
 
     public void OnPlayerLoss(Player player)
     {
-        if(player.GetOwnedTerritories().Count != 0) return;
+        if(state.map.GetOwnedTerritories(player).Length != 0) return;
         Debug.Log(player.GetData().playerName + " has lost!");
         if(player.IsMyTurn())
         {
@@ -252,5 +252,31 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
     public IMapPlayerView GetMap()
     {
         return state.map;
+    }
+
+    public void HighlightTerritory(ITerritoryPlayerView territory, bool toHighlight)
+    {
+        if(territory == null) return;
+        TerritoryData Territory = (TerritoryData) territory;
+        if(toHighlight)
+        {
+            Territory.territoryColor = Helpers.GetHighlighedColorVersion(getPlayerFromName(Territory.Owner).GetData().playerColor);
+        }
+        else
+        {
+            Territory.territoryColor = getPlayerFromName(Territory.Owner).GetData().playerColor;
+        }
+    }
+
+    public Player getPlayerFromName(string playerName)
+    {
+        for(int i = 0; i < state.Players.Length; i++)
+        {
+            if(playerName.Equals(state.Players[i].GetData().playerName))
+            {
+                return state.Players[i];
+            }
+        }
+        return null;
     }
 }

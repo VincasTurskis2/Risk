@@ -16,9 +16,9 @@ public class Attack : PlayerAction
         TerritoryData from = (TerritoryData) IFrom, to = (TerritoryData) ITo;
         // Guards
         if(from == null || to == null || from.TroopCount <= 1) return false;
-        if(!from.Owner.IsMyTurn()) return false;
+        if(!caller.IsMyTurn()) return false;
         if(!from.IsANeighbor(to)) return false;
-        if(to.Owner == from.Owner) return false;
+        if(to.Owner.Equals(from.Owner)) return false;
         if(gameMaster.turnStage() != TurnStage.Attack) return false;
 
         // Note: technically, a player may choose to roll less dice in an attack; However, in reality, rolling less dice is not a good strategy for either player.
@@ -28,11 +28,11 @@ public class Attack : PlayerAction
         to.TroopCount -= results[1];
         if(to.TroopCount <= 0)
         {
-            Player loser = to.Owner;
-            to.SetOwner(from.Owner, true);
-            if(loser.GetOwnedTerritories().Count == 0)
+            Player loser = gameMaster.getPlayerFromName(to.Owner);
+            to.SetOwner(gameMaster.getPlayerFromName(from.Owner), true);
+            if(gameMaster.state.map.GetOwnedTerritories(loser).Length == 0)
             {
-                from.Owner.AddCardsToHand(loser.GetCardHand());
+                gameMaster.getPlayerFromName(from.Owner).AddCardsToHand(loser.GetCardHand());
                 new DiscardCards(loser, gameMaster, loser.GetCardHand().ToArray()).execute();
                 gameMaster.OnPlayerLoss(loser);
             }

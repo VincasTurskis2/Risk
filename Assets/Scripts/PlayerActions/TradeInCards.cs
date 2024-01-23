@@ -36,7 +36,7 @@ public class TradeInCards : PlayerAction
         {
             if(cards[i].ReferencedTerritory != null)
             {
-                if(cards[i].ReferencedTerritory.Owner == caller)
+                if(cards[i].ReferencedTerritory.Owner.Equals(caller.GetData().playerName))
                 {
                     result += 2;
                     break;

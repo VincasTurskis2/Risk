@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
 
 
 
-    private GameMaster _gameState;
+    private GameMaster _gameMaster;
 
     public bool PanelOverlayIsDisplayed {get; private set;} = false;
 
@@ -113,17 +113,17 @@ public class UIManager : MonoBehaviour
     {
         _cardUIManager.gameObject.SetActive(true);
         _winLosePanel.SetActive(false);
-        _gameState = gameObject.GetComponent<GameMaster>();
+        _gameMaster = gameObject.GetComponent<GameMaster>();
         _cumulativeAttackerLoss = 0;
         _cumulativeDefenderLoss = 0;
         HideAttackPanel();
         HideFortifyPanel();
-        _cardUIManager.Setup(_gameState);
+        _cardUIManager.Setup(_gameMaster);
         
     }
     public void UpdateCurrentStageText()
     {
-        switch(_gameState.turnStage()){
+        switch(_gameMaster.turnStage()){
             case TurnStage.Setup:
                 _currentStageText.SetText("Current Stage: Setup");
                 break;
@@ -140,12 +140,12 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateCurrentPlayerText()
     {
-        _currentPlayerText.SetText(_gameState.CurrentPlayer().GetData().playerName + "'s turn");
+        _currentPlayerText.SetText(_gameMaster.CurrentPlayer().GetData().playerName + "'s turn");
     }
     public void UpdateHelperPanelText()
     {
-        _helperPanel.SetActive(_gameState.turnStage() == TurnStage.Deploy || _gameState.turnStage() == TurnStage.Setup);
-        _helperPanelText.SetText("Troops left to deploy: " + _gameState.CurrentPlayer().GetPlaceableTroopNumber());
+        _helperPanel.SetActive(_gameMaster.turnStage() == TurnStage.Deploy || _gameMaster.turnStage() == TurnStage.Setup);
+        _helperPanelText.SetText("Troops left to deploy: " + _gameMaster.CurrentPlayer().GetPlaceableTroopNumber());
     }
     public void DisplayAttackPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
@@ -161,11 +161,11 @@ public class UIManager : MonoBehaviour
         _attackPanelTitle.SetText("Battle for " + to.TerritoryName);
         _attackButtonText.SetText("Attack!");
 
-        _attackerName.SetText("Attacker: " + from.GetOwner().GetData().playerName);
+        _attackerName.SetText("Attacker: " + from.GetOwner());
         _attackerOrigin.SetText("(" + from.TerritoryName + ")");
         _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
 
-        _defenderName.SetText("Defender: " + to.GetOwner().GetData().playerName);
+        _defenderName.SetText("Defender: " + to.GetOwner());
         _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
 
         _attackerDice.SetText("Dice rolled: {}");
@@ -294,14 +294,14 @@ public class UIManager : MonoBehaviour
 
     public bool Attack(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        return new Attack((Player)from.GetOwner(), _gameState, from, to).execute();
+        return new Attack(_gameMaster.getPlayerFromName(from.GetOwner()), _gameMaster, from, to).execute();
     }
     public bool Fortify(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
     {
-        return new Fortify((Player)from.GetOwner(), _gameState, from, to, numberOfTroops).execute();
+        return new Fortify(_gameMaster.getPlayerFromName(from.GetOwner()), _gameMaster, from, to, numberOfTroops).execute();
     }
     public bool Occupy(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
     {
-        return new Occupy((Player)from.GetOwner(), _gameState, from, to, numberOfTroops).execute();
+        return new Occupy(_gameMaster.getPlayerFromName(from.GetOwner()), _gameMaster, from, to, numberOfTroops).execute();
     }
 }

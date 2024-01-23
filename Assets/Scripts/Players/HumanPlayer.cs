@@ -14,8 +14,6 @@ public class HumanPlayer : Player
         // Set the "trade in cards" button to call a function from this class
         // Needs to be done in script, because an object with this class attached does not exist in the scene before running it
         _gameMaster.uiManager.GetCardUIManager().GetTradeInCardsButton().onClick.AddListener(TradeInCards);
-
-        _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _hand = new List<TerritoryCard>();
         _data = data;
     }
@@ -51,7 +49,7 @@ public class HumanPlayer : Player
                         new SetupDeploy(this, _gameMaster, _selectedTerritory).execute();
                         break;
                     case TurnStage.Deploy:
-                        if((Player)_selectedTerritory.GetOwner() == this)
+                        if(_selectedTerritory.GetOwner().Equals(_data.playerName))
                         {
                             success = new Deploy(this, _gameMaster, _selectedTerritory).execute();
                         }
@@ -59,7 +57,7 @@ public class HumanPlayer : Player
                     case TurnStage.Attack:
                         if(_selectedTerritory != null && _previouslySelectedTerritory != null)
                         {
-                            if((Player)_previouslySelectedTerritory.GetOwner() == this && (Player)_selectedTerritory.GetOwner() != this && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory) && _previouslySelectedTerritory.TroopCount > 1)
+                            if(_previouslySelectedTerritory.GetOwner().Equals(_data.playerName) && !_selectedTerritory.GetOwner().Equals(_data.playerName) && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory) && _previouslySelectedTerritory.TroopCount > 1)
                             {
                                 _gameMaster.uiManager.DisplayAttackPanel(_previouslySelectedTerritory, _selectedTerritory);
                                 SelectTerritory(null);
@@ -69,7 +67,7 @@ public class HumanPlayer : Player
                     case TurnStage.Reinforce:
                         if(_selectedTerritory != null && _previouslySelectedTerritory != null)
                         {
-                            if(_selectedTerritory.GetOwner() == _previouslySelectedTerritory.GetOwner() && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory))
+                            if(_selectedTerritory.GetOwner().Equals(_previouslySelectedTerritory.GetOwner()) && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory))
                             {
                                 _gameMaster.uiManager.DisplayFortifyPanel(_previouslySelectedTerritory, _selectedTerritory);
                                 SelectTerritory(null);
@@ -107,11 +105,11 @@ public class HumanPlayer : Player
     {
         if(_selectedTerritory != null)
         {
-            _selectedTerritory.Highlight(false);
+            _gameMaster.HighlightTerritory(_selectedTerritory, false);
         }
         if(tr != null)
         {
-            tr.Highlight(true);
+            _gameMaster.HighlightTerritory(tr, true);
         }
         _previouslySelectedTerritory = _selectedTerritory;
         _selectedTerritory = tr;

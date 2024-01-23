@@ -24,12 +24,12 @@ public class DeployMultiple : PlayerAction
             territories[i] = (TerritoryData) ITerritories[i];
             if(owner == null)
             {
-                if(!territories[i].Owner.IsMyTurn()) return false;
-                owner = territories[i].Owner;
+                if(!gameMaster.getPlayerFromName(territories[i].Owner).IsMyTurn()) return false;
+                owner = gameMaster.getPlayerFromName(territories[i].Owner);
             }
             else 
             {
-                if(territories[i].Owner == owner) return false;
+                if(!territories[i].Owner.Equals(owner.GetData().playerName)) return false;
             }
             totalToDeploy += amounts[i];
         }
@@ -37,7 +37,7 @@ public class DeployMultiple : PlayerAction
         if(totalToDeploy > owner.GetPlaceableTroopNumber()) return false;
         for(int i = 0; i < territories.Length; i++)
         {
-            territories[i].Owner.DecrementPlaceableTroops(amounts[i]);
+            gameMaster.getPlayerFromName(territories[i].Owner).DecrementPlaceableTroops(amounts[i]);
             territories[i].TroopCount += amounts[i];
         }
         if(owner.GetPlaceableTroopNumber() <= 0)
