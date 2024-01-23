@@ -7,38 +7,21 @@ using System.Linq;
 public class PassiveAIPlayer : Player
 {
     
-    public override void Setup(GameMaster state, PlayerData data)
+    public PassiveAIPlayer(GameMaster state, PlayerData data) : base(state, data)
     {
-        _gameState = state;
-        if(_gameState.is2PlayerGame)
-        {
-            _placeableTroops = 26;
-        }
-        else if(_gameState.Players().Length >= 3 && _gameState.Players().Length <= 6)
-        {
-            _placeableTroops = 40 - ((_gameState.Players().Length - 2) * 5);
-        }
-        else
-        {
-            Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
-            return;
-        }
-        _ownedTerritories = new HashSet<ITerritoryPlayerView>();
-        _hand = new List<TerritoryCard>();
-        _data = data;
     }
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
-        new UpdatePlaceableTroops(this, _gameState).execute();
-        if(_gameState.turnStage() == TurnStage.Setup)
+        new UpdatePlaceableTroops(this, _gameMaster).execute();
+        if(_gameMaster.turnStage() == TurnStage.Setup)
         {
             List<ITerritoryPlayerView> possibleTerritories = new List<ITerritoryPlayerView>(_ownedTerritories);
-            if(!_gameState.allTerritoriesClaimed)
+            if(!_gameMaster.allTerritoriesClaimed)
             {
                 possibleTerritories = new List<ITerritoryPlayerView>();
-                foreach(ITerritoryPlayerView t in _gameState.GetMap().GetTerritories())
+                foreach(ITerritoryPlayerView t in _gameMaster.GetMap().GetTerritories())
                 {
                     
                     if(t.GetOwner() == null)
@@ -48,16 +31,16 @@ public class PassiveAIPlayer : Player
                 }
             }
             int randomTerritoryNumber = Random.Range(0, possibleTerritories.Count);
-            bool success = new SetupDeploy(this, _gameState, possibleTerritories[randomTerritoryNumber]).execute();
+            bool success = new SetupDeploy(this, _gameMaster, possibleTerritories[randomTerritoryNumber]).execute();
         }
-        else if(_gameState.turnStage() == TurnStage.Deploy)
+        else if(_gameMaster.turnStage() == TurnStage.Deploy)
         {
             int randomTerritoryNumber = Random.Range(0, _ownedTerritories.Count);
             List<ITerritoryPlayerView> territoryList = _ownedTerritories.ToList();
             ITerritoryPlayerView territoryToDeploy = territoryList[randomTerritoryNumber];
             ITerritoryPlayerView[] territoryToDeployArray = {territoryToDeploy};
             int[] amounts = { _placeableTroops };
-            new DeployMultiple(this, _gameState, territoryToDeployArray, amounts);
+            new DeployMultiple(this, _gameMaster, territoryToDeployArray, amounts);
             EndTurn();
         }
         else

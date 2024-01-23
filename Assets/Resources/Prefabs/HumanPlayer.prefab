@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8905822811619230432}
-  - component: {fileID: 7519257150994063783}
+  - component: {fileID: 3928965085793559571}
   m_Layer: 0
   m_Name: HumanPlayer
   m_TagString: Untagged
@@ -30,9 +30,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7519257150994063783
+--- !u!114 &3928965085793559571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +41,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2544387057047214275}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06b1d4f76214eb54f8163ebeaf320efa, type: 3}
+  m_Script: {fileID: 11500000, guid: a7b2778f43755bd4eaa6d979cb99051b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isMyTurn: 0
-  <SelectedTerritory>k__BackingField: {fileID: 0}

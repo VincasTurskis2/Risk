@@ -44,15 +44,12 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
     }
     public void SetupPlayers(PlayerData[] players)
     {
-        GameObject playerObject, playerObjectInstance;
+        GameObject playerObject;
         if(players.Length == 2)
         {
             is2PlayerGame = true;
             state.Players = new Player[players.Length + 1];
-            playerObject = (GameObject)Resources.Load("prefabs/NeutralArmyPlayer", typeof(GameObject));
-            playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
-            state.Players[players.Length] = playerObjectInstance.GetComponent<NeutralArmyPlayer>();
-            state.Players[players.Length].Setup(this, null);
+            state.Players[players.Length] = new NeutralArmyPlayer(this);
         }
         else
         {
@@ -62,29 +59,23 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
         {
             switch(players[i].playerType){
                 case PlayerType.Human:
+                    HumanPlayer hp = new HumanPlayer(this, players[i]);
                     playerObject = (GameObject)Resources.Load("prefabs/HumanPlayer", typeof(GameObject));
-                    playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
-                    state.Players[i] = playerObjectInstance.GetComponent<HumanPlayer>();
+                    Instantiate(playerObject, new Vector3(), Quaternion.identity).GetComponent<HumanPlayerWrapper>().Setup(hp);
+                    state.Players[i] = hp;
                     break;
                 case PlayerType.PassiveAI:
-                    playerObject = (GameObject)Resources.Load("prefabs/PassiveAIPlayer", typeof(GameObject));
-                    playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
-                    state.Players[i] = playerObjectInstance.GetComponent<PassiveAIPlayer>();
+                    state.Players[i] = new PassiveAIPlayer(this, players[i]);
                     break;
                 case PlayerType.Neutral:
-                    playerObject = (GameObject)Resources.Load("prefabs/NeutralArmyPlayer", typeof(GameObject));
-                    playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
-                    state.Players[i] = playerObjectInstance.GetComponent<NeutralArmyPlayer>();
+                    state.Players[i] = new NeutralArmyPlayer(this);
                     break;
                 case PlayerType.MCTS:
-                    playerObject = (GameObject)Resources.Load("prefabs/MCTSPlayer", typeof(GameObject));
-                    playerObjectInstance = Instantiate(playerObject, new Vector3(), Quaternion.identity);
-                    state.Players[i] = playerObjectInstance.GetComponent<MCTSPlayer>();
+                    state.Players[i] = new MCTSPlayer(this, players[i]);
                     break;
                 default:
                     break;
             }
-            state.Players[i].Setup(this, players[i]);
         }
         state.currentPlayerNo = 0;
         state.turnStage = TurnStage.Setup;

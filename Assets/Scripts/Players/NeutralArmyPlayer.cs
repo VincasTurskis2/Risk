@@ -6,21 +6,10 @@ using UnityEngine;
 public class NeutralArmyPlayer : Player
 {
     
-    public override void Setup(GameMaster state, PlayerData data)
+    public NeutralArmyPlayer(GameMaster state) : base(state, null)
     {
-        _gameState = state;
-        if(_gameState.Players().Length == 3)
-        {
-            _placeableTroops = 26;
-        }
-        else
-        {
-            Debug.Log("Error: Neutral player should not appear in non-2 player games");
-            return;
-        }
-        _ownedTerritories = new HashSet<ITerritoryPlayerView>();
-        _hand = new List<TerritoryCard>();
         _data = new PlayerData("Neutral", PlayerType.Neutral, ColorPreset.White);
+        _placeableTroops = 0;
     }
     public override void StartTurn()
     {
@@ -29,6 +18,6 @@ public class NeutralArmyPlayer : Player
 
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
-        new DiscardCards(this, (GameMaster) _gameState, cards.ToArray()).execute();
+        new DiscardCards(this, (GameMaster) _gameMaster, cards.ToArray()).execute();
     }
 }

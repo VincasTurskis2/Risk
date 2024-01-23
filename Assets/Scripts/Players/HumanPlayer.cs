@@ -4,41 +4,24 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.EventSystems;
 
-public class HumanPlayer :  Player
+public class HumanPlayer : Player
 {
-    private UIManager _uiManager;
     private ITerritoryPlayerView _selectedTerritory = null;
     private ITerritoryPlayerView _previouslySelectedTerritory = null;
 
-    public override void Setup(GameMaster state, PlayerData data)
+    public HumanPlayer(GameMaster state, PlayerData data) : base(state, data)
     {
-        _gameState = state;
-        if(_gameState.is2PlayerGame)
-        {
-            _placeableTroops = 26;
-        }
-        else if(_gameState.Players().Length >= 3 && _gameState.Players().Length <= 6)
-        {
-            _placeableTroops = 40 - ((_gameState.Players().Length - 2) * 5);
-        }
-        else
-        {
-            Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
-            return;
-        }
-        _uiManager = (UIManager) FindAnyObjectByType(typeof(UIManager));
-
         // Set the "trade in cards" button to call a function from this class
         // Needs to be done in script, because an object with this class attached does not exist in the scene before running it
-        _uiManager.GetCardUIManager().GetTradeInCardsButton().onClick.AddListener(TradeInCards);
+        _gameMaster.uiManager.GetCardUIManager().GetTradeInCardsButton().onClick.AddListener(TradeInCards);
 
         _ownedTerritories = new HashSet<ITerritoryPlayerView>();
         _hand = new List<TerritoryCard>();
         _data = data;
     }
-    void Update()
+    public void Update()
     {
-        if(Input.GetMouseButtonDown(0) && _isMyTurn && !_uiManager.PanelOverlayIsDisplayed)
+        if(Input.GetMouseButtonDown(0) && _isMyTurn && !_gameMaster.uiManager.PanelOverlayIsDisplayed)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 15);
@@ -63,22 +46,22 @@ public class HumanPlayer :  Player
             {
                 bool success = false;
                 SelectTerritory(hit.collider.gameObject.GetComponent<Territory>().data);
-                switch(_gameState.turnStage()){
+                switch(_gameMaster.turnStage()){
                     case TurnStage.Setup:
-                        new SetupDeploy(this, _gameState, _selectedTerritory).execute();
+                        new SetupDeploy(this, _gameMaster, _selectedTerritory).execute();
                         break;
                     case TurnStage.Deploy:
-                        if((Object)_selectedTerritory.GetOwner() == this)
+                        if((Player)_selectedTerritory.GetOwner() == this)
                         {
-                            success = new Deploy(this, _gameState, _selectedTerritory).execute();
+                            success = new Deploy(this, _gameMaster, _selectedTerritory).execute();
                         }
                         break;
                     case TurnStage.Attack:
                         if(_selectedTerritory != null && _previouslySelectedTerritory != null)
                         {
-                            if((Object)_previouslySelectedTerritory.GetOwner() == this && (Object)_selectedTerritory.GetOwner() != this && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory) && _previouslySelectedTerritory.TroopCount > 1)
+                            if((Player)_previouslySelectedTerritory.GetOwner() == this && (Player)_selectedTerritory.GetOwner() != this && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory) && _previouslySelectedTerritory.TroopCount > 1)
                             {
-                                _uiManager.DisplayAttackPanel(_previouslySelectedTerritory, _selectedTerritory);
+                                _gameMaster.uiManager.DisplayAttackPanel(_previouslySelectedTerritory, _selectedTerritory);
                                 SelectTerritory(null);
                             }
                         }
@@ -88,7 +71,7 @@ public class HumanPlayer :  Player
                         {
                             if(_selectedTerritory.GetOwner() == _previouslySelectedTerritory.GetOwner() && _selectedTerritory.IsANeighbor(_previouslySelectedTerritory))
                             {
-                                _uiManager.DisplayFortifyPanel(_previouslySelectedTerritory, _selectedTerritory);
+                                _gameMaster.uiManager.DisplayFortifyPanel(_previouslySelectedTerritory, _selectedTerritory);
                                 SelectTerritory(null);
                             }
                         }
@@ -105,9 +88,9 @@ public class HumanPlayer :  Player
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
-        new UpdatePlaceableTroops(this, _gameState).execute();
+        new UpdatePlaceableTroops(this, _gameMaster).execute();
         _isMyTurn = true;
-        _uiManager.RedrawCardPanel(this);
+        _gameMaster.uiManager.RedrawCardPanel(this);
     }
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
@@ -116,7 +99,7 @@ public class HumanPlayer :  Player
         
         for(int i = 0; i < cards.Count; i++)
         {
-            _uiManager.AddCardToPanel(cards[i]);
+            _gameMaster.uiManager.AddCardToPanel(cards[i]);
         }
     }
 
@@ -136,11 +119,11 @@ public class HumanPlayer :  Player
 
     public void TradeInCards()
     {
-        if(_gameState.turnStage() != TurnStage.Deploy) 
+        if(_gameMaster.turnStage() != TurnStage.Deploy) 
         {
             Debug.Log("wrong stage of the game to trade in cards");
             return;
         }
-        _uiManager.GetCardUIManager().TradeInCards(this);
+        _gameMaster.uiManager.GetCardUIManager().TradeInCards(this);
     }    
 }

@@ -20,7 +20,7 @@ public class SetupDeploy : PlayerAction
         if(!caller.IsMyTurn()) return false;
         if(caller.GetPlaceableTroopNumber() < 1) return false;
 
-        if((Object)territory.Owner == null)
+        if(territory.Owner == null)
         {
             territory.SetOwner(caller, false);
             territory.TroopCount++;
@@ -28,7 +28,7 @@ public class SetupDeploy : PlayerAction
             caller.EndTurn();
             return true;
         }
-        else if((Object)territory.Owner == (Object) caller && gameMaster.allTerritoriesClaimed)
+        else if(territory.Owner == caller && gameMaster.allTerritoriesClaimed)
         {
             territory.TroopCount++;
             caller.DecrementPlaceableTroops(1);

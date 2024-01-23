@@ -7,34 +7,17 @@ using System.Linq;
 public class MCTSPlayer : Player
 {
     
-    public override void Setup(GameMaster state, PlayerData data)
+    public MCTSPlayer(GameMaster state, PlayerData data) : base(state, data)
     {
-        _gameState = state;
-        if(_gameState.is2PlayerGame)
-        {
-            _placeableTroops = 26;
-        }
-        else if(_gameState.Players().Length >= 3 && _gameState.Players().Length <= 6)
-        {
-            _placeableTroops = 40 - ((_gameState.Players().Length - 2) * 5);
-        }
-        else
-        {
-            Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
-            return;
-        }
-        _ownedTerritories = new HashSet<ITerritoryPlayerView>();
-        _hand = new List<TerritoryCard>();
-        _data = data;
     }
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
-        new UpdatePlaceableTroops(this, _gameState).execute();
+        new UpdatePlaceableTroops(this, _gameMaster).execute();
         // TODO: Add rule-based troop deployment
 
-        new EndTurnStage(this, _gameState).execute();
+        new EndTurnStage(this, _gameMaster).execute();
         //GameStateTreeNode root = new GameStateTreeNode(_gameState)
 
     }
