@@ -1,3 +1,5 @@
+using System.Linq;
+
 public class TradeInCards : PlayerAction
 {
     public readonly TerritoryCard[] cards;
@@ -30,13 +32,19 @@ public class TradeInCards : PlayerAction
             different3 = true;
         }
         if(!matching3 && !different3) return false;
-
-        result += TerritoryCard.CardSetRewards[gameMaster.state.cardSetRewardStage++];
+        if(gameMaster.state.cardSetRewardStage >= TerritoryCard.CardSetRewards.Length)
+        {
+            result += (gameMaster.state.cardSetRewardStage - 2) * 4;
+        }
+        else
+        {
+            result += TerritoryCard.CardSetRewards[gameMaster.state.cardSetRewardStage];
+        }
         for(int i = 0; i < 3; i++)
         {
             if(cards[i].ReferencedTerritory != null)
             {
-                if(cards[i].ReferencedTerritory.Owner.Equals(caller.GetData().playerName))
+                if(gameMaster.state.map.GetTerritory(cards[i].ReferencedTerritory).GetOwner().Equals(caller.GetData().playerName))
                 {
                     result += 2;
                     break;

@@ -25,7 +25,7 @@ public class CardUIManager : MonoBehaviour
     [SerializeField]
     private GameObject _cardsHiddenText;
 
-    private GameMaster _gameState;
+    public GameMaster gameMaster{get; set;}
 
     private bool _cardsHidden;
 
@@ -38,7 +38,7 @@ public class CardUIManager : MonoBehaviour
         _cardsDisplayed = new();
         _cardsSelected = new();
         _tradeInCardsButton.interactable = false;
-        _gameState = state;
+        gameMaster = state;
     }
 
     public void AddCard(TerritoryCard cardToAdd)
@@ -123,7 +123,7 @@ public class CardUIManager : MonoBehaviour
 
     public bool TradeInCards(Player player)
     {
-        bool result = new TradeInCards(player, _gameState, _cardsSelected.ToArray()).execute();
+        bool result = new TradeInCards(player, gameMaster, _cardsSelected.ToArray()).execute();
         if(result)
         {
             _cardsSelected.Clear();
@@ -144,6 +144,6 @@ public class CardUIManager : MonoBehaviour
             _showHideCardsButtonText.text = "Show Cards";
             _cardsHidden = true;
         }
-        RedrawCardHand(_gameState.CurrentPlayer());
+        RedrawCardHand(gameMaster.CurrentPlayer());
     }
 }

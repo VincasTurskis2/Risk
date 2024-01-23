@@ -42,8 +42,7 @@ public class TerritoryData : ITerritoryPlayerView
         Continent = oldData.Continent;
 
         TroopCount = oldData.TroopCount;
-
-
+        Owner = oldData.Owner;
     }
 
     public bool IsANeighbor(TerritoryData other)

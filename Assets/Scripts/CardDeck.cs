@@ -9,6 +9,20 @@ public class CardDeck
     private Stack<TerritoryCard> _deck;
     private Stack<TerritoryCard> _discardDeck;
 
+    public CardDeck()
+    {
+        
+    }
+    public CardDeck(CardDeck oldDeck)
+    {
+        _deck = new Stack<TerritoryCard>(oldDeck._deck.Count);
+        _discardDeck = new Stack<TerritoryCard>(oldDeck._discardDeck.Count);
+        foreach(var card in oldDeck._deck)
+        {
+            
+        }
+    }
+
     public void Setup(TerritoryData[] territories)
     {
         int infantryRem = 14, cavalryRem = 14, artilleryRem = 14;
@@ -35,7 +49,7 @@ public class CardDeck
                 type = TroopType.Infantry;
                 infantryRem--;
             }
-            _deck.Push(new TerritoryCard(type, t));
+            _deck.Push(new TerritoryCard(type, t.TerritoryName));
         }
         _deck.Push(new TerritoryCard(TroopType.WildCard, null));
         _deck.Push(new TerritoryCard(TroopType.WildCard, null));
@@ -54,11 +68,20 @@ public class CardDeck
         }
         _deck = new Stack<TerritoryCard>(list);
     }
+    public void Reset()
+    {
+        foreach(var card in _discardDeck)
+        {
+            _deck.Push(card);
+        }
+        _discardDeck.Clear();
+        Shuffle();
+    }
     public TerritoryCard DrawCard()
     {
         if(_deck.Count == 0)
         {
-            return null;
+            Reset();
         }
         return _deck.Pop();
     }

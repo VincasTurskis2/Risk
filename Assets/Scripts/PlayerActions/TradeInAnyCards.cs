@@ -68,13 +68,13 @@ public class TradeInAnyCards : PlayerAction
             different3 = true;
         }
         if(!matching3 && !different3) return 0;
-
-        result += TerritoryCard.CardSetRewards[gameMaster.state.cardSetRewardStage++];
+        
+        result += TerritoryCard.CardSetRewards[gameMaster.state.cardSetRewardStage];
         for(int i = 0; i < 3; i++)
         {
             if(cards[i].ReferencedTerritory != null)
             {
-                if(cards[i].ReferencedTerritory.Owner.Equals(player.GetData().playerName))
+                if(gameMaster.state.map.GetTerritory(cards[i].ReferencedTerritory).GetOwner().Equals(player.GetData().playerName))
                 {
                     result += 2;
                     break;

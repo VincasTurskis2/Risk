@@ -18,7 +18,11 @@ public class Map : IMapPlayerView
 
     public Map(Map oldMap)
     {
-        
+        Territories = new TerritoryData[oldMap.Territories.Length];
+        for(int i = 0; i < oldMap.Territories.Length; i++)
+        {
+            Territories[i] = new TerritoryData(oldMap.Territories[i]);
+        }
     }
 
     public TerritoryData[] GetRawTerritories(string[] territories)

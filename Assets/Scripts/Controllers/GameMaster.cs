@@ -99,17 +99,17 @@ public class GameMaster : MonoBehaviour, IGameMasterPlayerView
                 if(rand - player3Rem < 0)
                 {
                     state.map.Territories[i].SetOwner(state.Players[2], false);
-                    player3Rem--;
+                    player3Rem -= 1;
                 }
-                else if(rand - player3Rem - player2Rem < 0)
+                else if(rand - player3Rem- player2Rem < 0)
                 {
                     state.map.Territories[i].SetOwner(state.Players[1], false);
-                    player2Rem--;
+                    player2Rem -= 1;
                 }
                 else
                 {
                     state.map.Territories[i].SetOwner(state.Players[0], false);
-                    player1Rem--;
+                    player1Rem -= 1;
                 }
                 state.map.Territories[i].TroopCount = 1;
                 ContinentCount[(int) state.map.Territories[i].Continent]++;
