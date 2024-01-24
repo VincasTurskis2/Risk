@@ -14,8 +14,10 @@ public class HumanPlayer : Player
         // Set the "trade in cards" button to call a function from this class
         // Needs to be done in script, because an object with this class attached does not exist in the scene before running it
         UIManager.Instance.GetCardUIManager().GetTradeInCardsButton().onClick.AddListener(TradeInCards);
-        _hand = new List<TerritoryCard>();
-        _data = data;
+    }
+
+    public HumanPlayer(HumanPlayer oldPlayer, GameState newState) : base(oldPlayer, newState)
+    {
     }
     public void Update()
     {

@@ -10,6 +10,9 @@ public class PassiveAIPlayer : Player
     public PassiveAIPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
+    public PassiveAIPlayer(PassiveAIPlayer oldPlayer, GameState newState) : base(oldPlayer, newState)
+    {
+    }
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");

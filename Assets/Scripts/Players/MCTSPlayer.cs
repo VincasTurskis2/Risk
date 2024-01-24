@@ -10,6 +10,9 @@ public class MCTSPlayer : Player
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
+    public MCTSPlayer(MCTSPlayer oldPlayer, GameState newState) : base(oldPlayer, newState)
+    {
+    }
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");

@@ -35,6 +35,19 @@ public abstract class Player : IOtherPlayer
             return;
         }
     }
+    public Player(Player oldPlayer, GameState newState)
+    {
+        _data = oldPlayer._data;
+        _placeableTroops = oldPlayer._placeableTroops;
+        _gameState = newState;
+        _isMyTurn = oldPlayer._isMyTurn;
+        foreach(var card in oldPlayer._hand)
+        {
+            _hand.Add(card);
+        }
+        _cardEligible = oldPlayer._cardEligible;
+
+    }
 
     public abstract void StartTurn();
     public abstract void AddCardsToHand(List<TerritoryCard> cards);
