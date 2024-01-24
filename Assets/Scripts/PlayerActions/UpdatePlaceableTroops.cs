@@ -3,25 +3,25 @@ using UnityEngine.PlayerLoop;
 
 public class UpdatePlaceableTroops : PlayerAction
 {
-    public UpdatePlaceableTroops(Player Caller, IGameMasterPlayerView GameMaster) : base(Caller, GameMaster)
+    public UpdatePlaceableTroops(Player Caller) : base(Caller)
     {
 
     }
     public override bool execute()
     {    
-        if(gameMaster.turnStage() == TurnStage.Setup)
+        if(GameMaster.Instance.state.turnStage == TurnStage.InitDeploy || GameMaster.Instance.state.turnStage == TurnStage.InitReinforce)
         {
             if(caller.GetPlaceableTroopNumber() == 0)
             {
-                gameMaster.EndSetupStage();
-                new UpdatePlaceableTroops(caller, gameMaster).execute();
+                GameMaster.Instance.EndSetupStage();
+                new UpdatePlaceableTroops(caller).execute();
             }
             return true;
         }
-        else if (gameMaster.turnStage() == TurnStage.Deploy)
+        else if (GameMaster.Instance.state.turnStage == TurnStage.Deploy)
         {
             int result = 0;
-            result = gameMaster.state.map.GetOwnedTerritories(caller).Length / 3;
+            result = GameMaster.Instance.state.map.GetOwnedTerritories(caller).Length / 3;
             List<Continent> ownedContinents = GetOwnedContinents(caller);
             for(int i = 0; i < ownedContinents.Count; i++)
             {
@@ -37,7 +37,7 @@ public class UpdatePlaceableTroops : PlayerAction
         List<Continent> result = new List<Continent>();
         int[] continentCountLocal = new int[GameMaster.ContinentCount.Length];
         GameMaster.ContinentCount.CopyTo(continentCountLocal, 0);
-        foreach(TerritoryData t in gameMaster.state.map.GetOwnedTerritories(player))
+        foreach(TerritoryData t in GameMaster.Instance.state.map.GetOwnedTerritories(player))
         {
             continentCountLocal[(int) t.Continent]--;
         }

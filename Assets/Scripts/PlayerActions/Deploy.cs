@@ -2,7 +2,7 @@ public class Deploy : PlayerAction
 {
     public readonly ITerritoryPlayerView ITerritory;
 
-    public Deploy(Player Caller, IGameMasterPlayerView GameMaster, ITerritoryPlayerView territory) : base(Caller, GameMaster)
+    public Deploy(Player Caller, ITerritoryPlayerView territory) : base(Caller)
     {
         ITerritory = territory;
     }
@@ -13,15 +13,15 @@ public class Deploy : PlayerAction
 
         // Guards
         if(territory == null) return false;
-        if(!gameMaster.getPlayerFromName(territory.Owner).IsMyTurn()) return false;
-        if(gameMaster.turnStage() != TurnStage.Deploy) return false;
-        if(gameMaster.getPlayerFromName(territory.Owner).GetPlaceableTroopNumber() <= 0) return false;
+        if(!GameMaster.Instance.state.getPlayerFromName(territory.Owner).IsMyTurn()) return false;
+        if(GameMaster.Instance.state.turnStage != TurnStage.Deploy) return false;
+        if(GameMaster.Instance.state.getPlayerFromName(territory.Owner).GetPlaceableTroopNumber() <= 0) return false;
 
-        gameMaster.getPlayerFromName(territory.Owner).DecrementPlaceableTroops(1);
+        GameMaster.Instance.state.getPlayerFromName(territory.Owner).DecrementPlaceableTroops(1);
         territory.TroopCount++;
-        if(gameMaster.getPlayerFromName(territory.Owner).GetPlaceableTroopNumber() <= 0)
+        if(GameMaster.Instance.state.getPlayerFromName(territory.Owner).GetPlaceableTroopNumber() <= 0)
         {
-            gameMaster.getPlayerFromName(territory.Owner).EndTurnStage();
+            GameMaster.Instance.state.getPlayerFromName(territory.Owner).EndTurnStage();
         }
         return true;
     }

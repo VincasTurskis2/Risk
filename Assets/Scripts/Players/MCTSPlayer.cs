@@ -7,17 +7,17 @@ using System.Linq;
 public class MCTSPlayer : Player
 {
     
-    public MCTSPlayer(GameMaster state, PlayerData data) : base(state, data)
+    public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
-        new UpdatePlaceableTroops(this, _gameMaster).execute();
+        new UpdatePlaceableTroops(this).execute();
         // TODO: Add rule-based troop deployment
 
-        new EndTurnStage(this, _gameMaster).execute();
+        new EndTurnStage(this).execute();
         //GameStateTreeNode root = new GameStateTreeNode(_gameState)
 
     }

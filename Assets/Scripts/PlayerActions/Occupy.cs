@@ -4,7 +4,7 @@ public class Occupy : PlayerAction
     public readonly ITerritoryPlayerView ITo;
     public readonly int numberOfTroops;
 
-    public Occupy(Player Caller, IGameMasterPlayerView GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to, int NumberOfTroops) : base(Caller, GameMaster)
+    public Occupy(Player Caller, ITerritoryPlayerView from, ITerritoryPlayerView to, int NumberOfTroops) : base(Caller)
     {
 
         IFrom = from;
@@ -18,12 +18,12 @@ public class Occupy : PlayerAction
 
         // Guards
         if(from == null || to == null || numberOfTroops < 1) return false;
-        if(!gameMaster.getPlayerFromName(from.Owner).IsMyTurn()) return false;
+        if(!GameMaster.Instance.state.getPlayerFromName(from.Owner).IsMyTurn()) return false;
         if(numberOfTroops >= from.TroopCount) return false;
         if(!from.IsANeighbor(to)) return false;
         if(to.Owner != from.Owner) return false;
         if(to.TroopCount != 0) return false;
-        if(gameMaster.turnStage() != TurnStage.Attack) return false;
+        if(GameMaster.Instance.state.turnStage != TurnStage.Attack) return false;
 
         from.TroopCount -= numberOfTroops;
         to.TroopCount += numberOfTroops;

@@ -8,30 +8,30 @@ public abstract class Player : IOtherPlayer
     protected PlayerData _data;
     [SerializeField]
     protected int _placeableTroops;
-    protected IGameMasterPlayerView _gameMaster;
+    protected IGameStatePlayerView _gameState;
     [SerializeField]
     protected bool _isMyTurn;
     protected List<TerritoryCard> _hand;
     protected bool _cardEligible;
 
-    public Player(GameMaster gameMaster, PlayerData data)
+    public Player(GameState gameState, PlayerData data, bool is2PlayerGame)
     {
         _data = data;
-        _gameMaster = gameMaster;
+        _gameState = gameState;
         _isMyTurn = false;
         _hand = new List<TerritoryCard>();
         _cardEligible = false;
-        if(_gameMaster.is2PlayerGame)
+        if(is2PlayerGame)
         {
             _placeableTroops = 26;
         }
-        else if(_gameMaster.Players().Length >= 3 && _gameMaster.Players().Length <= 6)
+        else if(_gameState.Players().Length >= 3 && _gameState.Players().Length <= 6)
         {
-            _placeableTroops = 40 - ((_gameMaster.Players().Length - 2) * 5);
+            _placeableTroops = 40 - ((_gameState.Players().Length - 2) * 5);
         }
         else
         {
-            Debug.Log("Error in player count: there are " + _gameMaster.Players().Length + " players, should be between 2 and 6");
+            Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
             return;
         }
     }
@@ -41,7 +41,7 @@ public abstract class Player : IOtherPlayer
 
     public void EndTurnStage()
     {
-        new EndTurnStage(this, _gameMaster).execute();
+        new EndTurnStage(this).execute();
     }
 
     public void SetCardEligible(bool set)
@@ -82,6 +82,6 @@ public abstract class Player : IOtherPlayer
     {
         Debug.Log(_data.playerName + " ending turn");
         _isMyTurn = false;
-        new EndTurn(this, _gameMaster).execute();
+        new EndTurn(this).execute();
     }
 }

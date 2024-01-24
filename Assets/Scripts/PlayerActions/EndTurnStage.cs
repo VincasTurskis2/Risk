@@ -3,21 +3,23 @@ using System.Collections.Generic;
 public class EndTurnStage : PlayerAction
 {
 
-    public EndTurnStage(Player Caller, IGameMasterPlayerView GameMaster) : base(Caller, GameMaster)
+    public EndTurnStage(Player Caller) : base(Caller)
     {
     }
     public override bool execute()
     {    
-        if(gameMaster.CurrentPlayer() != caller) return false;
-        switch(gameMaster.turnStage()){
-            case TurnStage.Setup:
+        if(GameMaster.Instance.CurrentPlayer() != caller) return false;
+        switch(GameMaster.Instance.state.turnStage){
+            case TurnStage.InitDeploy:
+                break;
+            case TurnStage.InitReinforce:
                 break;
             case TurnStage.Deploy:
                 if(caller.GetCardHand().Count >= 5) return false;
-                gameMaster.state.turnStage = TurnStage.Attack;
+                GameMaster.Instance.state.turnStage = TurnStage.Attack;
                 break;
             case TurnStage.Attack:
-                gameMaster.state.turnStage = TurnStage.Reinforce;
+                GameMaster.Instance.state.turnStage = TurnStage.Reinforce;
                 break;
             case TurnStage.Reinforce:
                 caller.EndTurn();

@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameState
+public class GameState : IGameStatePlayerView
 {
     public CardDeck cardDeck {get; private set;}
-    public Player[] Players {get; set;}
+    public Player[] players {get; set;}
     public Map map {get; set;}
     public int currentPlayerNo{get; set;}
     public TurnStage turnStage {get; set;}
@@ -24,5 +24,31 @@ public class GameState
         currentPlayerNo = oldState.currentPlayerNo;
         turnStage = oldState.turnStage;
         cardSetRewardStage = oldState.cardSetRewardStage;
+    }
+
+    public IOtherPlayer[] Players()
+    {
+        return players;
+    }
+
+    public IMapPlayerView Map()
+    {
+        return map;
+    }
+    
+    public Player getPlayerFromName(string playerName)
+    {
+        for(int i = 0; i < players.Length; i++)
+        {
+            if(playerName.Equals(players[i].GetData().playerName))
+            {
+                return players[i];
+            }
+        }
+        return null;
+    }
+    public IOtherPlayer getPlayerViewFromName(string playerName)
+    {
+        return getPlayerFromName(playerName);
     }
 }

@@ -7,21 +7,21 @@ using System.Linq;
 public class PassiveAIPlayer : Player
 {
     
-    public PassiveAIPlayer(GameMaster state, PlayerData data) : base(state, data)
+    public PassiveAIPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
     public override void StartTurn()
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
-        new UpdatePlaceableTroops(this, _gameMaster).execute();
-        if(_gameMaster.turnStage() == TurnStage.Setup)
+        new UpdatePlaceableTroops(this).execute();
+        if(_gameState.turnStage == TurnStage.InitDeploy || _gameState.turnStage == TurnStage.InitReinforce)
         {
-            List<ITerritoryPlayerView> possibleTerritories = _gameMaster.GetMap().GetOwnedTerritories(this).ToList();
-            if(!_gameMaster.allTerritoriesClaimed)
+            List<ITerritoryPlayerView> possibleTerritories = _gameState.Map().GetOwnedTerritories(this).ToList();
+            if(_gameState.turnStage == TurnStage.InitDeploy)
             {
                 possibleTerritories = new List<ITerritoryPlayerView>();
-                foreach(ITerritoryPlayerView t in _gameMaster.GetMap().GetTerritories())
+                foreach(ITerritoryPlayerView t in _gameState.Map().GetTerritories())
                 {
                     if(t.GetOwner() == null)
                     {
@@ -30,17 +30,17 @@ public class PassiveAIPlayer : Player
                 }
             }
             int randomTerritoryNumber = Random.Range(0, possibleTerritories.Count);
-            bool success = new SetupDeploy(this, _gameMaster, possibleTerritories[randomTerritoryNumber]).execute();
+            bool success = new SetupDeploy(this, possibleTerritories[randomTerritoryNumber]).execute();
         }
-        else if(_gameMaster.turnStage() == TurnStage.Deploy)
+        else if(_gameState.turnStage == TurnStage.Deploy)
         {
-            _gameMaster.GetMap().GetOwnedTerritories(this).Count();
-            int randomTerritoryNumber = Random.Range(0, _gameMaster.GetMap().GetOwnedTerritories(this).Length);
-            List<ITerritoryPlayerView> territoryList = _gameMaster.GetMap().GetOwnedTerritories(this).ToList();
+            _gameState.Map().GetOwnedTerritories(this).Count();
+            int randomTerritoryNumber = Random.Range(0, _gameState.Map().GetOwnedTerritories(this).Length);
+            List<ITerritoryPlayerView> territoryList = _gameState.Map().GetOwnedTerritories(this).ToList();
             ITerritoryPlayerView territoryToDeploy = territoryList[randomTerritoryNumber];
             ITerritoryPlayerView[] territoryToDeployArray = {territoryToDeploy};
             int[] amounts = { _placeableTroops };
-            new DeployMultiple(this, _gameMaster, territoryToDeployArray, amounts);
+            new DeployMultiple(this, territoryToDeployArray, amounts);
             EndTurn();
         }
         else

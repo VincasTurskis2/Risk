@@ -6,7 +6,7 @@ using UnityEngine;
 public class NeutralArmyPlayer : Player
 {
     
-    public NeutralArmyPlayer(GameMaster state) : base(state, null)
+    public NeutralArmyPlayer(GameState state) : base(state, null, true)
     {
         _data = new PlayerData("Neutral", PlayerType.Neutral, ColorPreset.White);
         _placeableTroops = 0;
@@ -18,6 +18,6 @@ public class NeutralArmyPlayer : Player
 
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
-        new DiscardCards(this, (GameMaster) _gameMaster, cards.ToArray()).execute();
+        new DiscardCards(this, cards.ToArray()).execute();
     }
 }

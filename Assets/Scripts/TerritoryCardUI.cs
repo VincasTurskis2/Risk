@@ -43,8 +43,8 @@ public class TerritoryCardUI : MonoBehaviour
         }
         else
         {
-            _territoryNameText.text = _manager.gameMaster.state.map.GetRawTerritory(_cardData.ReferencedTerritory).TerritoryName;
-            _territoryImage.sprite = _manager.gameMaster.state.map.GetRawTerritory(_cardData.ReferencedTerritory).sprite;
+            _territoryNameText.text = GameMaster.Instance.state.map.GetRawTerritory(_cardData.ReferencedTerritory).TerritoryName;
+            _territoryImage.sprite = GameMaster.Instance.state.map.GetRawTerritory(_cardData.ReferencedTerritory).sprite;
             _troopTypeText.text = "" + _cardData.Type;
 
             _territoryNameText.gameObject.SetActive(true);

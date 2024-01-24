@@ -9,6 +9,17 @@ using System;
 // A class 
 public class UIManager : MonoBehaviour
 {
+
+    public static UIManager Instance {get; private set;}
+    void Awake()
+    {
+        Instance = this;
+    }
+    private UIManager()
+    {
+
+    }
+
     [SerializeField]
     private TextMeshProUGUI _currentStageText;
     [SerializeField]
@@ -95,10 +106,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _winnerText;
 
-
-
-    private GameMaster _gameMaster;
-
     public bool PanelOverlayIsDisplayed {get; private set;} = false;
 
     private int _cumulativeAttackerLoss, _cumulativeDefenderLoss;
@@ -113,18 +120,20 @@ public class UIManager : MonoBehaviour
     {
         _cardUIManager.gameObject.SetActive(true);
         _winLosePanel.SetActive(false);
-        _gameMaster = gameObject.GetComponent<GameMaster>();
         _cumulativeAttackerLoss = 0;
         _cumulativeDefenderLoss = 0;
         HideAttackPanel();
         HideFortifyPanel();
-        _cardUIManager.Setup(_gameMaster);
+        _cardUIManager.Setup();
         
     }
     public void UpdateCurrentStageText()
     {
-        switch(_gameMaster.turnStage()){
-            case TurnStage.Setup:
+        switch(GameMaster.Instance.state.turnStage){
+            case TurnStage.InitDeploy:
+                _currentStageText.SetText("Current Stage: Setup");
+                break;
+            case TurnStage.InitReinforce:
                 _currentStageText.SetText("Current Stage: Setup");
                 break;
             case TurnStage.Deploy:
@@ -140,12 +149,12 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateCurrentPlayerText()
     {
-        _currentPlayerText.SetText(_gameMaster.CurrentPlayer().GetData().playerName + "'s turn");
+        _currentPlayerText.SetText(GameMaster.Instance.CurrentPlayer().GetData().playerName + "'s turn");
     }
     public void UpdateHelperPanelText()
     {
-        _helperPanel.SetActive(_gameMaster.turnStage() == TurnStage.Deploy || _gameMaster.turnStage() == TurnStage.Setup);
-        _helperPanelText.SetText("Troops left to deploy: " + _gameMaster.CurrentPlayer().GetPlaceableTroopNumber());
+        _helperPanel.SetActive(GameMaster.Instance.state.turnStage == TurnStage.Deploy || GameMaster.Instance.state.turnStage == TurnStage.InitDeploy || GameMaster.Instance.state.turnStage == TurnStage.InitReinforce);
+        _helperPanelText.SetText("Troops left to deploy: " + GameMaster.Instance.CurrentPlayer().GetPlaceableTroopNumber());
     }
     public void DisplayAttackPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
@@ -294,14 +303,29 @@ public class UIManager : MonoBehaviour
 
     public bool Attack(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        return new Attack(_gameMaster.getPlayerFromName(from.GetOwner()), _gameMaster, from, to).execute();
+        return new Attack(GameMaster.Instance.state.getPlayerFromName(from.GetOwner()), from, to).execute();
     }
     public bool Fortify(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
     {
-        return new Fortify(_gameMaster.getPlayerFromName(from.GetOwner()), _gameMaster, from, to, numberOfTroops).execute();
+        return new Fortify(GameMaster.Instance.state.getPlayerFromName(from.GetOwner()), from, to, numberOfTroops).execute();
     }
     public bool Occupy(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
     {
-        return new Occupy(_gameMaster.getPlayerFromName(from.GetOwner()), _gameMaster, from, to, numberOfTroops).execute();
+        return new Occupy(GameMaster.Instance.state.getPlayerFromName(from.GetOwner()), from, to, numberOfTroops).execute();
+    }
+
+    
+    public void HighlightTerritory(ITerritoryPlayerView territory, bool toHighlight)
+    {
+        if(territory == null) return;
+        TerritoryData Territory = (TerritoryData) territory;
+        if(toHighlight)
+        {
+            Territory.territoryColor = Helpers.GetHighlighedColorVersion(GameMaster.Instance.state.getPlayerFromName(Territory.Owner).GetData().playerColor);
+        }
+        else
+        {
+            Territory.territoryColor = GameMaster.Instance.state.getPlayerFromName(Territory.Owner).GetData().playerColor;
+        }
     }
 }

@@ -2,7 +2,7 @@ public class DiscardCards : PlayerAction
 {
     public readonly TerritoryCard[] cardsToDiscard;
 
-    public DiscardCards(Player Caller, IGameMasterPlayerView GameMaster, TerritoryCard[] CardsToDiscard) : base(Caller, GameMaster)
+    public DiscardCards(Player Caller, TerritoryCard[] CardsToDiscard) : base(Caller)
     {
         cardsToDiscard = CardsToDiscard;
     }
@@ -14,11 +14,11 @@ public class DiscardCards : PlayerAction
         {
             if(caller.GetCardHand().Contains(cardsToDiscard[i]))
             {
-                gameMaster.state.cardDeck.DiscardCard(cardsToDiscard[i]);
+                GameMaster.Instance.state.cardDeck.DiscardCard(cardsToDiscard[i]);
                 caller.GetCardHand().Remove(cardsToDiscard[i]);
             }
         }
-        gameMaster.uiManager.RedrawCardPanel(caller);
+        UIManager.Instance.RedrawCardPanel(caller);
         return true;
     }
 }

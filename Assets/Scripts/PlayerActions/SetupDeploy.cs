@@ -4,7 +4,7 @@ public class SetupDeploy : PlayerAction
 {
     public readonly ITerritoryPlayerView ITerritory;
 
-    public SetupDeploy(Player Caller, IGameMasterPlayerView GameMaster, ITerritoryPlayerView territory) : base(Caller, GameMaster)
+    public SetupDeploy(Player Caller, ITerritoryPlayerView territory) : base(Caller)
     {
         ITerritory = territory;
     }
@@ -16,7 +16,7 @@ public class SetupDeploy : PlayerAction
 
         //Guards
         if(territory == null) return false;
-        if(gameMaster.turnStage() != TurnStage.Setup) return false;
+        if(GameMaster.Instance.state.turnStage != TurnStage.InitDeploy && GameMaster.Instance.state.turnStage != TurnStage.InitReinforce) return false;
         if(!caller.IsMyTurn()) return false;
         if(caller.GetPlaceableTroopNumber() < 1) return false;
 
@@ -28,7 +28,7 @@ public class SetupDeploy : PlayerAction
             caller.EndTurn();
             return true;
         }
-        else if(territory.Owner.Equals(caller.GetData().playerName) && gameMaster.allTerritoriesClaimed)
+        else if(territory.Owner.Equals(caller.GetData().playerName) && GameMaster.Instance.state.turnStage == TurnStage.InitReinforce)
         {
             territory.TroopCount++;
             caller.DecrementPlaceableTroops(1);

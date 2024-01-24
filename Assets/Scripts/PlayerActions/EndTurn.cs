@@ -3,22 +3,22 @@ using System.Collections.Generic;
 public class EndTurn : PlayerAction
 {
 
-    public EndTurn(Player Caller, IGameMasterPlayerView GameMaster) : base(Caller, GameMaster)
+    public EndTurn(Player Caller) : base(Caller)
     {
     }
     public override bool execute()
     {    
-        if(gameMaster.state.Players[gameMaster.state.currentPlayerNo] != caller) return false;
+        if(GameMaster.Instance.state.players[GameMaster.Instance.state.currentPlayerNo] != caller) return false;
         if(caller.IsCardEligible() == true)
         {
             List<TerritoryCard> newCard = new()
             {
-                gameMaster.state.cardDeck.DrawCard()
+                GameMaster.Instance.state.cardDeck.DrawCard()
             };
             caller.AddCardsToHand(newCard);
             caller.SetCardEligible(false);
         }
-        gameMaster.EndTurn();
+        GameMaster.Instance.EndTurn();
         return true;
     }
 }

@@ -5,7 +5,7 @@ public class Attack : PlayerAction
     public readonly ITerritoryPlayerView IFrom;
     public readonly ITerritoryPlayerView ITo;
 
-    public Attack(Player Caller, IGameMasterPlayerView GameMaster, ITerritoryPlayerView from, ITerritoryPlayerView to) : base(Caller, GameMaster)
+    public Attack(Player Caller, ITerritoryPlayerView from, ITerritoryPlayerView to) : base(Caller)
     {
         IFrom = from;
         ITo = to;
@@ -19,7 +19,7 @@ public class Attack : PlayerAction
         if(!caller.IsMyTurn()) return false;
         if(!from.IsANeighbor(to)) return false;
         if(to.Owner.Equals(from.Owner)) return false;
-        if(gameMaster.turnStage() != TurnStage.Attack) return false;
+        if(GameMaster.Instance.state.turnStage != TurnStage.Attack) return false;
 
         // Note: technically, a player may choose to roll less dice in an attack; However, in reality, rolling less dice is not a good strategy for either player.
         // This function assumes both players will roll the maximum allowed amount of dice.
@@ -28,16 +28,16 @@ public class Attack : PlayerAction
         to.TroopCount -= results[1];
         if(to.TroopCount <= 0)
         {
-            Player loser = gameMaster.getPlayerFromName(to.Owner);
-            to.SetOwner(gameMaster.getPlayerFromName(from.Owner), true);
-            if(gameMaster.state.map.GetOwnedTerritories(loser).Length == 0)
+            Player loser = GameMaster.Instance.state.getPlayerFromName(to.Owner);
+            to.SetOwner(GameMaster.Instance.state.getPlayerFromName(from.Owner), true);
+            if(GameMaster.Instance.state.map.GetOwnedTerritories(loser).Length == 0)
             {
-                gameMaster.getPlayerFromName(from.Owner).AddCardsToHand(loser.GetCardHand());
-                new DiscardCards(loser, gameMaster, loser.GetCardHand().ToArray()).execute();
-                gameMaster.OnPlayerLoss(loser);
+                GameMaster.Instance.state.getPlayerFromName(from.Owner).AddCardsToHand(loser.GetCardHand());
+                new DiscardCards(loser, loser.GetCardHand().ToArray()).execute();
+                GameMaster.Instance.OnPlayerLoss(loser);
             }
         }
-        gameMaster.uiManager.UpdateAttackPanelResults(from, to);
+        UIManager.Instance.UpdateAttackPanelResults(from, to);
         return true;
     }
     private int[] RollDice(TerritoryData from, TerritoryData to)
@@ -71,7 +71,7 @@ public class Attack : PlayerAction
             attackerDice[Helpers.ArrayMaxElementIndex(attackerDice)] = 0;
             defenderDice[Helpers.ArrayMaxElementIndex(defenderDice)] = 0;
         }
-        gameMaster.uiManager.UpdateAttackPanelNumbers(diceRolls, result);
+        UIManager.Instance.UpdateAttackPanelNumbers(diceRolls, result);
         return result;
     }
 }

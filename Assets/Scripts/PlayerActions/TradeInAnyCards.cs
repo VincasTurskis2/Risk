@@ -5,7 +5,7 @@ using System.Linq;
 public class TradeInAnyCards : PlayerAction
 {
 
-    public TradeInAnyCards(Player Caller, IGameMasterPlayerView GameMaster) : base(Caller, GameMaster)
+    public TradeInAnyCards(Player Caller) : base(Caller)
     {
     }
     public override bool execute()
@@ -37,7 +37,7 @@ public class TradeInAnyCards : PlayerAction
                     result = TradeInCards(cardsToTradeIn, caller);
                     if (result != 0)
                     {
-                        return new TradeInCards(caller, gameMaster, cardsToTradeIn).execute();   
+                        return new TradeInCards(caller, cardsToTradeIn).execute();   
                     }
                 }
             }
@@ -49,7 +49,7 @@ public class TradeInAnyCards : PlayerAction
         int result = 0;
         if(cards.Length != 3) return 0;
         if(player == null) return 0;
-        if(gameMaster.turnStage() != TurnStage.Deploy) return 0;
+        if(GameMaster.Instance.state.turnStage != TurnStage.Deploy) return 0;
         bool matching3 = false, different3 = false;
         TroopType[] typesFound = new TroopType[3];
         for(int i = 0; i < 3; i++)
@@ -69,20 +69,20 @@ public class TradeInAnyCards : PlayerAction
         }
         if(!matching3 && !different3) return 0;
 
-        result += GameMaster.CardSetRewards[gameMaster.state.cardSetRewardStage];
+        result += GameMaster.CardSetRewards[GameMaster.Instance.state.cardSetRewardStage];
         for(int i = 0; i < 3; i++)
         {
             if(cards[i].ReferencedTerritory != null)
             {
-                if(gameMaster.state.map.GetTerritory(cards[i].ReferencedTerritory).GetOwner().Equals(player.GetData().playerName))
+                if(GameMaster.Instance.state.map.GetTerritory(cards[i].ReferencedTerritory).GetOwner().Equals(player.GetData().playerName))
                 {
                     result += 2;
                     break;
                 }
             }
         }
-        new DiscardCards(player, gameMaster, cards).execute();
-        gameMaster.state.cardSetRewardStage++;
+        new DiscardCards(player, cards).execute();
+        GameMaster.Instance.state.cardSetRewardStage++;
         return result;
     }
 }

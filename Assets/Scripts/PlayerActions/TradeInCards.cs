@@ -4,7 +4,7 @@ public class TradeInCards : PlayerAction
 {
     public readonly TerritoryCard[] cards;
 
-    public TradeInCards(Player Caller, IGameMasterPlayerView GameMaster, TerritoryCard[] Cards) : base(Caller, GameMaster)
+    public TradeInCards(Player Caller, TerritoryCard[] Cards) : base(Caller)
     {
         cards = Cards;
     }
@@ -13,7 +13,7 @@ public class TradeInCards : PlayerAction
         int result = 0;
         if(cards.Length != 3) return false;
         if(caller == null) return false;
-        if(gameMaster.turnStage() != TurnStage.Deploy) return false;
+        if(GameMaster.Instance.state.turnStage != TurnStage.Deploy) return false;
         bool matching3 = false, different3 = false;
         TroopType[] typesFound = new TroopType[3];
         for(int i = 0; i < 3; i++)
@@ -32,27 +32,27 @@ public class TradeInCards : PlayerAction
             different3 = true;
         }
         if(!matching3 && !different3) return false;
-        if(gameMaster.state.cardSetRewardStage >= GameMaster.CardSetRewards.Length)
+        if(GameMaster.Instance.state.cardSetRewardStage >= GameMaster.CardSetRewards.Length)
         {
-            result += (gameMaster.state.cardSetRewardStage - 2) * 4;
+            result += (GameMaster.Instance.state.cardSetRewardStage - 2) * 4;
         }
         else
         {
-            result += GameMaster.CardSetRewards[gameMaster.state.cardSetRewardStage];
+            result += GameMaster.CardSetRewards[GameMaster.Instance.state.cardSetRewardStage];
         }
         for(int i = 0; i < 3; i++)
         {
             if(cards[i].ReferencedTerritory != null)
             {
-                if(gameMaster.state.map.GetTerritory(cards[i].ReferencedTerritory).GetOwner().Equals(caller.GetData().playerName))
+                if(GameMaster.Instance.state.map.GetTerritory(cards[i].ReferencedTerritory).GetOwner().Equals(caller.GetData().playerName))
                 {
                     result += 2;
                     break;
                 }
             }
         }
-        new DiscardCards(caller, gameMaster, cards).execute();
-        gameMaster.state.cardSetRewardStage++;
+        new DiscardCards(caller, cards).execute();
+        GameMaster.Instance.state.cardSetRewardStage++;
         caller.SetPlaceableTroopNumber(caller.GetPlaceableTroopNumber() + result);
         return true;
     }
