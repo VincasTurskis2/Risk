@@ -42,3 +42,12 @@ run this formula on all possible moves from a child node, select the node with t
 on the child node. If not, run create a new node and run a simulation choosing moves based on the playout policy
 
 finally, update all parent nodes with the information.
+
+
+
+
+
+Making some assumptions:
+- The placement of troops and reinforcement will be rule-based
+    - Possible rule - place them on the territory with the most enemy troops touching it
+    
