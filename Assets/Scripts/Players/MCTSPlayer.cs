@@ -21,10 +21,9 @@ public class MCTSPlayer : Player
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
         new UpdatePlaceableTroops(this).execute();
-        // TODO: Add rule-based troop deployment
-
-        new EndTurnStage(this).execute();
-        
+        DeployTroops();
+        PerformMTCS();
+        Fortify();
 
     }
     
@@ -32,6 +31,94 @@ public class MCTSPlayer : Player
     {
         if(cards == null) return;
         _hand = Enumerable.Concat(_hand, cards).ToList();
+    }
+
+    // A method to make a rule-based selection on where to deploy troops
+    private void DeployTroops()
+    {
+        ITerritoryPlayerView[] myTerritories = _gameState.Map().GetOwnedTerritories(this);
+        while(_placeableTroops > 0)
+        {
+            float maxRatio = 0;
+            ITerritoryPlayerView toDeploy = myTerritories[UnityEngine.Random.Range(0, myTerritories.Length)];
+            for(int i = 0; i < myTerritories.Length; i++)
+            {
+                float ratio = TroopRatio(myTerritories[i]);
+                if(ratio > maxRatio)
+                {
+                    maxRatio = ratio;
+                    toDeploy = myTerritories[i];
+                }
+            }
+            new Deploy(this, toDeploy).execute();
+        }
+        if(_gameState.turnStage == TurnStage.Deploy)
+        {
+            Debug.Log("MCTS Player: Manually ending turn stage");
+            new EndTurnStage(this).execute();
+        }
+    }
+    private int NeighboringTroops(ITerritoryPlayerView territory)
+    {
+        int neighborTroopCount = 0;
+        ITerritoryPlayerView[] neighbors = _gameState.Map().GetTerritories(territory.GetNeighbors());
+        foreach(var neighbor in neighbors)
+        {
+            if(!neighbor.GetOwner().Equals(_data.playerName))
+            {
+                neighborTroopCount += neighbor.TroopCount;
+            }
+        }
+        return neighborTroopCount;
+    }
+    private float TroopRatio(ITerritoryPlayerView territory)
+    {
+        int neighborTroopCount = NeighboringTroops(territory);
+        float ratio = neighborTroopCount/territory.TroopCount;
+        return ratio;
+    }
+
+    private void Fortify()
+    {
+        ITerritoryPlayerView[] myTerritories = _gameState.Map().GetOwnedTerritories(this);
+        ITerritoryPlayerView strongestInlandTerritory = null;
+        foreach(var territory in myTerritories)
+        {
+            if(territory.TroopCount > 1 && NeighboringTroops(territory) == 0)
+            {
+                if(strongestInlandTerritory == null)
+                {
+                    strongestInlandTerritory = territory;
+                }
+                else if(strongestInlandTerritory.TroopCount < territory.TroopCount)
+                {
+                    strongestInlandTerritory = territory;
+                }
+            }
+        }
+        if(strongestInlandTerritory == null)
+        {
+            new EndTurnStage(this).execute();
+            return;
+        }
+        ITerritoryPlayerView[] neighbors = _gameState.Map().GetTerritories(strongestInlandTerritory.GetNeighbors());
+        float maxRatio = 0;
+        ITerritoryPlayerView toFortify = null;
+        foreach(var neighbor in neighbors)
+        {
+            float ratio = TroopRatio(neighbor);
+            if(ratio > maxRatio)
+            {
+                maxRatio = ratio;
+                toFortify = neighbor;
+            }
+        }
+        if(toFortify == null)
+        {
+            new EndTurnStage(this).execute();
+            return;
+        }
+        new Fortify(this, strongestInlandTerritory, toFortify, strongestInlandTerritory.TroopCount - 1).execute();
     }
 
     public List<PlayerAction> PerformMTCS()
