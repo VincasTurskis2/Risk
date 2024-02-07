@@ -9,6 +9,17 @@ using System;
 // A class 
 public class UIManager : MonoBehaviour
 {
+
+    public static UIManager Instance {get; private set;}
+    void Awake()
+    {
+        Instance = this;
+    }
+    private UIManager()
+    {
+
+    }
+
     [SerializeField]
     private TextMeshProUGUI _currentStageText;
     [SerializeField]
@@ -95,11 +106,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _winnerText;
 
-
-
-    private GameState _gameState;
-    private PlayerActions _playerActions;
-
     public bool PanelOverlayIsDisplayed {get; private set;} = false;
 
     private int _cumulativeAttackerLoss, _cumulativeDefenderLoss;
@@ -114,19 +120,20 @@ public class UIManager : MonoBehaviour
     {
         _cardUIManager.gameObject.SetActive(true);
         _winLosePanel.SetActive(false);
-        _gameState = gameObject.GetComponent<GameState>();
-        _playerActions = gameObject.GetComponent<PlayerActions>();
         _cumulativeAttackerLoss = 0;
         _cumulativeDefenderLoss = 0;
         HideAttackPanel();
         HideFortifyPanel();
-        _cardUIManager.Setup(_gameState);
+        _cardUIManager.Setup();
         
     }
     public void UpdateCurrentStageText()
     {
-        switch(_gameState.turnStage){
-            case TurnStage.Setup:
+        switch(GameMaster.Instance.state.turnStage){
+            case TurnStage.InitDeploy:
+                _currentStageText.SetText("Current Stage: Setup");
+                break;
+            case TurnStage.InitReinforce:
                 _currentStageText.SetText("Current Stage: Setup");
                 break;
             case TurnStage.Deploy:
@@ -142,12 +149,12 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateCurrentPlayerText()
     {
-        _currentPlayerText.SetText(_gameState.CurrentPlayer().GetData().playerName + "'s turn");
+        _currentPlayerText.SetText(GameMaster.Instance.CurrentPlayer().GetData().playerName + "'s turn");
     }
     public void UpdateHelperPanelText()
     {
-        _helperPanel.SetActive(_gameState.turnStage == TurnStage.Deploy || _gameState.turnStage == TurnStage.Setup);
-        _helperPanelText.SetText("Troops left to deploy: " + _gameState.CurrentPlayer().GetPlaceableTroopNumber());
+        _helperPanel.SetActive(GameMaster.Instance.state.turnStage == TurnStage.Deploy || GameMaster.Instance.state.turnStage == TurnStage.InitDeploy || GameMaster.Instance.state.turnStage == TurnStage.InitReinforce);
+        _helperPanelText.SetText("Troops left to deploy: " + GameMaster.Instance.CurrentPlayer().GetPlaceableTroopNumber());
     }
     public void DisplayAttackPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
@@ -163,11 +170,11 @@ public class UIManager : MonoBehaviour
         _attackPanelTitle.SetText("Battle for " + to.TerritoryName);
         _attackButtonText.SetText("Attack!");
 
-        _attackerName.SetText("Attacker: " + from.GetOwner().GetData().playerName);
+        _attackerName.SetText("Attacker: " + from.GetOwner());
         _attackerOrigin.SetText("(" + from.TerritoryName + ")");
         _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
 
-        _defenderName.SetText("Defender: " + to.GetOwner().GetData().playerName);
+        _defenderName.SetText("Defender: " + to.GetOwner());
         _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
 
         _attackerDice.SetText("Dice rolled: {}");
@@ -179,7 +186,7 @@ public class UIManager : MonoBehaviour
         _defenderTotalLoss.SetText("Total troops lost: " + _cumulativeDefenderLoss);
 
         _attackButton.onClick.RemoveAllListeners();
-        _attackButton.onClick.AddListener(delegate {_playerActions.Attack(from, to);});
+        _attackButton.onClick.AddListener(delegate {Attack(from, to);});
         PanelOverlayIsDisplayed = true;
     }
     public void HideAttackPanel()
@@ -232,7 +239,7 @@ public class UIManager : MonoBehaviour
             _occupyTroopSlider.gameObject.SetActive(true);
 
             _attackButton.onClick.RemoveAllListeners();
-            _attackButton.onClick.AddListener(delegate {_playerActions.Occupy(from, to, (int)_occupyTroopSlider.value);});
+            _attackButton.onClick.AddListener(delegate {Occupy(from, to, (int)_occupyTroopSlider.value);});
             _attackButton.onClick.AddListener(delegate {HideAttackPanel();});
         }
     }
@@ -251,7 +258,7 @@ public class UIManager : MonoBehaviour
         _fortifySliderMaxText.text = _fortifySlider.maxValue.ToString();
         _fortifySliderInputField.text = _fortifySlider.value.ToString();
         _fortifySliderConfirmButton.onClick.RemoveAllListeners();
-        _fortifySliderConfirmButton.onClick.AddListener(delegate {_playerActions.Fortify(from, to, (int)_fortifySlider.value);});
+        _fortifySliderConfirmButton.onClick.AddListener(delegate {Fortify(from, to, (int)_fortifySlider.value);});
         _fortifySliderConfirmButton.onClick.AddListener(delegate {HideFortifyPanel();});
         PanelOverlayIsDisplayed = true;
     }
@@ -292,5 +299,33 @@ public class UIManager : MonoBehaviour
     public void BackToMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public bool Attack(ITerritoryPlayerView from, ITerritoryPlayerView to)
+    {
+        return new Attack(GameMaster.Instance.state.getPlayerFromName(from.GetOwner()), from, to).execute();
+    }
+    public bool Fortify(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
+    {
+        return new Fortify(GameMaster.Instance.state.getPlayerFromName(from.GetOwner()), from, to, numberOfTroops).execute();
+    }
+    public bool Occupy(ITerritoryPlayerView from, ITerritoryPlayerView to, int numberOfTroops)
+    {
+        return new Occupy(GameMaster.Instance.state.getPlayerFromName(from.GetOwner()), from, to, numberOfTroops).execute();
+    }
+
+    
+    public void HighlightTerritory(ITerritoryPlayerView territory, bool toHighlight)
+    {
+        if(territory == null) return;
+        TerritoryData Territory = (TerritoryData) territory;
+        if(toHighlight)
+        {
+            Territory.territoryColor = Helpers.GetHighlighedColorVersion(GameMaster.Instance.state.getPlayerFromName(Territory.Owner).GetData().playerColor);
+        }
+        else
+        {
+            Territory.territoryColor = GameMaster.Instance.state.getPlayerFromName(Territory.Owner).GetData().playerColor;
+        }
     }
 }

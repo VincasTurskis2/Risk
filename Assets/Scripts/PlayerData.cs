@@ -5,11 +5,11 @@ using UnityEngine;
 public class PlayerData
 {
     [field: SerializeField]
-    public string playerName {get; private set;}
+    public string playerName {get;}
     [field: SerializeField]
-    public PlayerType playerType{get; private set;}
+    public PlayerType playerType{get;}
     [field: SerializeField]
-    public Color playerColor {get; private set;}
+    public Color playerColor {get;}
 
     public PlayerData(string name, PlayerType type, Color color)
     {

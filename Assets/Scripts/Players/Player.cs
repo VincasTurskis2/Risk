@@ -2,29 +2,59 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class Player : MonoBehaviour, IOtherPlayer
+public abstract class Player : IOtherPlayer
 {
     [SerializeField]
     protected PlayerData _data;
     [SerializeField]
     protected int _placeableTroops;
-    [SerializeField]
-    protected HashSet<ITerritoryPlayerView> _ownedTerritories;
     protected IGameStatePlayerView _gameState;
     [SerializeField]
-    protected bool _isMyTurn = false;
+    protected bool _isMyTurn;
     protected List<TerritoryCard> _hand;
-    protected PlayerActions _actions;
     protected bool _cardEligible;
 
+    public Player(GameState gameState, PlayerData data, bool is2PlayerGame)
+    {
+        _data = data;
+        _gameState = gameState;
+        _isMyTurn = false;
+        _hand = new List<TerritoryCard>();
+        _cardEligible = false;
+        if(is2PlayerGame)
+        {
+            _placeableTroops = 26;
+        }
+        else if(_gameState.Players().Length >= 3 && _gameState.Players().Length <= 6)
+        {
+            _placeableTroops = 40 - ((_gameState.Players().Length - 2) * 5);
+        }
+        else
+        {
+            Debug.Log("Error in player count: there are " + _gameState.Players().Length + " players, should be between 2 and 6");
+            return;
+        }
+    }
+    public Player(Player oldPlayer, GameState newState)
+    {
+        _data = oldPlayer._data;
+        _placeableTroops = oldPlayer._placeableTroops;
+        _gameState = newState;
+        _isMyTurn = oldPlayer._isMyTurn;
+        foreach(var card in oldPlayer._hand)
+        {
+            _hand.Add(card);
+        }
+        _cardEligible = oldPlayer._cardEligible;
+
+    }
+
     public abstract void StartTurn();
-    public abstract void Setup(GameState state, PlayerData data);
-    public abstract void DiscardCards(TerritoryCard[] cardsToDiscard);
     public abstract void AddCardsToHand(List<TerritoryCard> cards);
 
     public void EndTurnStage()
     {
-        _actions.EndTurnStage(this);
+        new EndTurnStage(this).execute();
     }
 
     public void SetCardEligible(bool set)
@@ -43,12 +73,6 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
     {
         return _isMyTurn;
     }
-    public HashSet<ITerritoryPlayerView> GetOwnedTerritories()
-    {
-        return _ownedTerritories;
-    }
-
-
     public int GetPlaceableTroopNumber()
     {
         return _placeableTroops;
@@ -71,6 +95,6 @@ public abstract class Player : MonoBehaviour, IOtherPlayer
     {
         Debug.Log(_data.playerName + " ending turn");
         _isMyTurn = false;
-        _actions.EndTurn(this);
+        new EndTurn(this).execute();
     }
 }

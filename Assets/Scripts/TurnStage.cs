@@ -1,3 +1,3 @@
 public enum TurnStage{
-    Setup, Deploy, Attack, Reinforce
+    InitDeploy, InitReinforce, Deploy, Attack, Reinforce
 }

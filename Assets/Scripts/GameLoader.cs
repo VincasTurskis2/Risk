@@ -5,25 +5,20 @@ using UnityEngine;
 // A script that's responsible for setting up the game
 public class GameLoader : MonoBehaviour
 {
-    private GameState _gameState;
-    private PlayerActions _playerActions;
     private UIManager _UIManager;
-    void Start()
+    void Awake()
     {
-        _gameState = gameObject.GetComponent<GameState>();
-        _playerActions = gameObject.GetComponent<PlayerActions>();
         _UIManager = gameObject.GetComponent<UIManager>();
-        PlayerSelectionManager psm = GameObject.FindObjectOfType<PlayerSelectionManager>();
+        PlayerSelectionManager psm = FindObjectOfType<PlayerSelectionManager>();
         if(psm == null)
         {
-            _gameState.Setup();
+            GameMaster.Instance.Setup();
         }
         else
         {
-            _gameState.Setup(psm.playerData);
+            GameMaster.Instance.Setup(psm.playerData);
         }
-        _playerActions.Setup();
         _UIManager.Setup();
-        _gameState.Players[0].StartTurn();
+        GameMaster.Instance.state.players[0].StartTurn();
     }
 }

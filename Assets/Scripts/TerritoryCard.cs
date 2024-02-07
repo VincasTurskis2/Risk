@@ -7,17 +7,18 @@ public enum TroopType{
 }
 public class TerritoryCard
 {
-    [field: SerializeField]
     public TroopType Type {get; set;}
-    [field: SerializeField]
-    public Territory ReferencedTerritory {get; set;}
+    public string ReferencedTerritory {get;}
 
-
-    public static readonly int[] CardSetRewards = {4, 6, 8, 10, 12, 15};
-
-    public TerritoryCard(TroopType type, Territory reference)
+    public TerritoryCard(TroopType type, string reference)
     {
         Type = type;
         ReferencedTerritory = reference;
+    }
+
+    public TerritoryCard(TerritoryCard oldCard)
+    {
+        Type = oldCard.Type;
+        ReferencedTerritory = oldCard.ReferencedTerritory;
     }
 }
