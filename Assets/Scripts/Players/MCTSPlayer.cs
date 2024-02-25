@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEditorInternal;
 using System;
 
 // An implementation of a player using Monte Carlo tree search.
@@ -148,7 +147,11 @@ public class MCTSPlayer : Player
 
     public void SemisplitRandomMove(GameStateTreeNode s)
     {
-        
+        var semimoves = s.getAllPossibleAttacks();
+        foreach(var a in semimoves.OrderBy(_ => new System.Random().Next()).ToList())
+        {
+            
+        }
     }
 
     public GameStateTreeNode Select(GameStateTreeNode curNode)

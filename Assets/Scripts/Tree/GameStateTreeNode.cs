@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GameStateTreeNode
 {
@@ -29,5 +31,21 @@ public class GameStateTreeNode
     public void AddChild(GameState child)
     {
         children.Add(new GameStateTreeNode(child, this));
+    }
+    public List<Attack> getAllPossibleAttacks()
+    {
+        List<Attack> result = new();
+        ITerritoryPlayerView[] curPlayerTerritories = state.map.GetOwnedTerritories(state.players[state.currentPlayerNo]);
+        for(int i = 0; i < curPlayerTerritories.Length; i++)
+        {
+            TerritoryData curTerritory = (TerritoryData) curPlayerTerritories[i];
+            if(curTerritory.TroopCount == 1) continue;
+            TerritoryData[] unownedNeighbors = state.map.GetRawTerritories(curTerritory.Neighbors).Where(x => !x.Owner.Equals(curTerritory.Owner)).ToArray();
+            foreach(var neighbor in unownedNeighbors)
+            {
+                result.Add(new Attack(state.getPlayerFromName(curTerritory.Owner), curTerritory, neighbor));
+            }
+        }
+        return result;
     }
 }
