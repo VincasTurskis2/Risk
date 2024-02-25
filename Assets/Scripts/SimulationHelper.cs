@@ -50,8 +50,9 @@ public static class SimulationHelper
     }
 
 
-    public static void SimulationAttack(Player player, GameState state)
+    public static bool SimulationAttack(Player player, GameState state)
     {
+        bool cardEligible = false;
         List<Attack> possibleAttacks = state.getAllPossibleAttacks();
         var rand = new System.Random();
         while(rand.Next(-1, possibleAttacks.Count) != -1)
@@ -68,10 +69,12 @@ public static class SimulationHelper
             if(attack.ITo.GetOwner().Equals(attack.IFrom.GetOwner()))
             {
                 new Occupy(player, attack.IFrom, attack.ITo, attack.IFrom.TroopCount - 1);
+                cardEligible = true;
             }
             possibleAttacks = state.getAllPossibleAttacks();
         }
         state.turnStage = TurnStage.Reinforce;
+        return cardEligible;
     }
 
 

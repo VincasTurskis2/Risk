@@ -186,7 +186,16 @@ public class MCTSPlayer : Player
         GameMaster.Instance.state = new GameState(curState);
         int curDepth = 0;
         Player toSimulate = curState.players[curState.currentPlayerNo];
-        SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+        bool cardEligible = SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+        if(cardEligible)
+        {
+            List<TerritoryCard> newCard = new()
+            {
+                GameMaster.Instance.state.cardDeck.DrawCard()
+            };
+            curState.players[curState.currentPlayerNo].AddCardsToHand(newCard);
+            curState.players[curState.currentPlayerNo].SetCardEligible(false);
+        }
         SimulationHelper.SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
         curState.currentPlayerNo += 1;
         if(curState.currentPlayerNo >= curState.players.Length)
@@ -200,7 +209,16 @@ public class MCTSPlayer : Player
                 if(curState.players[i].GetType() != typeof(NeutralArmyPlayer))
                 {
                     SimulationHelper.SimulationDeploy(curState.players[curState.currentPlayerNo], curState);
-                    SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+                    cardEligible = SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+                    if(cardEligible)
+                    {
+                        List<TerritoryCard> newCard = new()
+                        {
+                            GameMaster.Instance.state.cardDeck.DrawCard()
+                        };
+                        curState.players[curState.currentPlayerNo].AddCardsToHand(newCard);
+                        curState.players[curState.currentPlayerNo].SetCardEligible(false);
+                    }
                     SimulationHelper.SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
                 }
                 curState.currentPlayerNo += 1;
@@ -208,6 +226,7 @@ public class MCTSPlayer : Player
                 {
                     curState.currentPlayerNo = 0;
                 }
+                cardEligible = false;
             }
             curDepth += 1;
         }
