@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEditorInternal;
 
 // An implementation of a player using Monte Carlo tree search.
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public double C = Math.Sqrt(2);
+    //C = 0.5 because Limer et al. suggests so.
+    public double C = 0.5;
+    public int depth = 8;
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
@@ -125,43 +128,97 @@ public class MCTSPlayer : Player
     public List<PlayerAction> PerformMTCS()
     {
         List<PlayerAction> result = new();
-        GameStateTreeNode root = new GameStateTreeNode(_gameState, null);
+        GameStateTreeNode root = new GameStateTreeNode(_gameState, null, null);
         float curTime = 0f;
         while (curTime < timeForSearch)
         {
-
+            GameStateTreeNode nodeToExplore = Select(root);
+            var expandedNode = nodeToExplore.Expand();
+            float newResult = Simulate(expandedNode);
+            Backpropagate(expandedNode, newResult);
         }
         
         
         //return {Action that has the highest number of playouts}
         return result;
     }
-
-    public void SemisplitSimulation(GameStateTreeNode s)
+    public GameStateTreeNode Select(GameStateTreeNode node)
     {
-        while(s.state.terminalState == false)
+        while(node.fullyExpanded == true)
         {
-
+            float[] ucb1Values = new float[node.children.Count()];
+            int maxIndex = -1;
+            float maxValue = -1;
+            for(int i = 0; i < node.children.Count(); i++)
+            {
+                var child = node.children[i];
+                ucb1Values[i] = UCB1(child);
+                if(ucb1Values[i] > maxValue)
+                {
+                    maxValue = ucb1Values[i];
+                    maxIndex = i;
+                }
+            }
+            node = node.children[maxIndex];
         }
+        return node;
     }
 
-    public void SemisplitRandomMove(GameStateTreeNode s)
+    public float Simulate(GameStateTreeNode node)
     {
-        var semimoves = s.getAllPossibleAttacks();
-        foreach(var a in semimoves.OrderBy(_ => new System.Random().Next()).ToList())
+        GameState originalState = (GameState)_gameState;
+        GameState curState = new GameState(node.state);
+        GameMaster.Instance.state = new GameState(curState);
+        int curDepth = 0;
+        Player toSimulate = curState.players[curState.currentPlayerNo];
+        SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+        SimulationHelper.SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
+        curState.currentPlayerNo += 1;
+        if(curState.currentPlayerNo >= curState.players.Length)
         {
-            
+            curState.currentPlayerNo = 0;
         }
+        while(curDepth < depth || curState.map.GetOwnedTerritories(toSimulate).Length == 0)
+        {
+            for(int i = curState.currentPlayerNo; curState.players[i] != toSimulate; i++)
+            {
+                if(curState.players[i].GetType() != typeof(NeutralArmyPlayer))
+                {
+                    SimulationHelper.SimulationDeploy(curState.players[curState.currentPlayerNo], curState);
+                    SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+                    SimulationHelper.SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
+                }
+                curState.currentPlayerNo += 1;
+                if(curState.currentPlayerNo >= curState.players.Length)
+                {
+                    curState.currentPlayerNo = 0;
+                }
+            }
+            curDepth += 1;
+        }
+        float result = heuristicEvaluation(curState, toSimulate);
+        GameMaster.Instance.state = originalState;
+        return result;
     }
 
-    public GameStateTreeNode Select(GameStateTreeNode curNode)
+    public void Backpropagate(GameStateTreeNode node, float newResult)
     {
-        if(curNode.numberOfPlaythoughs == 0) return curNode;
-
-        return curNode;
+        while(node.parent != null)
+        {
+            if(node.state.players[node.state.currentPlayerNo].GetData().playerName.Equals(_data.playerName))
+            {
+                node.cumulativeHeuristicValue += newResult;
+            }
+            else
+            {
+                node.cumulativeHeuristicValue -= newResult;
+            }
+            node.numberOfPlaythoughs++;
+            node = node.parent;
+        }
+        node.cumulativeHeuristicValue += newResult;
+        node.numberOfPlaythoughs++;
     }
-
-
 
     public float heuristicEvaluation(GameState state, Player player)
     {

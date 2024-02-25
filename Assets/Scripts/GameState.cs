@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameState : IGameStatePlayerView
 {
@@ -70,5 +71,22 @@ public class GameState : IGameStatePlayerView
     public IOtherPlayer getPlayerViewFromName(string playerName)
     {
         return getPlayerFromName(playerName);
+    }
+
+    public List<Attack> getAllPossibleAttacks()
+    {
+        List<Attack> result = new();
+        ITerritoryPlayerView[] curPlayerTerritories = map.GetOwnedTerritories(players[currentPlayerNo]);
+        for(int i = 0; i < curPlayerTerritories.Length; i++)
+        {
+            TerritoryData curTerritory = (TerritoryData) curPlayerTerritories[i];
+            if(curTerritory.TroopCount == 1) continue;
+            TerritoryData[] unownedNeighbors = map.GetRawTerritories(curTerritory.Neighbors).Where(x => !x.Owner.Equals(curTerritory.Owner)).ToArray();
+            foreach(var neighbor in unownedNeighbors)
+            {
+                result.Add(new Attack(getPlayerFromName(curTerritory.Owner), curTerritory, neighbor));
+            }
+        }
+        return result;
     }
 }

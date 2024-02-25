@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,46 +7,81 @@ public class GameStateTreeNode
 {
     public GameState state {get; private set;}
     public GameStateTreeNode parent {get; private set;}
+    public PlayerAction sourceMove;
     public List<GameStateTreeNode> children {get; private set;}
+    public bool fullyExpanded = false;
 
     public float cumulativeHeuristicValue;
     public int numberOfPlaythoughs;
 
-    public GameStateTreeNode(GameState Value, GameStateTreeNode Parent)
+    public GameStateTreeNode(GameState Value, GameStateTreeNode Parent, PlayerAction SourceMove)
     {
         state = Value;
         children = new List<GameStateTreeNode>();
         numberOfPlaythoughs = 0;
         cumulativeHeuristicValue = 0;
         parent = Parent;
+        sourceMove = SourceMove;
     }
-    public GameStateTreeNode(IGameStatePlayerView Value, GameStateTreeNode Parent)
+    public GameStateTreeNode(IGameStatePlayerView Value, GameStateTreeNode Parent, PlayerAction SourceMove)
     {
         state = (GameState) Value;
         children = new List<GameStateTreeNode>();
         numberOfPlaythoughs = 0;
         cumulativeHeuristicValue = 0;
         parent = Parent;
+        sourceMove = SourceMove;
     }
 
-    public void AddChild(GameState child)
+    public GameStateTreeNode AddChild(GameState child, PlayerAction SourceMove)
     {
-        children.Add(new GameStateTreeNode(child, this));
+        var newNode = new GameStateTreeNode(child, this, SourceMove);
+        children.Add(newNode);
+        return newNode;
     }
-    public List<Attack> getAllPossibleAttacks()
+
+    public GameStateTreeNode Apply(Attack attack)
     {
-        List<Attack> result = new();
-        ITerritoryPlayerView[] curPlayerTerritories = state.map.GetOwnedTerritories(state.players[state.currentPlayerNo]);
-        for(int i = 0; i < curPlayerTerritories.Length; i++)
+        //TODO: account for multiple outcomes due to dice rolls
+        GameState newState = new GameState(state);
+        var from = newState.map.GetRawTerritory(attack.IFrom.TerritoryName);
+        var to = newState.map.GetRawTerritory(attack.ITo.TerritoryName);
+        if(from.TroopCount <= to.TroopCount)
         {
-            TerritoryData curTerritory = (TerritoryData) curPlayerTerritories[i];
-            if(curTerritory.TroopCount == 1) continue;
-            TerritoryData[] unownedNeighbors = state.map.GetRawTerritories(curTerritory.Neighbors).Where(x => !x.Owner.Equals(curTerritory.Owner)).ToArray();
-            foreach(var neighbor in unownedNeighbors)
+            to.TroopCount = to.TroopCount - from.TroopCount + 1;
+            from.TroopCount = 1;
+        }
+        else if(from.TroopCount == to.TroopCount + 1)
+        {
+            to.SetOwner(newState.getPlayerFromName(from.Owner), true);
+            to.TroopCount = 1;
+            from.TroopCount = 1;
+        }
+        else
+        {
+            to.SetOwner(newState.getPlayerFromName(from.Owner), true);
+            to.TroopCount = from.TroopCount - to.TroopCount - 1;
+            from.TroopCount = 1;
+        }
+        return AddChild(newState, attack);
+    }
+
+    public GameStateTreeNode Expand()
+    {
+        var attacks = state.getAllPossibleAttacks();
+        foreach(var child in children)
+        {
+            foreach(var attack in attacks)
+            if(child.sourceMove.Equals(attack))
             {
-                result.Add(new Attack(state.getPlayerFromName(curTerritory.Owner), curTerritory, neighbor));
+                attacks.Remove(attack);
             }
         }
-        return result;
+        if(attacks.Count() == 1)
+        {
+            fullyExpanded = true;
+        }
+        var randAttack = attacks[new Random().Next(0, attacks.Count())];
+        return Apply(randAttack);
     }
 }

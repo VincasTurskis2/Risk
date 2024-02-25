@@ -52,5 +52,9 @@ Making some assumptions:
 
 Fabio gave me a bunch of papers. One of them is "Split moves for monte-carlo tree search", Kowalski et al. It contains pseudocode for split-move mtcs. Going to try to follow that
 
+Kinda failed following that.
+
 Another paper - "Monte Carlo Tree Search for Risk", Limer, Kalmer, Cohen, has some tips about simplifying the search. I'm also trying to use the tips in here.
+
+Will likely have to use RAVE, as there might be a problem of same permutations taking up space
     

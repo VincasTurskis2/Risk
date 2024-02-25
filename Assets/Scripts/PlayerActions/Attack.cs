@@ -74,4 +74,12 @@ public class Attack : PlayerAction
         UIManager.Instance.UpdateAttackPanelNumbers(diceRolls, result);
         return result;
     }
+    public bool Equals(Attack other)
+    {
+        if(IFrom.TerritoryName.Equals(other.IFrom.TerritoryName) && ITo.TerritoryName.Equals(other.ITo.TerritoryName) && caller.GetData().playerName.Equals(other.caller.GetData().playerName))
+        {
+            return true;
+        }
+        else return false;
+    }
 }
