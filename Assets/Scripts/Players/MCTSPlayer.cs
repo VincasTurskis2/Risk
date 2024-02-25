@@ -22,11 +22,29 @@ public class MCTSPlayer : Player
     {
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
+
+        if(_gameState.turnStage == TurnStage.InitDeploy || _gameState.turnStage == TurnStage.InitReinforce)
+        {
+            List<ITerritoryPlayerView> possibleTerritories = _gameState.Map().GetOwnedTerritories(this).ToList();
+            if(_gameState.turnStage == TurnStage.InitDeploy)
+            {
+                possibleTerritories = new List<ITerritoryPlayerView>();
+                foreach(ITerritoryPlayerView t in _gameState.Map().GetTerritories())
+                {
+                    if(t.GetOwner() == null)
+                    {
+                        possibleTerritories.Add(t);
+                    }
+                }
+            }
+            int randomTerritoryNumber = UnityEngine.Random.Range(0, possibleTerritories.Count);
+            bool success = new SetupDeploy(this, possibleTerritories[randomTerritoryNumber]).execute();
+        }
         new UpdatePlaceableTroops(this).execute();
         DeployTroops();
         PerformMTCS();
         Fortify();
-
+        _isMyTurn = false;
     }
     
     public override void AddCardsToHand(List<TerritoryCard> cards)
