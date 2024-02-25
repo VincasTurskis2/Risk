@@ -137,9 +137,6 @@ public class MCTSPlayer : Player
             float newResult = Simulate(expandedNode);
             Backpropagate(expandedNode, newResult);
         }
-        
-        
-        //return {Action that has the highest number of playouts}
         return result;
     }
     public GameStateTreeNode Select(GameStateTreeNode node)
@@ -205,14 +202,11 @@ public class MCTSPlayer : Player
     {
         while(node.parent != null)
         {
-            if(node.state.players[node.state.currentPlayerNo].GetData().playerName.Equals(_data.playerName))
+            if(node.state.players[node.state.currentPlayerNo].GetData().playerName.Equals(node.parent.state.players[node.parent.state.currentPlayerNo].GetData().playerName))
             {
-                node.cumulativeHeuristicValue += newResult;
+                newResult = 0 - newResult;
             }
-            else
-            {
-                node.cumulativeHeuristicValue -= newResult;
-            }
+            node.cumulativeHeuristicValue += newResult;
             node.numberOfPlaythoughs++;
             node = node.parent;
         }
