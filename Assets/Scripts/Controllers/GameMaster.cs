@@ -200,7 +200,7 @@ public class GameMaster : MonoBehaviour
         if(state.players.Length == 1 || (state.players.Length == 2 && is2PlayerGame))
         {
             Debug.Log(state.players[0].GetData().playerName + " Has won!");
-            
+            state.terminalState = true;
             {
                 UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
             }

@@ -45,9 +45,12 @@ finally, update all parent nodes with the information.
 
 
 
-
-
 Making some assumptions:
 - The placement of troops and reinforcement will be rule-based
     - Possible rule - place them on the territory with the most enemy troops touching it
+
+
+Fabio gave me a bunch of papers. One of them is "Split moves for monte-carlo tree search", Kowalski et al. It contains pseudocode for split-move mtcs. Going to try to follow that
+
+Another paper - "Monte Carlo Tree Search for Risk", Limer, Kalmer, Cohen, has some tips about simplifying the search. I'm also trying to use the tips in here.
     

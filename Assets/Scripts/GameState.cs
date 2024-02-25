@@ -11,6 +11,7 @@ public class GameState : IGameStatePlayerView
     public int currentPlayerNo{get; set;}
     public TurnStage turnStage {get; set;}
     public int cardSetRewardStage {get; set;} = 0;
+    public bool terminalState = false;
     public GameState()
     {
         cardDeck = new CardDeck();
@@ -42,6 +43,7 @@ public class GameState : IGameStatePlayerView
         currentPlayerNo = oldState.currentPlayerNo;
         turnStage = oldState.turnStage;
         cardSetRewardStage = oldState.cardSetRewardStage;
+        terminalState = oldState.terminalState;
     }
 
     public IOtherPlayer[] Players()

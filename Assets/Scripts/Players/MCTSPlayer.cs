@@ -121,6 +121,8 @@ public class MCTSPlayer : Player
         new Fortify(this, strongestInlandTerritory, toFortify, strongestInlandTerritory.TroopCount - 1).execute();
     }
 
+
+
     public List<PlayerAction> PerformMTCS()
     {
         List<PlayerAction> result = new();
@@ -128,16 +130,25 @@ public class MCTSPlayer : Player
         float curTime = 0f;
         while (curTime < timeForSearch)
         {
-        //     State leaf = select(tree)
-        //     State child = expand(leaf)
-        //     tree.addNode(child, leaf)
-        //     result = simulate(child)
-        //     back_propagate(result, child)
+
         }
         
         
         //return {Action that has the highest number of playouts}
         return result;
+    }
+
+    public void SemisplitSimulation(GameStateTreeNode s)
+    {
+        while(s.state.terminalState == false)
+        {
+
+        }
+    }
+
+    public void SemisplitRandomMove(GameStateTreeNode s)
+    {
+        
     }
 
     public GameStateTreeNode Select(GameStateTreeNode curNode)
