@@ -74,14 +74,22 @@ public class GameStateTreeNode
 
     public GameStateTreeNode Expand()
     {
-        var attacks = state.getAllPossibleAttacks();
+        if(fullyExpanded)
+        {
+            return this;
+        }
+        var possibleAttacks = state.getAllPossibleAttacks();
+        var attacks = new List<Attack>(possibleAttacks);
         foreach(var child in children)
         {
-            foreach(var attack in attacks)
+            foreach(var attack in possibleAttacks)
             {       
-                if(child.sourceMove == null && attack == null)
+                if(child.sourceMove == null)
                 {
-                    attacks.Remove(null);
+                    if(attack == null)
+                    {
+                        attacks.Remove(null);
+                    }
                 }
                 else if(child.sourceMove.Equals(attack))
                 {

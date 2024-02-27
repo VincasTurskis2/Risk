@@ -76,6 +76,7 @@ public class Attack : PlayerAction
     }
     public bool Equals(Attack other)
     {
+        if(other==null) return false;
         if(IFrom.TerritoryName.Equals(other.IFrom.TerritoryName) && ITo.TerritoryName.Equals(other.ITo.TerritoryName) && caller.GetData().playerName.Equals(other.caller.GetData().playerName))
         {
             return true;

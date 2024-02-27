@@ -9,10 +9,10 @@ using UnityEditorInternal;
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 1000;
+    public int maxNumOfIterations = 2000;
     //C = 0.5 because Limer et al. suggests so.
     public double C = 0.5;
-    public int depth = 8;
+    public int depth = 4;
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
@@ -24,15 +24,15 @@ public class MCTSPlayer : Player
         Debug.Log(_data.playerName + " starting turn");
         _isMyTurn = true;
 
-        if(_gameState.turnStage == TurnStage.InitDeploy || _gameState.turnStage == TurnStage.InitReinforce)
+        if (_gameState.turnStage == TurnStage.InitDeploy || _gameState.turnStage == TurnStage.InitReinforce)
         {
             List<ITerritoryPlayerView> possibleTerritories = _gameState.Map().GetOwnedTerritories(this).ToList();
-            if(_gameState.turnStage == TurnStage.InitDeploy)
+            if (_gameState.turnStage == TurnStage.InitDeploy)
             {
                 possibleTerritories = new List<ITerritoryPlayerView>();
-                foreach(ITerritoryPlayerView t in _gameState.Map().GetTerritories())
+                foreach (ITerritoryPlayerView t in _gameState.Map().GetTerritories())
                 {
-                    if(t.GetOwner() == null)
+                    if (t.GetOwner() == null)
                     {
                         possibleTerritories.Add(t);
                     }
@@ -49,10 +49,10 @@ public class MCTSPlayer : Player
         Fortify();
         _isMyTurn = false;
     }
-    
+
     public override void AddCardsToHand(List<TerritoryCard> cards)
     {
-        if(cards == null) return;
+        if (cards == null) return;
         _hand = Enumerable.Concat(_hand, cards).ToList();
     }
 
@@ -60,14 +60,14 @@ public class MCTSPlayer : Player
     private void DeployTroops()
     {
         ITerritoryPlayerView[] myTerritories = _gameState.Map().GetOwnedTerritories(this);
-        while(_placeableTroops > 0)
+        while (_placeableTroops > 0)
         {
             float maxRatio = 0;
             ITerritoryPlayerView toDeploy = myTerritories[UnityEngine.Random.Range(0, myTerritories.Length)];
-            for(int i = 0; i < myTerritories.Length; i++)
+            for (int i = 0; i < myTerritories.Length; i++)
             {
-                float ratio = TroopRatio(myTerritories[i]);
-                if(ratio > maxRatio)
+                float ratio = TroopRatio(myTerritories[i], (GameState)_gameState, this);
+                if (ratio > maxRatio)
                 {
                     maxRatio = ratio;
                     toDeploy = myTerritories[i];
@@ -75,29 +75,29 @@ public class MCTSPlayer : Player
             }
             new Deploy(this, toDeploy).execute();
         }
-        if(_gameState.turnStage == TurnStage.Deploy)
+        if (_gameState.turnStage == TurnStage.Deploy)
         {
             Debug.Log("MCTS Player: Manually ending turn stage");
             new EndTurnStage(this).execute();
         }
     }
-    private int NeighboringTroops(ITerritoryPlayerView territory)
+    private int NeighboringTroops(ITerritoryPlayerView territory, GameState gameState, Player player)
     {
         int neighborTroopCount = 0;
-        ITerritoryPlayerView[] neighbors = _gameState.Map().GetTerritories(territory.GetNeighbors());
-        foreach(var neighbor in neighbors)
+        ITerritoryPlayerView[] neighbors = gameState.Map().GetTerritories(territory.GetNeighbors());
+        foreach (var neighbor in neighbors)
         {
-            if(!neighbor.GetOwner().Equals(_data.playerName))
+            if (!neighbor.GetOwner().Equals(player.GetData().playerName))
             {
                 neighborTroopCount += neighbor.TroopCount;
             }
         }
         return neighborTroopCount;
     }
-    private float TroopRatio(ITerritoryPlayerView territory)
+    private float TroopRatio(ITerritoryPlayerView territory, GameState gameState, Player player)
     {
-        int neighborTroopCount = NeighboringTroops(territory);
-        float ratio = neighborTroopCount/territory.TroopCount;
+        int neighborTroopCount = NeighboringTroops(territory, gameState, player);
+        float ratio = neighborTroopCount / territory.TroopCount;
         return ratio;
     }
 
@@ -105,21 +105,21 @@ public class MCTSPlayer : Player
     {
         ITerritoryPlayerView[] myTerritories = _gameState.Map().GetOwnedTerritories(this);
         ITerritoryPlayerView strongestInlandTerritory = null;
-        foreach(var territory in myTerritories)
+        foreach (var territory in myTerritories)
         {
-            if(territory.TroopCount > 1 && NeighboringTroops(territory) == 0)
+            if (territory.TroopCount > 1 && NeighboringTroops(territory, (GameState)_gameState, this) == 0)
             {
-                if(strongestInlandTerritory == null)
+                if (strongestInlandTerritory == null)
                 {
                     strongestInlandTerritory = territory;
                 }
-                else if(strongestInlandTerritory.TroopCount < territory.TroopCount)
+                else if (strongestInlandTerritory.TroopCount < territory.TroopCount)
                 {
                     strongestInlandTerritory = territory;
                 }
             }
         }
-        if(strongestInlandTerritory == null)
+        if (strongestInlandTerritory == null)
         {
             new EndTurnStage(this).execute();
             return;
@@ -127,16 +127,16 @@ public class MCTSPlayer : Player
         ITerritoryPlayerView[] neighbors = _gameState.Map().GetTerritories(strongestInlandTerritory.GetNeighbors());
         float maxRatio = 0;
         ITerritoryPlayerView toFortify = null;
-        foreach(var neighbor in neighbors)
+        foreach (var neighbor in neighbors)
         {
-            float ratio = TroopRatio(neighbor);
-            if(ratio > maxRatio)
+            float ratio = TroopRatio(neighbor, (GameState)_gameState, this);
+            if (ratio > maxRatio)
             {
                 maxRatio = ratio;
                 toFortify = neighbor;
             }
         }
-        if(toFortify == null)
+        if (toFortify == null)
         {
             new EndTurnStage(this).execute();
             return;
@@ -162,25 +162,30 @@ public class MCTSPlayer : Player
             curIterationNo++;
         }
         var curNode = root;
-        while(curNode.sourceMove != null || curNode.parent == null)
+        while (curNode.sourceMove != null || curNode.parent == null)
         {
             int maxPlaythrough = -1;
             GameStateTreeNode maxNode = null;
-            foreach(var child in curNode.children)
+            foreach (var child in curNode.children)
             {
-                if(child.numberOfPlaythoughs > maxPlaythrough)
+                if (child.numberOfPlaythoughs > maxPlaythrough)
                 {
                     maxPlaythrough = child.numberOfPlaythoughs;
                     maxNode = child;
                 }
             }
+            if(maxNode == null)
+            {
+                result.Add(null);
+                break;
+            }
             result.Add(maxNode.sourceMove);
             curNode = maxNode;
         }
-        for(int i = 0; i < result.Count(); i++)
+        for (int i = 0; i < result.Count(); i++)
         {
             var curMove = result[i];
-            if(curMove == null)
+            if (curMove == null)
             {
                 new EndTurnStage(this).execute();
                 return;
@@ -188,28 +193,33 @@ public class MCTSPlayer : Player
             bool success = true;
             var from = _gameState.Map().GetTerritory(curMove.IFrom.TerritoryName);
             var to = _gameState.Map().GetTerritory(curMove.ITo.TerritoryName);
-            while(success)
+            while (success)
             {
-                new Attack(this, from, to).execute();
+                var attack = new Attack(this, from, to);
+                success = attack.execute();
+            }
+            if(from.GetOwner().Equals(to.GetOwner()))
+            {
+                new Occupy(this, from, to, from.TroopCount - 1).execute();
             }
         }
-        if(_gameState.turnStage == TurnStage.Attack)
+        if (_gameState.turnStage == TurnStage.Attack)
         {
             new EndTurnStage(this).execute();
         }
     }
     public GameStateTreeNode Select(GameStateTreeNode node)
     {
-        while(node.fullyExpanded == true && (node.sourceMove != null || node.parent == null))
+        while (node.fullyExpanded == true && (node.sourceMove != null || node.parent == null))
         {
             float[] ucb1Values = new float[node.children.Count()];
             int maxIndex = -1;
             float maxValue = -1;
-            for(int i = 0; i < node.children.Count(); i++)
+            for (int i = 0; i < node.children.Count(); i++)
             {
                 var child = node.children[i];
                 ucb1Values[i] = UCB1(child);
-                if(ucb1Values[i] > maxValue)
+                if (ucb1Values[i] > maxValue)
                 {
                     maxValue = ucb1Values[i];
                     maxIndex = i;
@@ -228,11 +238,11 @@ public class MCTSPlayer : Player
         int curDepth = 0;
         Player toSimulate = curState.players[curState.currentPlayerNo];
         bool cardEligible = false;
-        if(node.sourceMove != null)
+        if (node.sourceMove != null)
         {
-            cardEligible = SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+            cardEligible = SimulationAttack(curState.players[curState.currentPlayerNo], curState);
         }
-        if(cardEligible)
+        if (cardEligible)
         {
             List<TerritoryCard> newCard = new()
             {
@@ -241,35 +251,35 @@ public class MCTSPlayer : Player
             curState.players[curState.currentPlayerNo].AddCardsToHand(newCard);
             curState.players[curState.currentPlayerNo].SetCardEligible(false);
         }
-        SimulationHelper.SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
+        SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
         curState.currentPlayerNo += 1;
-        if(curState.currentPlayerNo >= curState.players.Length)
+        if (curState.currentPlayerNo >= curState.players.Length)
         {
             curState.currentPlayerNo = 0;
         }
-        while(curDepth < depth || curState.map.GetOwnedTerritories(toSimulate).Length == 0 || curState.terminalState == true)
+        while (curDepth < depth || curState.map.GetOwnedTerritories(toSimulate).Length == 0 || curState.terminalState == true)
         {
-            for(int i = curState.currentPlayerNo; curState.players[i] != toSimulate; i++)
+            for (int i = curState.currentPlayerNo; !curState.players[i].GetData().playerName.Equals(toSimulate.GetData().playerName); i++)
             {
-                if(curState.players[i].GetType() != typeof(NeutralArmyPlayer))
+                if (curState.players[i].GetType() != typeof(NeutralArmyPlayer))
                 {
-                    SimulationHelper.SimulationDeploy(curState.players[curState.currentPlayerNo], curState);
-                    cardEligible = SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
-                    if(cardEligible)
+                    SimulationDeploy(curState.players[i], curState);
+                    cardEligible = SimulationAttack(curState.players[i], curState);
+                    if (cardEligible)
                     {
                         List<TerritoryCard> newCard = new()
                         {
                             GameMaster.Instance.state.cardDeck.DrawCard()
                         };
-                        curState.players[curState.currentPlayerNo].AddCardsToHand(newCard);
-                        curState.players[curState.currentPlayerNo].SetCardEligible(false);
+                        curState.players[i].AddCardsToHand(newCard);
+                        curState.players[i].SetCardEligible(false);
                     }
-                    SimulationHelper.SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
+                    SimulationReinforce(curState.players[i], curState);
                 }
-                curState.currentPlayerNo += 1;
-                if(curState.currentPlayerNo >= curState.players.Length)
+                i += 1;
+                if (i>= curState.players.Length)
                 {
-                    curState.currentPlayerNo = 0;
+                    i = 0;
                 }
                 cardEligible = false;
             }
@@ -282,9 +292,9 @@ public class MCTSPlayer : Player
 
     public void Backpropagate(GameStateTreeNode node, float newResult)
     {
-        while(node.parent != null)
+        while (node.parent != null)
         {
-            if(node.state.players[node.state.currentPlayerNo].GetData().playerName.Equals(node.parent.state.players[node.parent.state.currentPlayerNo].GetData().playerName))
+            if (!node.state.players[node.state.currentPlayerNo].GetData().playerName.Equals(node.parent.state.players[node.parent.state.currentPlayerNo].GetData().playerName))
             {
                 newResult = 0 - newResult;
             }
@@ -304,9 +314,9 @@ public class MCTSPlayer : Player
     public float troopSharePercent(GameState state, Player player)
     {
         int totalOwnTroops = 0, totalOtherTroops = 0;
-        for(int i = 0; i < state.map.Territories.Length; i++)
+        for (int i = 0; i < state.map.Territories.Length; i++)
         {
-            if(state.map.Territories[i].Owner.Equals(player.GetData().playerName))
+            if (state.map.Territories[i].Owner.Equals(player.GetData().playerName))
             {
                 totalOwnTroops += state.map.Territories[i].TroopCount;
             }
@@ -315,22 +325,121 @@ public class MCTSPlayer : Player
                 totalOtherTroops += state.map.Territories[i].TroopCount;
             }
         };
-        if(totalOwnTroops + totalOtherTroops == 0) return 0;
-        
-        return totalOwnTroops/(totalOwnTroops + totalOtherTroops);
-        
+        if (totalOwnTroops + totalOtherTroops == 0) return 0;
+
+        float result = (float)totalOwnTroops / (float)(totalOwnTroops + totalOtherTroops);
+        return result;
+
     }
     public float UCB1(GameStateTreeNode node)
     {
         double result = 0;
-        if(node.numberOfPlaythoughs != 0)
+        if (node.numberOfPlaythoughs != 0)
         {
             result = node.cumulativeHeuristicValue / node.numberOfPlaythoughs;
         }
-        if(node.parent != null)
+        if (node.parent != null)
         {
-            result += C * Math.Sqrt(Math.Log(node.parent.numberOfPlaythoughs)/node.numberOfPlaythoughs);
+            result += C * Math.Sqrt(Math.Log(node.parent.numberOfPlaythoughs) / node.numberOfPlaythoughs);
         }
         return (float)result;
+    }
+
+    public bool SimulationAttack(Player player, GameState state)
+    {
+        bool cardEligible = false;
+        List<Attack> possibleAttacks = state.getAllPossibleAttacks();
+        var rand = new System.Random();
+        int index = rand.Next(0, possibleAttacks.Count);
+        while (possibleAttacks[index] != null)
+        {
+            Attack attack = possibleAttacks[index];
+            bool attackResult;
+            do
+            {
+                attackResult = attack.execute();
+            }
+            while (attackResult == true);
+
+            if (attack.ITo.GetOwner().Equals(attack.IFrom.GetOwner()))
+            {
+                new Occupy(player, attack.IFrom, attack.ITo, attack.IFrom.TroopCount - 1).execute();
+                cardEligible = true;
+            }
+            possibleAttacks = state.getAllPossibleAttacks();
+            index = rand.Next(0, possibleAttacks.Count);
+        }
+        state.turnStage = TurnStage.Reinforce;
+        return cardEligible;
+    }
+
+
+    public void SimulationReinforce(Player player, GameState state)
+    {
+        ITerritoryPlayerView[] myTerritories = state.Map().GetOwnedTerritories(player);
+        ITerritoryPlayerView strongestInlandTerritory = null;
+        foreach (var territory in myTerritories)
+        {
+            if (territory.TroopCount > 1 && NeighboringTroops(territory, state, player) == 0)
+            {
+                if (strongestInlandTerritory == null)
+                {
+                    strongestInlandTerritory = territory;
+                }
+                else if (strongestInlandTerritory.TroopCount < territory.TroopCount)
+                {
+                    strongestInlandTerritory = territory;
+                }
+            }
+        }
+        if (strongestInlandTerritory == null)
+        {
+            state.turnStage = TurnStage.Deploy;
+            return;
+        }
+        ITerritoryPlayerView[] neighbors = state.Map().GetTerritories(strongestInlandTerritory.GetNeighbors());
+        float maxRatio = 0;
+        ITerritoryPlayerView toFortify = null;
+        foreach (var neighbor in neighbors)
+        {
+            float ratio = TroopRatio(neighbor, state, player);
+            if (ratio > maxRatio)
+            {
+                maxRatio = ratio;
+                toFortify = neighbor;
+            }
+        }
+        if (toFortify == null)
+        {
+            state.turnStage = TurnStage.Deploy;
+            return;
+        }
+        new Fortify(player, strongestInlandTerritory, toFortify, strongestInlandTerritory.TroopCount - 1).execute(false);
+        state.turnStage = TurnStage.Deploy;
+    }
+
+    public void SimulationDeploy(Player player, GameState state)
+    {
+        new TradeInAnyCards(player).execute();
+        ITerritoryPlayerView[] myTerritories = state.Map().GetOwnedTerritories(player);
+        while (player.GetPlaceableTroopNumber() > 0)
+        {
+            float maxRatio = 0;
+            ITerritoryPlayerView toDeploy = myTerritories[UnityEngine.Random.Range(0, myTerritories.Length)];
+            for (int i = 0; i < myTerritories.Length; i++)
+            {
+                float ratio = TroopRatio(myTerritories[i], state, player);
+                if (ratio > maxRatio)
+                {
+                    maxRatio = ratio;
+                    toDeploy = myTerritories[i];
+                }
+            }
+            new Deploy(player, toDeploy).execute();
+        }
+        if (state.turnStage == TurnStage.Deploy)
+        {
+            state.turnStage = TurnStage.Attack;
+        }
     }
 }
