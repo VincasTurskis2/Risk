@@ -87,6 +87,7 @@ public class GameState : IGameStatePlayerView
                 result.Add(new Attack(getPlayerFromName(curTerritory.Owner), curTerritory, neighbor));
             }
         }
+        result.Add(null);
         return result;
     }
 }

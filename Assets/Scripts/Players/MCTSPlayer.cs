@@ -9,6 +9,7 @@ using UnityEditorInternal;
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
+    public int maxNumOfIterations = 1000;
     //C = 0.5 because Limer et al. suggests so.
     public double C = 0.5;
     public int depth = 8;
@@ -39,10 +40,12 @@ public class MCTSPlayer : Player
             }
             int randomTerritoryNumber = UnityEngine.Random.Range(0, possibleTerritories.Count);
             bool success = new SetupDeploy(this, possibleTerritories[randomTerritoryNumber]).execute();
+            _isMyTurn = false;
+            return;
         }
         new UpdatePlaceableTroops(this).execute();
         DeployTroops();
-        PerformMTCS();
+        AttackWithMCTS();
         Fortify();
         _isMyTurn = false;
     }
@@ -143,23 +146,61 @@ public class MCTSPlayer : Player
 
 
 
-    public List<PlayerAction> PerformMTCS()
+    public void AttackWithMCTS()
     {
-        List<PlayerAction> result = new();
+        List<Attack> result = new();
         GameStateTreeNode root = new GameStateTreeNode(_gameState, null, null);
-        float curTime = 0f;
-        while (curTime < timeForSearch)
+        //float curTime = 0f;
+        int curIterationNo = 0;
+        //DateTime startTime = DateTime.Now;
+        while (curIterationNo < maxNumOfIterations)//(curTime < timeForSearch)
         {
             GameStateTreeNode nodeToExplore = Select(root);
             var expandedNode = nodeToExplore.Expand();
             float newResult = Simulate(expandedNode);
             Backpropagate(expandedNode, newResult);
+            curIterationNo++;
         }
-        return result;
+        var curNode = root;
+        while(curNode.sourceMove != null || curNode.parent == null)
+        {
+            int maxPlaythrough = -1;
+            GameStateTreeNode maxNode = null;
+            foreach(var child in curNode.children)
+            {
+                if(child.numberOfPlaythoughs > maxPlaythrough)
+                {
+                    maxPlaythrough = child.numberOfPlaythoughs;
+                    maxNode = child;
+                }
+            }
+            result.Add(maxNode.sourceMove);
+            curNode = maxNode;
+        }
+        for(int i = 0; i < result.Count(); i++)
+        {
+            var curMove = result[i];
+            if(curMove == null)
+            {
+                new EndTurnStage(this).execute();
+                return;
+            }
+            bool success = true;
+            var from = _gameState.Map().GetTerritory(curMove.IFrom.TerritoryName);
+            var to = _gameState.Map().GetTerritory(curMove.ITo.TerritoryName);
+            while(success)
+            {
+                new Attack(this, from, to).execute();
+            }
+        }
+        if(_gameState.turnStage == TurnStage.Attack)
+        {
+            new EndTurnStage(this).execute();
+        }
     }
     public GameStateTreeNode Select(GameStateTreeNode node)
     {
-        while(node.fullyExpanded == true)
+        while(node.fullyExpanded == true && (node.sourceMove != null || node.parent == null))
         {
             float[] ucb1Values = new float[node.children.Count()];
             int maxIndex = -1;
@@ -186,7 +227,11 @@ public class MCTSPlayer : Player
         GameMaster.Instance.state = new GameState(curState);
         int curDepth = 0;
         Player toSimulate = curState.players[curState.currentPlayerNo];
-        bool cardEligible = SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+        bool cardEligible = false;
+        if(node.sourceMove != null)
+        {
+            cardEligible = SimulationHelper.SimulationAttack(curState.players[curState.currentPlayerNo], curState);
+        }
         if(cardEligible)
         {
             List<TerritoryCard> newCard = new()
@@ -202,7 +247,7 @@ public class MCTSPlayer : Player
         {
             curState.currentPlayerNo = 0;
         }
-        while(curDepth < depth || curState.map.GetOwnedTerritories(toSimulate).Length == 0)
+        while(curDepth < depth || curState.map.GetOwnedTerritories(toSimulate).Length == 0 || curState.terminalState == true)
         {
             for(int i = curState.currentPlayerNo; curState.players[i] != toSimulate; i++)
             {

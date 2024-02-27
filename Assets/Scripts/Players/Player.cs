@@ -41,6 +41,7 @@ public abstract class Player : IOtherPlayer
         _placeableTroops = oldPlayer._placeableTroops;
         _gameState = newState;
         _isMyTurn = oldPlayer._isMyTurn;
+        _hand = new List<TerritoryCard>();
         foreach(var card in oldPlayer._hand)
         {
             _hand.Add(card);

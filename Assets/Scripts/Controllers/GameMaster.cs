@@ -43,7 +43,7 @@ public class GameMaster : MonoBehaviour
         is2PlayerGame = false;
         PlayerData[] players = new PlayerData[2];
         players[0] = new PlayerData("Vince", PlayerType.Human, ColorPreset.Green);
-        players[1] = new PlayerData("JohnGPT", PlayerType.PassiveAI, ColorPreset.Pink);
+        players[1] = new PlayerData("JohnGPT", PlayerType.MCTS, ColorPreset.Pink);
         Setupplayers(players);
         SetupTerritories();
         state.cardDeck.Setup(state.map.Territories);

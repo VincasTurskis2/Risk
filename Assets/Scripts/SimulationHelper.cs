@@ -55,10 +55,10 @@ public static class SimulationHelper
         bool cardEligible = false;
         List<Attack> possibleAttacks = state.getAllPossibleAttacks();
         var rand = new System.Random();
-        while(rand.Next(-1, possibleAttacks.Count) != -1)
+        int index = rand.Next(0, possibleAttacks.Count);
+        while(possibleAttacks[index] != null)
         {
-            int randIndex = rand.Next(0, possibleAttacks.Count);
-            Attack attack = possibleAttacks[randIndex];
+            Attack attack = possibleAttacks[index];
             bool attackResult;
             do
             {
