@@ -9,8 +9,9 @@ public class TradeInAnyCards : PlayerAction
     {
     }
     public override bool execute()
-    {    
-        if(caller == null) return false;
+    {
+        Debug.Log("Trading in any cards");
+        if (caller == null) return false;
         if(caller.GetCardHand().Count < 3) return false;
 
         TerritoryCard[] cardsToTradeIn = new TerritoryCard[3];

@@ -142,6 +142,10 @@ public class MCTSPlayer : Player
             return;
         }
         new Fortify(this, strongestInlandTerritory, toFortify, strongestInlandTerritory.TroopCount - 1).execute();
+        if (_gameState.turnStage == TurnStage.Reinforce)
+        {
+            new EndTurnStage(this).execute();
+        }
     }
 
 
@@ -420,6 +424,7 @@ public class MCTSPlayer : Player
 
     public void SimulationDeploy(Player player, GameState state)
     {
+        new UpdatePlaceableTroops(player).execute();
         new TradeInAnyCards(player).execute();
         ITerritoryPlayerView[] myTerritories = state.Map().GetOwnedTerritories(player);
         while (player.GetPlaceableTroopNumber() > 0)
