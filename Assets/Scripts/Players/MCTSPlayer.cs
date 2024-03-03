@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using UnityEditorInternal;
 
 // An implementation of a player using Monte Carlo tree search.
 public class MCTSPlayer : Player

@@ -1,13 +1,20 @@
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{2}{}%
-\contentsline {section}{\numberline {1.1}pls}{2}{}%
+\contentsline {section}{\numberline {1.1}Temp}{2}{}%
 \contentsline {chapter}{\numberline {2}Background}{3}{}%
-\contentsline {section}{\numberline {2.1}pls}{3}{}%
+\contentsline {section}{\numberline {2.1}Temp}{3}{}%
 \contentsline {chapter}{\numberline {3}Design}{4}{}%
-\contentsline {section}{\numberline {3.1}pls}{4}{}%
-\contentsline {chapter}{\numberline {4}Implementation}{5}{}%
-\contentsline {section}{\numberline {4.1}pls}{5}{}%
-\contentsline {chapter}{\numberline {5}Testing}{6}{}%
-\contentsline {section}{\numberline {5.1}pls}{6}{}%
-\contentsline {chapter}{\numberline {6}Conclusion}{7}{}%
-\contentsline {section}{\numberline {6.1}pls}{7}{}%
+\contentsline {section}{\numberline {3.1}Overview}{4}{}%
+\contentsline {section}{\numberline {3.2}Game Client Design}{4}{}%
+\contentsline {subsection}{\numberline {3.2.1}Game Engine}{4}{}%
+\contentsline {subsection}{\numberline {3.2.2}User Interaction Design}{5}{}%
+\contentsline {subsection}{\numberline {3.2.3}Code Structure}{7}{}%
+\contentsline {section}{\numberline {3.3}Computer Player Design}{8}{}%
+\contentsline {subsection}{\numberline {3.3.1}Approach}{8}{}%
+\contentsline {subsection}{\numberline {3.3.2}Integration with the game client}{9}{}%
+\contentsline {chapter}{\numberline {4}Implementation}{10}{}%
+\contentsline {section}{\numberline {4.1}Temp}{10}{}%
+\contentsline {chapter}{\numberline {5}Testing}{11}{}%
+\contentsline {section}{\numberline {5.1}Temp}{11}{}%
+\contentsline {chapter}{\numberline {6}Conclusion}{12}{}%
+\contentsline {section}{\numberline {6.1}Temp}{12}{}%
