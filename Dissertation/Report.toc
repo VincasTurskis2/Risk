@@ -2,19 +2,19 @@
 \contentsline {chapter}{\numberline {1}Introduction}{2}{}%
 \contentsline {section}{\numberline {1.1}Temp}{2}{}%
 \contentsline {chapter}{\numberline {2}Background}{3}{}%
-\contentsline {section}{\numberline {2.1}Temp}{3}{}%
-\contentsline {chapter}{\numberline {3}Design}{4}{}%
-\contentsline {section}{\numberline {3.1}Overview}{4}{}%
-\contentsline {section}{\numberline {3.2}Game Client Design}{4}{}%
-\contentsline {subsection}{\numberline {3.2.1}Game Engine}{4}{}%
-\contentsline {subsection}{\numberline {3.2.2}User Interaction Design}{5}{}%
-\contentsline {subsection}{\numberline {3.2.3}Code Structure}{7}{}%
-\contentsline {section}{\numberline {3.3}Computer Player Design}{8}{}%
-\contentsline {subsection}{\numberline {3.3.1}Approach}{8}{}%
-\contentsline {subsection}{\numberline {3.3.2}Integration with the game client}{9}{}%
-\contentsline {chapter}{\numberline {4}Implementation}{10}{}%
-\contentsline {section}{\numberline {4.1}Temp}{10}{}%
-\contentsline {chapter}{\numberline {5}Testing}{11}{}%
-\contentsline {section}{\numberline {5.1}Temp}{11}{}%
-\contentsline {chapter}{\numberline {6}Conclusion}{12}{}%
-\contentsline {section}{\numberline {6.1}Temp}{12}{}%
+\contentsline {section}{\numberline {2.1}Rules of Risk}{3}{}%
+\contentsline {section}{\numberline {2.2}Monte Carlo Tree Search Theory}{4}{}%
+\contentsline {chapter}{\numberline {3}Design}{5}{}%
+\contentsline {section}{\numberline {3.1}Overview}{5}{}%
+\contentsline {section}{\numberline {3.2}Game Client Design}{5}{}%
+\contentsline {subsection}{\numberline {3.2.1}Game Engine}{5}{}%
+\contentsline {subsection}{\numberline {3.2.2}User Interaction Design}{6}{}%
+\contentsline {subsection}{\numberline {3.2.3}Code Structure}{8}{}%
+\contentsline {section}{\numberline {3.3}Computer Player Design}{9}{}%
+\contentsline {subsection}{\numberline {3.3.1}Approach}{9}{}%
+\contentsline {chapter}{\numberline {4}Implementation}{11}{}%
+\contentsline {section}{\numberline {4.1}Temp}{11}{}%
+\contentsline {chapter}{\numberline {5}Testing}{12}{}%
+\contentsline {section}{\numberline {5.1}Temp}{12}{}%
+\contentsline {chapter}{\numberline {6}Conclusion}{13}{}%
+\contentsline {section}{\numberline {6.1}Temp}{13}{}%
