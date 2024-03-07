@@ -11,7 +11,7 @@ public class MCTSPlayer : Player
     public int maxNumOfIterations = 2000;
     //C = 0.5 because Limer et al. suggests so.
     public double C = 0.5;
-    public int depth = 4;
+    public int depth = 100;
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
@@ -311,7 +311,8 @@ public class MCTSPlayer : Player
 
     public float heuristicEvaluation(GameState state, Player player)
     {
-        return troopSharePercent(state, player);
+        return troopEarningPercent(state, player);
+        //return troopSharePercent(state, player);
     }
 
     public float troopSharePercent(GameState state, Player player)
@@ -333,6 +334,37 @@ public class MCTSPlayer : Player
         float result = (float)totalOwnTroops / (float)(totalOwnTroops + totalOtherTroops);
         return result;
 
+    }
+    public float troopEarningPercent(GameState state, Player player)
+    {
+        int ownTroopsEarned = 0;
+        ownTroopsEarned += state.map.GetOwnedTerritories(player).Count() / 3;
+        ownTroopsEarned += GetContinentTroopCount(state, player);
+        return (float)ownTroopsEarned / 38.0f;
+    }
+
+    private int GetContinentTroopCount(GameState state, Player player)
+    {
+        List<Continent> ownedContinents = new List<Continent>();
+        int[] continentCountLocal = new int[GameMaster.ContinentCount.Length];
+        GameMaster.ContinentCount.CopyTo(continentCountLocal, 0);
+        foreach (TerritoryData t in state.map.GetOwnedTerritories(player))
+        {
+            continentCountLocal[(int)t.Continent]--;
+        }
+        for (int i = 0; i < continentCountLocal.Length; i++)
+        {
+            if (continentCountLocal[i] <= 0)
+            {
+                ownedContinents.Add((Continent)i);
+            }
+        }
+        int result = 0;
+        for (int i = 0; i < ownedContinents.Count; i++)
+        {
+            result += GameMaster.ContinentValues[(int)ownedContinents[i]];
+        }
+        return result;
     }
     public float UCB1(GameStateTreeNode node)
     {
