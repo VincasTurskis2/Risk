@@ -19,6 +19,35 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{Coulom2007MonteCarlo}{article}{}
+      \name{author}{1}{}{%
+        {{hash=ae7c83876ac79093e7c8ec77de300a9c}{%
+           family={Coulom},
+           familyi={C\bibinitperiod},
+           given={Rémi},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{fullhash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{bibnamehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{authorbibnamehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{authornamehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{authorfullhash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)}
+      \field{title}{Efficient selectivity and backup operators in Monte-Carlo tree search}
+      \field{type}{Conference paper}
+      \field{volume}{4630 LNCS}
+      \field{year}{2007}
+      \field{pages}{72\bibrangedash 83}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1007/978-3-540-75538-8_7
+      \endverb
+    \endentry
     \entry{riskrules}{misc}{}
       \name{author}{1}{}{%
         {{hash=6d311e5d6d64c6a3706fc2158857d7e8}{%
