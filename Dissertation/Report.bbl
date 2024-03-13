@@ -19,6 +19,31 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{bauer2023artificial}{article}{}
+      \name{author}{1}{}{%
+        {{hash=d66abb737832ae2da495d00aa0b729f6}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{d66abb737832ae2da495d00aa0b729f6}
+      \strng{fullhash}{d66abb737832ae2da495d00aa0b729f6}
+      \strng{bibnamehash}{d66abb737832ae2da495d00aa0b729f6}
+      \strng{authorbibnamehash}{d66abb737832ae2da495d00aa0b729f6}
+      \strng{authornamehash}{d66abb737832ae2da495d00aa0b729f6}
+      \strng{authorfullhash}{d66abb737832ae2da495d00aa0b729f6}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Games}
+      \field{title}{Artificial Intelligence with Graph Neural Networks Applied to a Risk-like Board Game}
+      \field{year}{2023}
+    \endentry
     \entry{Coulom2007MonteCarlo}{article}{}
       \name{author}{1}{}{%
         {{hash=ae7c83876ac79093e7c8ec77de300a9c}{%
@@ -67,6 +92,37 @@
       \field{howpublished}{\url{https://www.hasbro.com/common/instruct/risk.pdf}}
       \field{note}{Accessed: 2024-03-06}
       \field{title}{Risk: The World Conquest Game}
+    \endentry
+    \entry{limer2020monte}{misc}{}
+      \name{author}{3}{}{%
+        {{hash=0bb9bc2b8953ab273b387e4d07f116a0}{%
+           family={Limér},
+           familyi={L\bibinitperiod},
+           given={Christoffer},
+           giveni={C\bibinitperiod}}}%
+        {{hash=e2aa7637e3ca8ac36fe5ec86dfd24021}{%
+           family={Kalmér},
+           familyi={K\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod}}}%
+        {{hash=1e05293c9d4c0f709d046b3ac22033f6}{%
+           family={Cohen},
+           familyi={C\bibinitperiod},
+           given={Mika},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{5273d3e50817cac9f0ed33067adb7cab}
+      \strng{fullhash}{5273d3e50817cac9f0ed33067adb7cab}
+      \strng{bibnamehash}{5273d3e50817cac9f0ed33067adb7cab}
+      \strng{authorbibnamehash}{5273d3e50817cac9f0ed33067adb7cab}
+      \strng{authornamehash}{5273d3e50817cac9f0ed33067adb7cab}
+      \strng{authorfullhash}{5273d3e50817cac9f0ed33067adb7cab}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Monte Carlo Tree Search for Risk}
+      \field{year}{2020}
     \endentry
   \enddatalist
 \endrefsection

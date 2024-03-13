@@ -1,20 +1,24 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{2}{}%
-\contentsline {section}{\numberline {1.1}Temp}{2}{}%
-\contentsline {chapter}{\numberline {2}Background}{3}{}%
-\contentsline {section}{\numberline {2.1}Rules of Risk}{3}{}%
-\contentsline {section}{\numberline {2.2}Monte Carlo Tree Search Theory}{4}{}%
-\contentsline {chapter}{\numberline {3}Design}{5}{}%
-\contentsline {section}{\numberline {3.1}Overview}{5}{}%
-\contentsline {section}{\numberline {3.2}Game Client Design}{5}{}%
-\contentsline {subsection}{\numberline {3.2.1}Game Engine}{5}{}%
-\contentsline {subsection}{\numberline {3.2.2}User Interaction Design}{6}{}%
-\contentsline {subsection}{\numberline {3.2.3}Code Structure}{8}{}%
-\contentsline {section}{\numberline {3.3}Computer Player Design}{9}{}%
-\contentsline {subsection}{\numberline {3.3.1}Approach}{9}{}%
-\contentsline {chapter}{\numberline {4}Implementation}{11}{}%
-\contentsline {section}{\numberline {4.1}Temp}{11}{}%
-\contentsline {chapter}{\numberline {5}Testing}{12}{}%
-\contentsline {section}{\numberline {5.1}Temp}{12}{}%
-\contentsline {chapter}{\numberline {6}Conclusion}{13}{}%
-\contentsline {section}{\numberline {6.1}Temp}{13}{}%
+\contentsline {chapter}{\numberline {1}Introduction}{3}{}%
+\contentsline {section}{\numberline {1.1}Temp}{3}{}%
+\contentsline {chapter}{\numberline {2}Background}{4}{}%
+\contentsline {section}{\numberline {2.1}Rules of Risk}{4}{}%
+\contentsline {section}{\numberline {2.2}Monte Carlo Tree Search Theory}{5}{}%
+\contentsline {section}{\numberline {2.3}Using MCTS for Risk}{6}{}%
+\contentsline {chapter}{\numberline {3}Design}{8}{}%
+\contentsline {section}{\numberline {3.1}Overview}{8}{}%
+\contentsline {section}{\numberline {3.2}Game Client Design}{8}{}%
+\contentsline {subsection}{\numberline {3.2.1}Game Engine}{8}{}%
+\contentsline {subsection}{\numberline {3.2.2}User Interaction Design}{9}{}%
+\contentsline {subsection}{\numberline {3.2.3}Code Structure}{11}{}%
+\contentsline {section}{\numberline {3.3}Computer Player Design}{12}{}%
+\contentsline {subsection}{\numberline {3.3.1}Approach}{12}{}%
+\contentsline {subsection}{\numberline {3.3.2}Action Pruning}{13}{}%
+\contentsline {chapter}{\numberline {4}Implementation}{14}{}%
+\contentsline {section}{\numberline {4.1}Game Client Implementation}{14}{}%
+\contentsline {subsection}{\numberline {4.1.1}Initial Implementation}{14}{}%
+\contentsline {subsection}{\numberline {4.1.2}Refactoring}{14}{}%
+\contentsline {chapter}{\numberline {5}Testing}{16}{}%
+\contentsline {section}{\numberline {5.1}Temp}{16}{}%
+\contentsline {chapter}{\numberline {6}Conclusion}{17}{}%
+\contentsline {section}{\numberline {6.1}Temp}{17}{}%
