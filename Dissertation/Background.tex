@@ -1,5 +1,6 @@
 \graphicspath{ {./Images/} }
 \chapter{Background}
+\label{background}
 \section{Rules of Risk}
 \label{rulesOfRisk}
 Risk \cite{riskrules} is a 2-6 player strategy board game, in which players try to conquer the world. The game is played on a game board representing the entire world, which is divided into 42 territories, with each of those territories belonging to one of 6 continents. Players start by controlling an equal amount of territories each, and must earn more troops and attack territories of other players in order to win.
@@ -15,4 +16,17 @@ If a player has captured at least 1 territory in their turn, at the end of said 
 \section{Monte Carlo Tree Search Theory}
 \label{MCTSTheory}
 
-Monte Carlo tree search (MCTS) is a heuristic-based search algorithm
+Monte Carlo tree search (MCTS) \cite{Coulom2007MonteCarlo} is a search algorithm that - as the name suggests - utilizes the Monte Carlo method to explore a game tree. More specifically, MCTS builds a tree of moves by continually running simulations until a game concludes and keeping track of the results of those simulations, preferring to explore nodes that have a higher average simulation results. The MCTS algorithm starts from the current game state as the root of the tree, and generally has 4 stages:
+\begin{itemize}
+\item Select - the algorithm travels from the root to an unexplored leaf node. The chosen path/leaf node depends on the cumulative simulation values of the nodes, and how many times a node has been visited. The algorithm needs to strike a balance between exploration of nodes that have not been simulated many times, and exploitation of nodes that have high potential.
+\item Expand - The algorithm creates a new leaf node from the selected node by picking a random move out of all the possible moves the player can make in that node and adding the game state resulting from that move as a new node
+\item Simulate - From the newly expanded node, a simulation is run until the end of the game, and the result is recorded - 1 if the player won, 0 if they lost. For games with a depth too large to realistically simulate many times, the simulation can cut off at a certain depth and perform a heuristic evaluation, returning a value between 0 and 1.
+\item Backpropagate - the result of the simulation is backpropagated up the tree. Starting from the new node - increase the "number of simulations" counter by 1, increase the cumulative simulation value by the result of the simulation (0/1/heuristic value), go to the parent of the node. Repeat until the root node is reached.
+\end{itemize}
+
+This process has several advantages over other search approaches such as minimax or alpha-beta pruning. The first one is that the "pure" version of MCTS (with simulating until game end, rather than cut-off and heuristic evaluation) requires no game knowledge - game states are evaluated based on how many simulations were won from that state, rather than a heuristic that is based on expert game knowledge. Some understanding of the game rules are required to make a viable simulation, however, the simulation can - and should - be very rudimentary, as it needs to be computationally cheap. For example, a possible strategy for simulations for chess could be "capture pieces when possible". This is useful, as games that are interesting enough for research into using search-based approaches are usually not solved - meaning, even the best expert human players do not have complete knowledge and do not play the game fully optimally.
+
+The second advantage of MCTS is its ability to deal with games with a high branching factor. The MCTS algorithm focuses on nodes that have both a high cumulative simulation value (meaning the simulations that have gone through that node have a high chance of resulting in a win) and a high number of playthroughs (meaning the algorithm has a high certainty for the accuracy of the simulation value). The algorithm will usually follow a course of exploring nodes until eventually converging on the most promising one. A higher branching factor will result in less certainty in the best path, a longer time until the algorithm converges and, in more extreme cases, the inability to properly explore certain nodes at all. However, it is still likely to find the best or at least a good move. This is in contrast to, for example, alpha-beta pruning, in which the time to run the algorithm will grow exponentially with the branching factor. This trait of MCTS is very useful for Risk, which has an extremely high branching factor \\textbf{CITATION?} - many positions have a branching factor in the tens or hundreds of millions. For comparison, the branching factor of chess is around 35, while Go has a factor of around 250.
+
+\section{Using MCTS for Risk}
+\label{MCTSforRisk}

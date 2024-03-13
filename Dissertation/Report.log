@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.2.6)  6 MAR 2024 13:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.2.6)  9 MAR 2024 13:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -579,7 +579,13 @@ Chapter 5.
 Chapter 6.
 [13
 
-] [14
+]
+Overfull \hbox (8.8345pt too wide) in paragraph at lines 39--39
+[]\OT1/cmr/m/n/10.95 R^^Semi Coulom. \  Ef-fi-cient se-lec-tiv-ity and backup o
+p-er-a-tors in Monte-Carlo tree search".
+ []
+
+[14
 
 ] (Report.aux)
  ***********
@@ -591,23 +597,24 @@ Package logreq Info: Writing requests to 'Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 11691 strings out of 474541
- 222800 string characters out of 5743954
+ 11700 strings out of 474541
+ 223033 string characters out of 5743954
  1934978 words of memory out of 5000000
- 33818 multiletter control sequences out of 15000+600000
- 564393 words of font info for 57 fonts, out of 8000000 for 9000
+ 33826 multiletter control sequences out of 15000+600000
+ 564694 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  66i,6n,81p,1591b,1791s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Vincas\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcr
 m1095.pk><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
 onts/cm/cmbx10.pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmbx12.pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Vincas/AppData/Local/Programs/M
-iKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Vincas/AppData/Local/
-Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Report.pdf (14 pages, 656640 bytes).
+ts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/Vincas/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Vincas/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Vincas/App
+Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Report.pdf (14 pages, 670748 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
+ 88 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

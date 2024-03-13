@@ -57,4 +57,6 @@ Kinda failed following that.
 Another paper - "Monte Carlo Tree Search for Risk", Limer, Kalmer, Cohen, has some tips about simplifying the search. I'm also trying to use the tips in here.
 
 Will likely have to use RAVE, as there might be a problem of same permutations taking up space
-    
+
+Problem - simulation does not reach the end, seemingly goes in circles of capturing-recapturing territories.
+Need to have AI pay attention to continents - deploy troops in continents that they are strong in, and then look for non-suicidal attacks
