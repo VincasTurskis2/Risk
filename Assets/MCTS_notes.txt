@@ -56,7 +56,18 @@ Kinda failed following that.
 
 Another paper - "Monte Carlo Tree Search for Risk", Limer, Kalmer, Cohen, has some tips about simplifying the search. I'm also trying to use the tips in here.
 
-Will likely have to use RAVE, as there might be a problem of same permutations taking up space
-
 Problem - simulation does not reach the end, seemingly goes in circles of capturing-recapturing territories.
 Need to have AI pay attention to continents - deploy troops in continents that they are strong in, and then look for non-suicidal attacks
+
+Will likely have to use RAVE, as there might be a problem of same permutations taking up space. Or not, because i don't have time.
+
+What to try in order to have a good simulation:
+- Make a static class strategies.cs, which has a bunch of static methods (take player as an argument) on how to make deploy/attack/reinforce troops. Move currently used strategies to those methods
+- Add new deploy strategy - rank continents based on (own troop no in continent+adjacent lands/total troop no in continent+adjacent lands) in that continent. Deploy on the border in the highest ranked continent. If the highest-ranked continent does not have any borders - try the next highest, etc.
+- Add new attack strategy - rank continents again, try random attack whose target is in the highest ranked continent. If impossible - try next highest, etc.
+- (Maybe) add the limitation that only attacks where you have the advantage are considered (remember that defender loses more troops than attacker, see py script)
+- Use the new deploy strategy in both simulation and actual deploy, use new attack strategy in simulation
+- Adjust the simulation troop loss count to take the py script ratio into account.
+
+If this doesn't work, Give up, describe failure in report.
+    
