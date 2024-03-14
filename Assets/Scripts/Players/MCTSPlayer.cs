@@ -8,10 +8,10 @@ using System;
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 2000;
+    public int maxNumOfIterations = 200;
     //C = 0.5 because Limer et al. suggests so.
     public double C = 0.5;
-    public int depth = 100;
+    public int depth = 1000;
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
@@ -58,27 +58,7 @@ public class MCTSPlayer : Player
     // A method to make a rule-based selection on where to deploy troops
     private void DeployTroops()
     {
-        ITerritoryPlayerView[] myTerritories = _gameState.Map().GetOwnedTerritories(this);
-        while (_placeableTroops > 0)
-        {
-            float maxRatio = 0;
-            ITerritoryPlayerView toDeploy = myTerritories[UnityEngine.Random.Range(0, myTerritories.Length)];
-            for (int i = 0; i < myTerritories.Length; i++)
-            {
-                float ratio = TroopRatio(myTerritories[i], (GameState)_gameState, this);
-                if (ratio > maxRatio)
-                {
-                    maxRatio = ratio;
-                    toDeploy = myTerritories[i];
-                }
-            }
-            new Deploy(this, toDeploy).execute();
-        }
-        if (_gameState.turnStage == TurnStage.Deploy)
-        {
-            Debug.Log("MCTS Player: Manually ending turn stage");
-            new EndTurnStage(this).execute();
-        }
+        Strategies.Deploy_MostThreatenedBorder((GameState)_gameState, this);
     }
     private int NeighboringTroops(ITerritoryPlayerView territory, GameState gameState, Player player)
     {
@@ -168,6 +148,7 @@ public class MCTSPlayer : Player
         while (curNode.sourceMove != null || curNode.parent == null)
         {
             int maxPlaythrough = -1;
+
             GameStateTreeNode maxNode = null;
             foreach (var child in curNode.children)
             {
@@ -288,6 +269,10 @@ public class MCTSPlayer : Player
             }
             curDepth += 1;
         }
+        if(curState.terminalState == true)
+        {
+            Debug.Log("Reached the end");
+        }
         float result = heuristicEvaluation(curState, toSimulate);
         GameMaster.Instance.state = originalState;
         return result;
@@ -311,8 +296,9 @@ public class MCTSPlayer : Player
 
     public float heuristicEvaluation(GameState state, Player player)
     {
-        return troopEarningPercent(state, player);
-        //return troopSharePercent(state, player);
+        return troopSharePercent(state, player);
+        //return troopEarningPercent(state, player);
+        //return UnityEngine.Random.Range(0, 1);
     }
 
     public float troopSharePercent(GameState state, Player player)
