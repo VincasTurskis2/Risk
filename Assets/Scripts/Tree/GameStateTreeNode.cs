@@ -79,6 +79,7 @@ public class GameStateTreeNode
             return this;
         }
         var possibleAttacks = state.getAllPossibleAttacks();
+        possibleAttacks.Add(null);
         var attacks = new List<Attack>(possibleAttacks);
         foreach(var child in children)
         {

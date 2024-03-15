@@ -8,7 +8,7 @@ using System;
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 200;
+    public int maxNumOfIterations = 10;
     //C = 0.5 because Limer et al. suggests so.
     public double C = 0.5;
     public int depth = 1000;
@@ -58,7 +58,7 @@ public class MCTSPlayer : Player
     // A method to make a rule-based selection on where to deploy troops
     private void DeployTroops()
     {
-        Strategies.Deploy_MostThreatenedBorder((GameState)_gameState, this);
+        Strategies.Deploy_FavouriteContinent((GameState)_gameState, this);
     }
     private int NeighboringTroops(ITerritoryPlayerView territory, GameState gameState, Player player)
     {
@@ -177,6 +177,7 @@ public class MCTSPlayer : Player
             bool success = true;
             var from = _gameState.Map().GetTerritory(curMove.IFrom.TerritoryName);
             var to = _gameState.Map().GetTerritory(curMove.ITo.TerritoryName);
+            Debug.Log(GetData().playerName + ": Attacking from " + from.TerritoryName + " to " + to.TerritoryName);
             while (success)
             {
                 var attack = new Attack(this, from, to);
@@ -218,7 +219,8 @@ public class MCTSPlayer : Player
     {
         GameState originalState = (GameState)_gameState;
         GameState curState = new GameState(node.state);
-        GameMaster.Instance.state = new GameState(curState);
+        GameMaster.Instance.state = curState;
+        GameMaster.Instance.isSimulation = true;
         int curDepth = 0;
         Player toSimulate = curState.players[curState.currentPlayerNo];
         bool cardEligible = false;
@@ -241,9 +243,31 @@ public class MCTSPlayer : Player
         {
             curState.currentPlayerNo = 0;
         }
+        // Finish the current turn
+        for (int i = curState.currentPlayerNo; i < curState.players.Length; i++)
+        {
+            if (curState.players[i].GetType() != typeof(NeutralArmyPlayer))
+            {
+                SimulationDeploy(curState.players[i], curState);
+                cardEligible = SimulationAttack(curState.players[i], curState);
+                if (cardEligible)
+                {
+                    List<TerritoryCard> newCard = new()
+                        {
+                            GameMaster.Instance.state.cardDeck.DrawCard()
+                        };
+                    curState.players[i].AddCardsToHand(newCard);
+                    curState.players[i].SetCardEligible(false);
+                }
+            }
+            SimulationReinforce(curState.players[i], curState);
+            i += 1;
+            cardEligible = false;
+        }
+        curDepth += 1;
         while (curDepth < depth || curState.map.GetOwnedTerritories(toSimulate).Length == 0 || curState.terminalState == true)
         {
-            for (int i = curState.currentPlayerNo; !curState.players[i].GetData().playerName.Equals(toSimulate.GetData().playerName); i++)
+            for (int i = 0; i < curState.players.Length; i++)
             {
                 if (curState.players[i].GetType() != typeof(NeutralArmyPlayer))
                 {
@@ -258,8 +282,8 @@ public class MCTSPlayer : Player
                         curState.players[i].AddCardsToHand(newCard);
                         curState.players[i].SetCardEligible(false);
                     }
-                    SimulationReinforce(curState.players[i], curState);
                 }
+                SimulationReinforce(curState.players[i], curState);
                 i += 1;
                 if (i>= curState.players.Length)
                 {
@@ -275,6 +299,7 @@ public class MCTSPlayer : Player
         }
         float result = heuristicEvaluation(curState, toSimulate);
         GameMaster.Instance.state = originalState;
+        GameMaster.Instance.isSimulation = false;
         return result;
     }
 
@@ -368,30 +393,7 @@ public class MCTSPlayer : Player
 
     public bool SimulationAttack(Player player, GameState state)
     {
-        bool cardEligible = false;
-        List<Attack> possibleAttacks = state.getAllPossibleAttacks();
-        var rand = new System.Random();
-        int index = rand.Next(0, possibleAttacks.Count);
-        while (possibleAttacks[index] != null)
-        {
-            Attack attack = possibleAttacks[index];
-            bool attackResult;
-            do
-            {
-                attackResult = attack.execute();
-            }
-            while (attackResult == true);
-
-            if (attack.ITo.GetOwner().Equals(attack.IFrom.GetOwner()))
-            {
-                new Occupy(player, attack.IFrom, attack.ITo, attack.IFrom.TroopCount - 1).execute();
-                cardEligible = true;
-            }
-            possibleAttacks = state.getAllPossibleAttacks();
-            index = rand.Next(0, possibleAttacks.Count);
-        }
-        state.turnStage = TurnStage.Reinforce;
-        return cardEligible;
+        return Strategies.Attack_RandomInFavouriteContinent(state, player);
     }
 
 
@@ -443,22 +445,7 @@ public class MCTSPlayer : Player
     {
         new UpdatePlaceableTroops(player).execute();
         new TradeInAnyCards(player).execute();
-        ITerritoryPlayerView[] myTerritories = state.Map().GetOwnedTerritories(player);
-        while (player.GetPlaceableTroopNumber() > 0)
-        {
-            float maxRatio = 0;
-            ITerritoryPlayerView toDeploy = myTerritories[UnityEngine.Random.Range(0, myTerritories.Length)];
-            for (int i = 0; i < myTerritories.Length; i++)
-            {
-                float ratio = TroopRatio(myTerritories[i], state, player);
-                if (ratio > maxRatio)
-                {
-                    maxRatio = ratio;
-                    toDeploy = myTerritories[i];
-                }
-            }
-            new Deploy(player, toDeploy).execute();
-        }
+        Strategies.Deploy_FavouriteContinent(state, player);
         if (state.turnStage == TurnStage.Deploy)
         {
             state.turnStage = TurnStage.Attack;

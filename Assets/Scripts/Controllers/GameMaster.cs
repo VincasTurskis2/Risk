@@ -23,6 +23,7 @@ public class GameMaster : MonoBehaviour
     public static int[] ContinentCount = {0, 0, 0, 0, 0, 0};
 
     public bool is2PlayerGame {get; private set;}
+    public bool isSimulation { get; set; } = false;
 
     public float gameTimeElapsedSeconds {get; private set;} = 0;
 
@@ -202,7 +203,7 @@ public class GameMaster : MonoBehaviour
             Debug.Log(state.players[0].GetData().playerName + " Has won!");
             state.terminalState = true;
             {
-                UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
+                //UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
             }
         }
     }

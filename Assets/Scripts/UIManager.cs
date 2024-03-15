@@ -158,36 +158,39 @@ public class UIManager : MonoBehaviour
     }
     public void DisplayAttackPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        _attackPanel.SetActive(true);
-        _cumulativeAttackerLoss = 0;
-        _cumulativeDefenderLoss = 0;
-        _resultText.gameObject.SetActive(false);
-        _endStageButton.gameObject.SetActive(false);
-        _occupyTroopSlider.gameObject.SetActive(false);
-        _cardUIManager.gameObject.SetActive(false);
-        _retreatButton.interactable = true;
-        _attackButton.interactable = true;
-        _attackPanelTitle.SetText("Battle for " + to.TerritoryName);
-        _attackButtonText.SetText("Attack!");
+        if(GameMaster.Instance.isSimulation == false)
+        {
+            _attackPanel.SetActive(true);
+            _cumulativeAttackerLoss = 0;
+            _cumulativeDefenderLoss = 0;
+            _resultText.gameObject.SetActive(false);
+            _endStageButton.gameObject.SetActive(false);
+            _occupyTroopSlider.gameObject.SetActive(false);
+            _cardUIManager.gameObject.SetActive(false);
+            _retreatButton.interactable = true;
+            _attackButton.interactable = true;
+            _attackPanelTitle.SetText("Battle for " + to.TerritoryName);
+            _attackButtonText.SetText("Attack!");
 
-        _attackerName.SetText("Attacker: " + from.GetOwner());
-        _attackerOrigin.SetText("(" + from.TerritoryName + ")");
-        _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
+            _attackerName.SetText("Attacker: " + from.GetOwner());
+            _attackerOrigin.SetText("(" + from.TerritoryName + ")");
+            _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
 
-        _defenderName.SetText("Defender: " + to.GetOwner());
-        _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
+            _defenderName.SetText("Defender: " + to.GetOwner());
+            _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
 
-        _attackerDice.SetText("Dice rolled: {}");
-        _attackerTroopLoss.SetText("Troops lost: 0");
-        _attackerTotalLoss.SetText("Total troops lost: " + _cumulativeAttackerLoss);
+            _attackerDice.SetText("Dice rolled: {}");
+            _attackerTroopLoss.SetText("Troops lost: 0");
+            _attackerTotalLoss.SetText("Total troops lost: " + _cumulativeAttackerLoss);
 
-        _defenderDice.SetText("Dice rolled: {}");
-        _defenderTroopLoss.SetText("Troops lost: 0");
-        _defenderTotalLoss.SetText("Total troops lost: " + _cumulativeDefenderLoss);
+            _defenderDice.SetText("Dice rolled: {}");
+            _defenderTroopLoss.SetText("Troops lost: 0");
+            _defenderTotalLoss.SetText("Total troops lost: " + _cumulativeDefenderLoss);
 
-        _attackButton.onClick.RemoveAllListeners();
-        _attackButton.onClick.AddListener(delegate {Attack(from, to);});
-        PanelOverlayIsDisplayed = true;
+            _attackButton.onClick.RemoveAllListeners();
+            _attackButton.onClick.AddListener(delegate {Attack(from, to);});
+            PanelOverlayIsDisplayed = true;
+        }
     }
     public void HideAttackPanel()
     {
@@ -200,47 +203,53 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateAttackPanelNumbers(int[][] diceRolls, int[]diceRollResults)
     {
-        _attackerDice.SetText("Dice rolled: " + Helpers.IntArrayToString(diceRolls[0]));
-        _attackerTroopLoss.SetText("Troops lost: " + diceRollResults[0]);
-        _cumulativeAttackerLoss += diceRollResults[0];
-        _attackerTotalLoss.SetText("Total troops lost: " + _cumulativeAttackerLoss);
+        if (GameMaster.Instance.isSimulation == false)
+        {
+            _attackerDice.SetText("Dice rolled: " + Helpers.IntArrayToString(diceRolls[0]));
+            _attackerTroopLoss.SetText("Troops lost: " + diceRollResults[0]);
+            _cumulativeAttackerLoss += diceRollResults[0];
+            _attackerTotalLoss.SetText("Total troops lost: " + _cumulativeAttackerLoss);
 
-        _defenderDice.SetText("Dice rolled: " + Helpers.IntArrayToString(diceRolls[1]));
-        _defenderTroopLoss.SetText("Troops lost: " + diceRollResults[1]);
-        _cumulativeDefenderLoss += diceRollResults[1];
-        _defenderTotalLoss.SetText("Total troops lost: " + _cumulativeDefenderLoss);
-        _occupyTroopSlider.minValue = diceRollResults[2];
+            _defenderDice.SetText("Dice rolled: " + Helpers.IntArrayToString(diceRolls[1]));
+            _defenderTroopLoss.SetText("Troops lost: " + diceRollResults[1]);
+            _cumulativeDefenderLoss += diceRollResults[1];
+            _defenderTotalLoss.SetText("Total troops lost: " + _cumulativeDefenderLoss);
+            _occupyTroopSlider.minValue = diceRollResults[2];
+        }
     }
     public void UpdateAttackPanelResults(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
-        _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
-        if(from.TroopCount == 1)
+        if (GameMaster.Instance.isSimulation == false)
         {
-            _resultText.SetText("Defeat!");
-            _resultText.gameObject.SetActive(true);
-            _attackButton.interactable = false;
-            _retreatButton.interactable = true;
-        }
-        if(to.TroopCount == 0)
-        {
-            _resultText.SetText("Victory!");
-            _resultText.gameObject.SetActive(true);
-            _retreatButton.interactable = false;
-            _attackButtonText.SetText("Confirm");
+            _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
+            _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
+            if(from.TroopCount == 1)
+            {
+                _resultText.SetText("Defeat!");
+                _resultText.gameObject.SetActive(true);
+                _attackButton.interactable = false;
+                _retreatButton.interactable = true;
+            }
+            if(to.TroopCount == 0)
+            {
+                _resultText.SetText("Victory!");
+                _resultText.gameObject.SetActive(true);
+                _retreatButton.interactable = false;
+                _attackButtonText.SetText("Confirm");
 
-            _occupyTroopSlider.maxValue = from.TroopCount - 1;
-            _occupyTroopSliderMinText.SetText(_occupyTroopSlider.minValue.ToString());
-            _occupyTroopSliderMaxText.SetText(_occupyTroopSlider.maxValue.ToString());
+                _occupyTroopSlider.maxValue = from.TroopCount - 1;
+                _occupyTroopSliderMinText.SetText(_occupyTroopSlider.minValue.ToString());
+                _occupyTroopSliderMaxText.SetText(_occupyTroopSlider.maxValue.ToString());
             
-            _occupyTroopSlider.value = _occupyTroopSlider.maxValue;
-            _occupyTroopInputField.text = _occupyTroopSlider.value.ToString();
+                _occupyTroopSlider.value = _occupyTroopSlider.maxValue;
+                _occupyTroopInputField.text = _occupyTroopSlider.value.ToString();
 
-            _occupyTroopSlider.gameObject.SetActive(true);
+                _occupyTroopSlider.gameObject.SetActive(true);
 
-            _attackButton.onClick.RemoveAllListeners();
-            _attackButton.onClick.AddListener(delegate {Occupy(from, to, (int)_occupyTroopSlider.value);});
-            _attackButton.onClick.AddListener(delegate {HideAttackPanel();});
+                _attackButton.onClick.RemoveAllListeners();
+                _attackButton.onClick.AddListener(delegate {Occupy(from, to, (int)_occupyTroopSlider.value);});
+                _attackButton.onClick.AddListener(delegate {HideAttackPanel();});
+            }
         }
     }
     public void HideFortifyPanel()
@@ -251,21 +260,27 @@ public class UIManager : MonoBehaviour
     }
     public void DisplayFortifyPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        _endStageButton.interactable = false;
-        _fortifySliderPanel.SetActive(true);
-        _fortifySlider.maxValue = from.TroopCount - 1;
-        _fortifySlider.value = _fortifySlider.maxValue;
-        _fortifySliderMaxText.text = _fortifySlider.maxValue.ToString();
-        _fortifySliderInputField.text = _fortifySlider.value.ToString();
-        _fortifySliderConfirmButton.onClick.RemoveAllListeners();
-        _fortifySliderConfirmButton.onClick.AddListener(delegate {Fortify(from, to, (int)_fortifySlider.value);});
-        _fortifySliderConfirmButton.onClick.AddListener(delegate {HideFortifyPanel();});
-        PanelOverlayIsDisplayed = true;
+        if (GameMaster.Instance.isSimulation == false)
+        {
+            _endStageButton.interactable = false;
+            _fortifySliderPanel.SetActive(true);
+            _fortifySlider.maxValue = from.TroopCount - 1;
+            _fortifySlider.value = _fortifySlider.maxValue;
+            _fortifySliderMaxText.text = _fortifySlider.maxValue.ToString();
+            _fortifySliderInputField.text = _fortifySlider.value.ToString();
+            _fortifySliderConfirmButton.onClick.RemoveAllListeners();
+            _fortifySliderConfirmButton.onClick.AddListener(delegate {Fortify(from, to, (int)_fortifySlider.value);});
+            _fortifySliderConfirmButton.onClick.AddListener(delegate {HideFortifyPanel();});
+            PanelOverlayIsDisplayed = true;
+        }
     }
 
     public void AddCardToPanel(TerritoryCard card)
     {
-        _cardUIManager.AddCard(card);
+        if (GameMaster.Instance.isSimulation == false)
+        {
+            _cardUIManager.AddCard(card);
+        }
     }
     public void RedrawCardPanel(Player player)
     {
@@ -278,23 +293,26 @@ public class UIManager : MonoBehaviour
 
     public void DisplayVictoryPanel(string winnerName, int turnCount, float gameTimeSeconds)
     {
-        HideAttackPanel();
-        HideFortifyPanel();
-        _currentPlayerText.transform.parent.gameObject.SetActive(false);
-        _currentStageText.transform.parent.gameObject.SetActive(false);
-        _endStageButton.gameObject.SetActive(false);
-        _cardUIManager.gameObject.SetActive(false);
-        PanelOverlayIsDisplayed = true;
+        if (GameMaster.Instance.isSimulation == false)
+        {
+            HideAttackPanel();
+            HideFortifyPanel();
+            _currentPlayerText.transform.parent.gameObject.SetActive(false);
+            _currentStageText.transform.parent.gameObject.SetActive(false);
+            _endStageButton.gameObject.SetActive(false);
+            _cardUIManager.gameObject.SetActive(false);
+            PanelOverlayIsDisplayed = true;
 
-        _winnerText.text = winnerName + " wins!";
+            _winnerText.text = winnerName + " wins!";
 
-        _turnCount.text = "" + turnCount;
+            _turnCount.text = "" + turnCount;
 
-        string timeString = String.Format("{0:00}:{1:00}:{2:00}", (int) gameTimeSeconds / 3600, (int) gameTimeSeconds/60, (int) gameTimeSeconds % 60);
+            string timeString = String.Format("{0:00}:{1:00}:{2:00}", (int) gameTimeSeconds / 3600, (int) gameTimeSeconds/60, (int) gameTimeSeconds % 60);
 
-        _gameTimeText.text = timeString;
+            _gameTimeText.text = timeString;
 
-        _winLosePanel.SetActive(true);
+            _winLosePanel.SetActive(true);
+        }
     }
     public void BackToMainMenu()
     {

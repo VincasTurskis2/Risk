@@ -82,8 +82,6 @@ public class TradeInAnyCards : PlayerAction
                 }
             }
         }
-        new DiscardCards(player, cards).execute();
-        GameMaster.Instance.state.cardSetRewardStage++;
         return result;
     }
 }
