@@ -8,10 +8,10 @@ using System;
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 10;
+    public int maxNumOfIterations = 4000;
     //C = 0.5 because Limer et al. suggests so.
-    public double C = 0.5;
-    public int depth = 1000;
+    public double C = 0.4;
+    public int depth = 3;
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
@@ -139,10 +139,18 @@ public class MCTSPlayer : Player
         while (curIterationNo < maxNumOfIterations)//(curTime < timeForSearch)
         {
             GameStateTreeNode nodeToExplore = Select(root);
-            var expandedNode = nodeToExplore.Expand();
+            var expandedNode = nodeToExplore.Expand(nodeToExplore.state.players[nodeToExplore.state.currentPlayerNo]);
             float newResult = Simulate(expandedNode);
             Backpropagate(expandedNode, newResult);
-            curIterationNo++;
+            if(curIterationNo % 50 == 0)
+            {
+                //for debugging
+                curIterationNo++;
+            }
+            else
+            {
+                curIterationNo++;
+            }
         }
         var curNode = root;
         while (curNode.sourceMove != null || curNode.parent == null)
@@ -217,8 +225,11 @@ public class MCTSPlayer : Player
 
     public float Simulate(GameStateTreeNode node)
     {
-        GameState originalState = (GameState)_gameState;
+        // Save the real active game state
+        GameState originalState = GameMaster.Instance.state;
+        // Create a clone that will be simulated on
         GameState curState = new GameState(node.state);
+
         GameMaster.Instance.state = curState;
         GameMaster.Instance.isSimulation = true;
         int curDepth = 0;
@@ -246,6 +257,7 @@ public class MCTSPlayer : Player
         // Finish the current turn
         for (int i = curState.currentPlayerNo; i < curState.players.Length; i++)
         {
+            curState.players[i].SetMyTurn(true);
             if (curState.players[i].GetType() != typeof(NeutralArmyPlayer))
             {
                 SimulationDeploy(curState.players[i], curState);
@@ -261,18 +273,24 @@ public class MCTSPlayer : Player
                 }
             }
             SimulationReinforce(curState.players[i], curState);
+            curState.players[i].SetMyTurn(false);
             i += 1;
             cardEligible = false;
         }
         curDepth += 1;
-        while (curDepth < depth || curState.map.GetOwnedTerritories(toSimulate).Length == 0 || curState.terminalState == true)
+        while (curDepth < depth && curState.map.GetOwnedTerritories(toSimulate).Length != 0 && curState.terminalState != true)
         {
             for (int i = 0; i < curState.players.Length; i++)
             {
+                curState.players[i].SetMyTurn(true);
                 if (curState.players[i].GetType() != typeof(NeutralArmyPlayer))
                 {
                     SimulationDeploy(curState.players[i], curState);
                     cardEligible = SimulationAttack(curState.players[i], curState);
+                    if (curState.terminalState == true)
+                    {
+                        break;
+                    }
                     if (cardEligible)
                     {
                         List<TerritoryCard> newCard = new()
@@ -290,12 +308,17 @@ public class MCTSPlayer : Player
                     i = 0;
                 }
                 cardEligible = false;
+                curState.players[i].SetMyTurn(false);
             }
             curDepth += 1;
         }
         if(curState.terminalState == true)
         {
-            Debug.Log("Reached the end");
+            Debug.Log("Reached the end at depth " + curDepth);
+        }
+        if(curState.map.GetOwnedTerritories(toSimulate).Length == 0)
+        {
+            Debug.Log("Lost at depth " + curDepth);
         }
         float result = heuristicEvaluation(curState, toSimulate);
         GameMaster.Instance.state = originalState;

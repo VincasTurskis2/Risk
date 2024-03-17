@@ -72,13 +72,13 @@ public class GameStateTreeNode
         return AddChild(newState, attack);
     }
 
-    public GameStateTreeNode Expand()
+    public GameStateTreeNode Expand(Player player)
     {
         if(fullyExpanded)
         {
             return this;
         }
-        var possibleAttacks = state.getAllPossibleAttacks();
+        var possibleAttacks = state.getAllPossibleAttacks(player);
         possibleAttacks.Add(null);
         var attacks = new List<Attack>(possibleAttacks);
         foreach(var child in children)

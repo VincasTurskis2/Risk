@@ -73,10 +73,10 @@ public class GameState : IGameStatePlayerView
         return getPlayerFromName(playerName);
     }
 
-    public List<Attack> getAllPossibleAttacks()
+    public List<Attack> getAllPossibleAttacks(Player player)
     {
         List<Attack> result = new();
-        ITerritoryPlayerView[] curPlayerTerritories = map.GetOwnedTerritories(players[currentPlayerNo]);
+        ITerritoryPlayerView[] curPlayerTerritories = map.GetOwnedTerritories(player);
         for(int i = 0; i < curPlayerTerritories.Length; i++)
         {
             TerritoryData curTerritory = (TerritoryData) curPlayerTerritories[i];
@@ -88,5 +88,9 @@ public class GameState : IGameStatePlayerView
             }
         }
         return result;
+    }
+    public List<Attack> getAllPossibleAttacks()
+    {
+        return getAllPossibleAttacks(players[currentPlayerNo]);
     }
 }

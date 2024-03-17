@@ -41,6 +41,7 @@ public class Attack : PlayerAction
         {
             UIManager.Instance.UpdateAttackPanelResults(from, to);
         }
+        Debug.Log("Succeeded an attack");
         return true;
     }
     private int[] RollDice(TerritoryData from, TerritoryData to)

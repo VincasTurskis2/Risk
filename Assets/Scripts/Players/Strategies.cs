@@ -21,7 +21,7 @@ public static class Strategies
     private static float TroopRatio(ITerritoryPlayerView territory, GameState gameState, Player player)
     {
         int neighborTroopCount = NeighboringTroops(territory, gameState, player);
-        float ratio = neighborTroopCount / territory.TroopCount;
+        float ratio = (float) neighborTroopCount / territory.TroopCount;
         return ratio;
     }
     public static void Deploy_MostThreatenedBorder(GameState state, Player player)
@@ -48,16 +48,15 @@ public static class Strategies
                 Debug.Log("Failed!");
             }*/
         }
-        if (state.turnStage == TurnStage.Deploy)
+        if (GameMaster.Instance.isSimulation)
         {
-            Debug.Log("Manually ending turn stage");
-            new EndTurnStage(player).execute();
+            state.turnStage = TurnStage.Attack;
         }
     }
     public static void Deploy_FavouriteContinent(GameState state, Player player)
     {
         int[] ownTroopsAtContinent = new int[6], totalTroopsAtContinent = new int[6];
-        List<TerritoryData>[] continentTerritories = new List<TerritoryData>[6];
+        HashSet<TerritoryData>[] continentTerritories = new HashSet<TerritoryData>[6];
         for (int i = 0; i < 6; i++)
         {
             continentTerritories[i] = new();
@@ -73,14 +72,13 @@ public static class Strategies
             }
             foreach (TerritoryData neighbour in state.map.GetRawTerritories(territory.GetNeighbors()))
             {
-                if(neighbour.Continent != c)
+                if (neighbour.Continent != c)
                 {
-                    int newC = (int)neighbour.Continent;
-                    continentTerritories[newC].Add(neighbour);
-                    totalTroopsAtContinent[newC] += neighbour.TroopCount;
+                    //continentTerritories[(int)c].Add(neighbour);
+                    totalTroopsAtContinent[(int)c] += neighbour.TroopCount;
                     if (neighbour.Owner.Equals(player.GetData().playerName))
                     {
-                        ownTroopsAtContinent[newC] += neighbour.TroopCount;
+                        ownTroopsAtContinent[(int)c] += neighbour.TroopCount;
                     }
                 }
             }
@@ -104,7 +102,12 @@ public static class Strategies
         while (success)
         {
             float maxRatio = 0;
-            ITerritoryPlayerView toDeploy = ownedTerritories[UnityEngine.Random.Range(0, ownedTerritories.Length)];
+            if (ownedTerritories.Length == 0)
+            {
+                Debug.Log(player.GetData().playerName + " has attempted to deploy troops, even though they have no territories");
+                return;
+            }
+            ITerritoryPlayerView toDeploy = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
             for (int i = 0; i < ownedTerritories.Length; i++)
             {
                 if (ownedTerritories[i].Owner.Equals(player.GetData().playerName))
@@ -124,17 +127,20 @@ public static class Strategies
                 Debug.Log("Failed!");
             }*/
         }
-        if (state.turnStage == TurnStage.Deploy)
+        if (GameMaster.Instance.isSimulation)
         {
-            Debug.Log("Manually ending turn stage");
-            new EndTurnStage(player).execute();
+            state.turnStage = TurnStage.Attack;
         }
     }
 
     public static bool Attack_RandomInFavouriteContinent(GameState state, Player player)
     {
+        if(state.turnStage != TurnStage.Attack)
+        {
+            return player.IsCardEligible();
+        }
         int[] ownTroopsAtContinent = new int[6], totalTroopsAtContinent = new int[6];
-        List<TerritoryData>[] continentTerritories = new List<TerritoryData>[6];
+        HashSet<TerritoryData>[] continentTerritories = new HashSet<TerritoryData>[6];
         for (int i = 0; i < 6; i++)
         {
             continentTerritories[i] = new();
@@ -152,12 +158,11 @@ public static class Strategies
             {
                 if (neighbour.Continent != c)
                 {
-                    int newC = (int)neighbour.Continent;
-                    continentTerritories[newC].Add(neighbour);
-                    totalTroopsAtContinent[newC] += neighbour.TroopCount;
+                    continentTerritories[(int)c].Add(neighbour);
+                    totalTroopsAtContinent[(int)c] += neighbour.TroopCount;
                     if (neighbour.Owner.Equals(player.GetData().playerName))
                     {
-                        ownTroopsAtContinent[newC] += neighbour.TroopCount;
+                        ownTroopsAtContinent[(int)c] += neighbour.TroopCount;
                     }
                 }
             }
@@ -176,7 +181,11 @@ public static class Strategies
         }
         // Attack randomly in the favourite continent
         bool cardEligible = false;
-        List<Attack> possibleAttacks = state.getAllPossibleAttacks().Where(x => continentTerritories[maxI].Contains(x.ITo)).ToList();
+        List<Attack> possibleAttacks = state.getAllPossibleAttacks(player).Where(x => continentTerritories[maxI].Contains(x.ITo)).ToList();
+        if (possibleAttacks.Count == 0)
+        {
+            possibleAttacks = state.getAllPossibleAttacks(player);
+        }
         possibleAttacks.Add(null);
         var rand = new System.Random();
         int index = rand.Next(0, possibleAttacks.Count);
@@ -195,11 +204,16 @@ public static class Strategies
                 new Occupy(player, attack.IFrom, attack.ITo, attack.IFrom.TroopCount - 1).execute();
                 cardEligible = true;
             }
-            possibleAttacks = state.getAllPossibleAttacks().Where(x => x.ITo.Continent == (Continent)maxI).ToList();
+            possibleAttacks = state.getAllPossibleAttacks(player).Where(x => x.ITo.Continent == (Continent)maxI).ToList();
+            if (possibleAttacks.Count == 0)
+            {
+                possibleAttacks = state.getAllPossibleAttacks(player);
+            }
             possibleAttacks.Add(null);
             index = rand.Next(0, possibleAttacks.Count);
         }
         state.turnStage = TurnStage.Reinforce;
+        Debug.Log("Attacking in the simulation");
         return cardEligible;
     }
 }

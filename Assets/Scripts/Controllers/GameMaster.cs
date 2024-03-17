@@ -172,10 +172,10 @@ public class GameMaster : MonoBehaviour
     {
         if(state.map.GetOwnedTerritories(player).Length != 0) return;
         Debug.Log(player.GetData().playerName + " has lost!");
-        if(player.IsMyTurn())
+        /*if(player.IsMyTurn())
         {
             player.EndTurn();
-        }
+        }*/
         List<Player> newplayers = new();
         int loserNo = 0;
         for(int i = 0; i < state.players.Length; i++)
@@ -202,8 +202,9 @@ public class GameMaster : MonoBehaviour
         {
             Debug.Log(state.players[0].GetData().playerName + " Has won!");
             state.terminalState = true;
+            if(!isSimulation)
             {
-                //UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
+                UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
             }
         }
     }

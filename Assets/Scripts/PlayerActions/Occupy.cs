@@ -1,3 +1,4 @@
+using UnityEngine;
 public class Occupy : PlayerAction
 {
     public readonly ITerritoryPlayerView IFrom;
@@ -17,13 +18,36 @@ public class Occupy : PlayerAction
         TerritoryData from = (TerritoryData) IFrom, to = (TerritoryData) ITo;
 
         // Guards
-        if(from == null || to == null || numberOfTroops < 1) return false;
-        if(!GameMaster.Instance.state.getPlayerFromName(from.Owner).IsMyTurn()) return false;
-        if(numberOfTroops >= from.TroopCount) return false;
-        if(!from.IsANeighbor(to)) return false;
-        if(to.Owner != from.Owner) return false;
-        if(to.TroopCount != 0) return false;
-        if(GameMaster.Instance.state.turnStage != TurnStage.Attack) return false;
+        if (from == null || to == null || numberOfTroops < 1)
+        {
+            Debug.Log("Occupy failed");
+            return false;
+        }
+        if (numberOfTroops >= from.TroopCount)
+        {
+            Debug.Log("Occupy failed");
+            return false;
+        }
+        if (!from.IsANeighbor(to))
+        {
+            Debug.Log("Occupy failed");
+            return false;
+        }
+        if (to.Owner != from.Owner)
+        {
+            Debug.Log("Occupy failed");
+            return false;
+        }
+        if (to.TroopCount != 0)
+        {
+            Debug.Log("Occupy failed");
+            return false;
+        }
+        if (GameMaster.Instance.state.turnStage != TurnStage.Attack)
+        {
+            Debug.Log("Occupy failed");
+            return false;
+        }
 
         from.TroopCount -= numberOfTroops;
         to.TroopCount += numberOfTroops;

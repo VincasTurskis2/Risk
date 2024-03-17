@@ -9,7 +9,6 @@ public class DiscardCards : PlayerAction
     public override bool execute()
     {    
         if(caller == null) return false;
-        if(!caller.IsMyTurn()) return false;
         for(int i = 0; i < cardsToDiscard.Length; i++)
         {
             if(caller.GetCardHand().Contains(cardsToDiscard[i]))

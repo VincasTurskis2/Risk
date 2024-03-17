@@ -70,8 +70,15 @@ public class TradeInAnyCards : PlayerAction
         }
         if(!matching3 && !different3) return 0;
 
-        result += GameMaster.CardSetRewards[GameMaster.Instance.state.cardSetRewardStage];
-        for(int i = 0; i < 3; i++)
+        if (GameMaster.Instance.state.cardSetRewardStage >= GameMaster.CardSetRewards.Length)
+        {
+            result += (GameMaster.Instance.state.cardSetRewardStage - 2) * 4;
+        }
+        else
+        {
+            result += GameMaster.CardSetRewards[GameMaster.Instance.state.cardSetRewardStage];
+        }
+        for (int i = 0; i < 3; i++)
         {
             if(cards[i].ReferencedTerritory != null)
             {

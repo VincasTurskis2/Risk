@@ -74,6 +74,11 @@ public abstract class Player : IOtherPlayer
     {
         return _isMyTurn;
     }
+    public void SetMyTurn(bool set)
+    {
+
+        _isMyTurn = set;
+    }
     public int GetPlaceableTroopNumber()
     {
         return _placeableTroops;
