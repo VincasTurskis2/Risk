@@ -93,6 +93,89 @@
       \field{note}{Accessed: 2024-03-06}
       \field{title}{Risk: The World Conquest Game}
     \endentry
+    \entry{kocsis2006bandit}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=38e4d8f3816645f33342266d60a42d10}{%
+           family={Kocsis},
+           familyi={K\bibinitperiod},
+           given={Levente},
+           giveni={L\bibinitperiod}}}%
+        {{hash=98b0d29966f947460b3eb25590bfa7b5}{%
+           family={Szepesvári},
+           familyi={S\bibinitperiod},
+           given={Csaba},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{d2a501acf3375269bdf09c94a3f59cae}
+      \strng{fullhash}{d2a501acf3375269bdf09c94a3f59cae}
+      \strng{bibnamehash}{d2a501acf3375269bdf09c94a3f59cae}
+      \strng{authorbibnamehash}{d2a501acf3375269bdf09c94a3f59cae}
+      \strng{authornamehash}{d2a501acf3375269bdf09c94a3f59cae}
+      \strng{authorfullhash}{d2a501acf3375269bdf09c94a3f59cae}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{European conference on machine learning}
+      \field{title}{Bandit based monte-carlo planning}
+      \field{year}{2006}
+      \field{pages}{282\bibrangedash 293}
+      \range{pages}{12}
+    \endentry
+    \entry{kowalski2022split}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=b47b2257910a78899ec9e06b901e278d}{%
+           family={Kowalski},
+           familyi={K\bibinitperiod},
+           given={Jakub},
+           giveni={J\bibinitperiod}}}%
+        {{hash=c1971b3d93c97428c89bfee7779c1d28}{%
+           family={Mika},
+           familyi={M\bibinitperiod},
+           given={Maksymilian},
+           giveni={M\bibinitperiod}}}%
+        {{hash=7c95b3e95a8ba6153f261c0add810c51}{%
+           family={Pawlik},
+           familyi={P\bibinitperiod},
+           given={Wojciech},
+           giveni={W\bibinitperiod}}}%
+        {{hash=9242996a35568315c537946035d56d52}{%
+           family={Sutowicz},
+           familyi={S\bibinitperiod},
+           given={Jakub},
+           giveni={J\bibinitperiod}}}%
+        {{hash=de872687a12ef1d90780d9cd78fbff7a}{%
+           family={Szyku{ł}a},
+           familyi={S\bibinitperiod},
+           given={Marek},
+           giveni={M\bibinitperiod}}}%
+        {{hash=2c22dd9c8e5834d56c396ce5ade81b81}{%
+           family={Winands},
+           familyi={W\bibinitperiod},
+           given={Mark\bibnamedelima HM},
+           giveni={M\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \strng{namehash}{9042727c1d5911ee0c712da1d8413efa}
+      \strng{fullhash}{bf6a5cb35f8fa1800371a11bc8f833cc}
+      \strng{bibnamehash}{9042727c1d5911ee0c712da1d8413efa}
+      \strng{authorbibnamehash}{9042727c1d5911ee0c712da1d8413efa}
+      \strng{authornamehash}{9042727c1d5911ee0c712da1d8413efa}
+      \strng{authorfullhash}{bf6a5cb35f8fa1800371a11bc8f833cc}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the AAAI Conference on Artificial Intelligence}
+      \field{number}{9}
+      \field{title}{Split Moves for Monte-Carlo Tree Search}
+      \field{volume}{36}
+      \field{year}{2022}
+      \field{pages}{10247\bibrangedash 10255}
+      \range{pages}{9}
+    \endentry
     \entry{limer2020monte}{misc}{}
       \name{author}{3}{}{%
         {{hash=0bb9bc2b8953ab273b387e4d07f116a0}{%
