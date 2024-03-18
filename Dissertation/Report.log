@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.2.6)  18 MAR 2024 01:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.2.6)  18 MAR 2024 01:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -519,21 +519,24 @@ Package biblatex Info: ... file 'Report.bbl' found.
  (Report.bbl)
 Package biblatex Info: Reference section=0 on input line 16.
 Package biblatex Info: Reference segment=0 on input line 16.
- (Report.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 17.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 17.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 17.
+ [1
+
+{C:/Users/Vincas/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] (Report.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <10.95> on input line 3.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 3.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 3.
 )
 \tf@toc=\write4
 \openout4 = `Report.toc'.
 
  [1
 
-
-{C:/Users/Vincas/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+]
 Chapter 1.
 (Background.tex [2
 
@@ -550,20 +553,20 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [7
 
 ]
-<./Images/player_select_menu.png, id=33, 1541.76pt x 867.24pt>
+<./Images/player_select_menu.png, id=38, 1541.76pt x 867.24pt>
 File: ./Images/player_select_menu.png Graphic file (type png)
 <use ./Images/player_select_menu.png>
 Package pdftex.def Info: ./Images/player_select_menu.png  used on input line 28
 .
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
  [8]
-<./Images/game_screen.png, id=37, 1541.76pt x 867.24pt>
+<./Images/game_screen.png, id=42, 1541.76pt x 867.24pt>
 File: ./Images/game_screen.png Graphic file (type png)
 <use ./Images/game_screen.png>
 Package pdftex.def Info: ./Images/game_screen.png  used on input line 34.
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
  [9 <./Images/player_select_menu.png> <./Images/game_screen.png>]
-<./Images/project_class_architecture_updated.png, id=41, 954.56625pt x 693.5912
+<./Images/project_class_architecture_updated.png, id=46, 954.56625pt x 693.5912
 5pt>
 File: ./Images/project_class_architecture_updated.png Graphic file (type png)
 <use ./Images/project_class_architecture_updated.png>
@@ -585,7 +588,7 @@ Chapter 6.
 [16
 
 ]
-Overfull \hbox (8.8345pt too wide) in paragraph at lines 37--37
+Overfull \hbox (8.8345pt too wide) in paragraph at lines 38--38
 []\OT1/cmr/m/n/10.95 R^^Semi Coulom. \  Ef-fi-cient se-lec-tiv-ity and backup o
 p-er-a-tors in Monte-Carlo tree search".
  []
@@ -602,28 +605,30 @@ Package logreq Info: Writing requests to 'Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 11740 strings out of 474541
- 224107 string characters out of 5743954
+ 11751 strings out of 474541
+ 224351 string characters out of 5743954
  1934978 words of memory out of 5000000
- 33860 multiletter control sequences out of 15000+600000
- 565606 words of font info for 61 fonts, out of 8000000 for 9000
+ 33870 multiletter control sequences out of 15000+600000
+ 566520 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,8n,81p,1591b,1791s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 66i,8n,81p,1591b,1783s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Vincas\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcr
 m1095.pk><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
 onts/cm/cmbx10.pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmbx12.pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fon
 ts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/Vincas/AppData/Local/Programs
 /MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Vincas/AppData/Local
-/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Vincas/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Vinc
-as/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Us
-ers/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.
+/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Vincas/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Vi
+ncas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/
+Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.
 pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
-cm/cmtt10.pfb>
-Output written on Report.pdf (17 pages, 717858 bytes).
+cm/cmr9.pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmti10.pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX/fonts/type
+1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Report.pdf (18 pages, 744098 bytes).
 PDF statistics:
- 112 PDF objects out of 1000 (max. 8388607)
+ 125 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

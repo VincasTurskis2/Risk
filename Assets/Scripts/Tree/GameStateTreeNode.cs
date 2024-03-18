@@ -52,21 +52,28 @@ public class GameStateTreeNode
         }
         var from = newState.map.GetRawTerritory(attack.IFrom.TerritoryName);
         var to = newState.map.GetRawTerritory(attack.ITo.TerritoryName);
-        if(from.TroopCount <= to.TroopCount)
+        int attackingTroops = from.TroopCount - 1, defendingTroops = to.TroopCount;
+        int attackingLosses = Math.Abs(attackingTroops - defendingTroops);
+        int defendingLosses = 0;
+        if (attackingTroops >= 3)
         {
-            to.TroopCount = to.TroopCount - from.TroopCount + 1;
-            from.TroopCount = 1;
+            defendingLosses = (int)Math.Round(attackingLosses * 1.17176f);
         }
-        else if(from.TroopCount == to.TroopCount + 1)
+        else defendingLosses = attackingLosses;
+        if(attackingLosses == defendingLosses)
         {
-            to.SetOwner(newState.getPlayerFromName(from.Owner), true);
             to.TroopCount = 1;
             from.TroopCount = 1;
+        }
+        else if(attackingLosses > defendingLosses)
+        {
+            from.TroopCount = 1;
+            to.TroopCount = Math.Max(1, to.TroopCount - defendingLosses);
         }
         else
         {
             to.SetOwner(newState.getPlayerFromName(from.Owner), true);
-            to.TroopCount = from.TroopCount - to.TroopCount - 1;
+            to.TroopCount = Math.Max(1, to.TroopCount - attackingLosses);
             from.TroopCount = 1;
         }
         return AddChild(newState, attack);
