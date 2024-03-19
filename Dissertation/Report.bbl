@@ -93,6 +93,40 @@
       \field{note}{Accessed: 2024-03-06}
       \field{title}{Risk: The World Conquest Game}
     \endentry
+    \entry{knuth1975analysis}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
+           family={Knuth},
+           familyi={K\bibinitperiod},
+           given={Donald\bibnamedelima E},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=81030bd2d606ce21bb3917e24893e629}{%
+           family={Moore},
+           familyi={M\bibinitperiod},
+           given={Ronald\bibnamedelima W},
+           giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{bbca34483b18c3d7fbc8988fdf317c28}
+      \strng{fullhash}{bbca34483b18c3d7fbc8988fdf317c28}
+      \strng{bibnamehash}{bbca34483b18c3d7fbc8988fdf317c28}
+      \strng{authorbibnamehash}{bbca34483b18c3d7fbc8988fdf317c28}
+      \strng{authornamehash}{bbca34483b18c3d7fbc8988fdf317c28}
+      \strng{authorfullhash}{bbca34483b18c3d7fbc8988fdf317c28}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Artificial intelligence}
+      \field{number}{4}
+      \field{title}{An analysis of alpha-beta pruning}
+      \field{volume}{6}
+      \field{year}{1975}
+      \field{pages}{293\bibrangedash 326}
+      \range{pages}{34}
+    \endentry
     \entry{kocsis2006bandit}{inproceedings}{}
       \name{author}{2}{}{%
         {{hash=38e4d8f3816645f33342266d60a42d10}{%
@@ -206,6 +240,33 @@
       \field{labeltitlesource}{title}
       \field{title}{Monte Carlo Tree Search for Risk}
       \field{year}{2020}
+    \endentry
+    \entry{winands2017monte}{incollection}{}
+      \name{author}{1}{}{%
+        {{hash=2c22dd9c8e5834d56c396ce5ade81b81}{%
+           family={Winands},
+           familyi={W\bibinitperiod},
+           given={Mark\bibnamedelima HM},
+           giveni={M\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{2c22dd9c8e5834d56c396ce5ade81b81}
+      \strng{fullhash}{2c22dd9c8e5834d56c396ce5ade81b81}
+      \strng{bibnamehash}{2c22dd9c8e5834d56c396ce5ade81b81}
+      \strng{authorbibnamehash}{2c22dd9c8e5834d56c396ce5ade81b81}
+      \strng{authornamehash}{2c22dd9c8e5834d56c396ce5ade81b81}
+      \strng{authorfullhash}{2c22dd9c8e5834d56c396ce5ade81b81}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Handbook of Digital Games and Entertainment Technologies}
+      \field{title}{Monte-Carlo tree search in board games}
+      \field{year}{2017}
+      \field{pages}{47\bibrangedash 76}
+      \range{pages}{30}
     \endentry
   \enddatalist
 \endrefsection

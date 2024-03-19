@@ -8,10 +8,10 @@ using System;
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 4000;
+    public int maxNumOfIterations = 5000;
     //C = 0.5 because Limer et al. suggests so.
-    public double C = 0.4;
-    public int depth = 3;
+    public double C = 0.2;
+    public int depth = 6;
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }

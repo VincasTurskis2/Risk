@@ -99,33 +99,28 @@ public static class Strategies
         //Deploy in most threatened border in the favourite continent
         bool success = true;
         var ownedTerritories = continentTerritories[maxI].Where(x => x.Owner.Equals(player.GetData().playerName)).ToArray();
-        while (success)
+        float maxRatio = 0;
+        if (ownedTerritories.Length == 0)
         {
-            float maxRatio = 0;
-            if (ownedTerritories.Length == 0)
+            Debug.Log(player.GetData().playerName + " has attempted to deploy troops, even though they have no territories");
+            return;
+        }
+        ITerritoryPlayerView toDeploy = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
+        for (int i = 0; i < ownedTerritories.Length; i++)
+        {
+            if (ownedTerritories[i].Owner.Equals(player.GetData().playerName))
             {
-                Debug.Log(player.GetData().playerName + " has attempted to deploy troops, even though they have no territories");
-                return;
-            }
-            ITerritoryPlayerView toDeploy = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
-            for (int i = 0; i < ownedTerritories.Length; i++)
-            {
-                if (ownedTerritories[i].Owner.Equals(player.GetData().playerName))
+                float ratio = TroopRatio(ownedTerritories[i], state, player);
+                if (ratio > maxRatio)
                 {
-                    float ratio = TroopRatio(ownedTerritories[i], state, player);
-                    if (ratio > maxRatio)
-                    {
-                        maxRatio = ratio;
-                        toDeploy = ownedTerritories[i];
-                    }
+                    maxRatio = ratio;
+                    toDeploy = ownedTerritories[i];
                 }
             }
-            //Debug.Log(player.GetData().playerName + ": Deploying a troop to " + toDeploy.TerritoryName);
+        }
+        while (success)
+        {
             success = new Deploy(player, toDeploy).execute();
-            /*if (!success)
-            {
-                Debug.Log("Failed!");
-            }*/
         }
         if (GameMaster.Instance.isSimulation)
         {
@@ -181,10 +176,11 @@ public static class Strategies
         }
         // Attack randomly in the favourite continent
         bool cardEligible = false;
-        List<Attack> possibleAttacks = state.getAllPossibleAttacks(player).Where(x => continentTerritories[maxI].Contains(x.ITo)).ToList();
+        List<Attack> legalAttacks = state.getAllPossibleAttacks(player);
+        List<Attack> possibleAttacks = legalAttacks.Where(x => continentTerritories[maxI].Contains(x.ITo)).ToList();
         if (possibleAttacks.Count == 0)
         {
-            possibleAttacks = state.getAllPossibleAttacks(player);
+            possibleAttacks = legalAttacks;
         }
         possibleAttacks.Add(null);
         var rand = new System.Random();
@@ -198,18 +194,22 @@ public static class Strategies
                 attackResult = attack.execute();
             }
             while (attackResult == true);
-
+            possibleAttacks = possibleAttacks.Where(x => x == null || x.IFrom.Equals(attack.IFrom) == false).ToList();
             if (attack.ITo.GetOwner().Equals(attack.IFrom.GetOwner()))
             {
                 new Occupy(player, attack.IFrom, attack.ITo, attack.IFrom.TroopCount - 1).execute();
                 cardEligible = true;
+                if(attack.ITo.TroopCount > 1)
+                {
+                    foreach (var neighbour in state.map.GetRawTerritories(attack.ITo.GetNeighbors()))
+                    {
+                        if(!neighbour.Owner.Equals(player.GetData().playerName))
+                        {
+                            possibleAttacks.Add(new Attack(player, attack.ITo, neighbour));
+                        }
+                    }
+                }
             }
-            possibleAttacks = state.getAllPossibleAttacks(player).Where(x => x.ITo.Continent == (Continent)maxI).ToList();
-            if (possibleAttacks.Count == 0)
-            {
-                possibleAttacks = state.getAllPossibleAttacks(player);
-            }
-            possibleAttacks.Add(null);
             index = rand.Next(0, possibleAttacks.Count);
         }
         state.turnStage = TurnStage.Reinforce;

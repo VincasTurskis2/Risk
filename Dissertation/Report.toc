@@ -3,22 +3,26 @@
 \contentsline {section}{\numberline {1.1}Temp}{2}{}%
 \contentsline {chapter}{\numberline {2}Background}{3}{}%
 \contentsline {section}{\numberline {2.1}Rules of Risk}{3}{}%
-\contentsline {section}{\numberline {2.2}Monte Carlo Tree Search Theory}{4}{}%
-\contentsline {section}{\numberline {2.3}Using MCTS for Risk}{5}{}%
-\contentsline {chapter}{\numberline {3}Design}{7}{}%
-\contentsline {section}{\numberline {3.1}Overview}{7}{}%
-\contentsline {section}{\numberline {3.2}Game Client Design}{7}{}%
-\contentsline {subsection}{\numberline {3.2.1}Game Engine}{7}{}%
-\contentsline {subsection}{\numberline {3.2.2}User Interaction Design}{8}{}%
-\contentsline {subsection}{\numberline {3.2.3}Code Structure}{10}{}%
-\contentsline {section}{\numberline {3.3}Computer Player Design}{11}{}%
-\contentsline {subsection}{\numberline {3.3.1}Approach}{11}{}%
-\contentsline {subsection}{\numberline {3.3.2}Action Pruning}{12}{}%
-\contentsline {chapter}{\numberline {4}Implementation}{13}{}%
-\contentsline {section}{\numberline {4.1}Game Client Implementation}{13}{}%
-\contentsline {subsection}{\numberline {4.1.1}Initial Implementation}{13}{}%
-\contentsline {subsection}{\numberline {4.1.2}Refactoring}{13}{}%
-\contentsline {chapter}{\numberline {5}Testing}{15}{}%
-\contentsline {section}{\numberline {5.1}Temp}{15}{}%
-\contentsline {chapter}{\numberline {6}Conclusion}{16}{}%
-\contentsline {section}{\numberline {6.1}Temp}{16}{}%
+\contentsline {section}{\numberline {2.2}Monte Carlo Tree Search Theory}{5}{}%
+\contentsline {section}{\numberline {2.3}Using MCTS for Risk}{6}{}%
+\contentsline {chapter}{\numberline {3}Design}{8}{}%
+\contentsline {section}{\numberline {3.1}Overview}{8}{}%
+\contentsline {section}{\numberline {3.2}Game Client Design}{8}{}%
+\contentsline {subsection}{\numberline {3.2.1}Game Engine}{8}{}%
+\contentsline {subsection}{\numberline {3.2.2}User Interaction Design}{9}{}%
+\contentsline {subsection}{\numberline {3.2.3}Code Structure}{11}{}%
+\contentsline {section}{\numberline {3.3}Computer Player Design}{12}{}%
+\contentsline {subsection}{\numberline {3.3.1}Approach}{12}{}%
+\contentsline {subsection}{\numberline {3.3.2}Action Pruning}{13}{}%
+\contentsline {chapter}{\numberline {4}Implementation}{14}{}%
+\contentsline {section}{\numberline {4.1}Overview}{14}{}%
+\contentsline {section}{\numberline {4.2}Game Client Implementation}{14}{}%
+\contentsline {subsection}{\numberline {4.2.1}Initial Implementation}{14}{}%
+\contentsline {subsection}{\numberline {4.2.2}Refactoring}{15}{}%
+\contentsline {section}{\numberline {4.3}Computer Player Implementation}{16}{}%
+\contentsline {subsection}{\numberline {4.3.1}Code Structure}{16}{}%
+\contentsline {subsection}{\numberline {4.3.2}Rule-Based Logic}{16}{}%
+\contentsline {chapter}{\numberline {5}Evaluation}{19}{}%
+\contentsline {section}{\numberline {5.1}Temp}{19}{}%
+\contentsline {chapter}{\numberline {6}Conclusion}{20}{}%
+\contentsline {section}{\numberline {6.1}Temp}{20}{}%
