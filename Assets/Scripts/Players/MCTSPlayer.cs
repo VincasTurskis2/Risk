@@ -10,7 +10,7 @@ public class MCTSPlayer : Player
     public float timeForSearch = 1f;
     public int maxNumOfIterations = 5000;
     //C = 0.5 because Limer et al. suggests so.
-    public double C = 0.2;
+    public double C = 0.5;
     public int depth = 6;
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
@@ -25,28 +25,16 @@ public class MCTSPlayer : Player
 
         if (_gameState.turnStage == TurnStage.InitDeploy || _gameState.turnStage == TurnStage.InitReinforce)
         {
-            List<ITerritoryPlayerView> possibleTerritories = _gameState.Map().GetOwnedTerritories(this).ToList();
-            if (_gameState.turnStage == TurnStage.InitDeploy)
-            {
-                possibleTerritories = new List<ITerritoryPlayerView>();
-                foreach (ITerritoryPlayerView t in _gameState.Map().GetTerritories())
-                {
-                    if (t.GetOwner() == null)
-                    {
-                        possibleTerritories.Add(t);
-                    }
-                }
-            }
-            int randomTerritoryNumber = UnityEngine.Random.Range(0, possibleTerritories.Count);
-            bool success = new SetupDeploy(this, possibleTerritories[randomTerritoryNumber]).execute();
-            _isMyTurn = false;
-            return;
+            Strategies.InitDeploy_StrongestContinent((GameState)_gameState, this);
         }
-        new UpdatePlaceableTroops(this).execute();
-        DeployTroops();
-        AttackWithMCTS();
-        Fortify();
-        _isMyTurn = false;
+        else
+        {
+            new UpdatePlaceableTroops(this).execute();
+            DeployTroops();
+            AttackWithMCTS();
+            Fortify();
+            _isMyTurn = false;
+        }
     }
 
     public override void AddCardsToHand(List<TerritoryCard> cards)
@@ -344,8 +332,9 @@ public class MCTSPlayer : Player
 
     public float heuristicEvaluation(GameState state, Player player)
     {
-        return troopSharePercent(state, player);
-        //return troopEarningPercent(state, player);
+        //return (troopSharePercent(state, player) + troopEarningPercent(state, player)) / 2;
+        //return troopSharePercent(state, player);
+        return troopEarningPercent(state, player);
         //return UnityEngine.Random.Range(0, 1);
     }
 

@@ -24,6 +24,90 @@ public static class Strategies
         float ratio = (float) neighborTroopCount / territory.TroopCount;
         return ratio;
     }
+    public static void InitDeploy_StrongestContinent(GameState state, Player player)
+    {
+        int[] ownTroopsAtContinent = new int[6], totalTroopsAtContinent = new int[6];
+        HashSet<TerritoryData>[] continentTerritories = new HashSet<TerritoryData>[6];
+        for (int i = 0; i < 6; i++)
+        {
+            continentTerritories[i] = new();
+        }
+        foreach (TerritoryData territory in state.map.Territories)
+        {
+            Continent c = territory.Continent;
+            continentTerritories[(int)c].Add(territory);
+            totalTroopsAtContinent[(int)c] += territory.TroopCount;
+            if (territory.Owner != null && territory.Owner.Equals(player.GetData().playerName))
+            {
+                ownTroopsAtContinent[(int)c] += territory.TroopCount;
+            }
+            foreach (TerritoryData neighbour in state.map.GetRawTerritories(territory.GetNeighbors()))
+            {
+                if (neighbour.Continent != c)
+                {
+                    continentTerritories[(int)c].Add(neighbour);
+                    totalTroopsAtContinent[(int)c] += neighbour.TroopCount;
+                    if (neighbour.Owner != null && neighbour.Owner.Equals(player.GetData().playerName))
+                    {
+                        ownTroopsAtContinent[(int)c] += neighbour.TroopCount;
+                    }
+                }
+            }
+        }
+        float[] ratios = new float[6];
+        float maxNum = 0;
+        int maxI = 4;
+        for (int i = 0; i < 6; i++)
+        {
+            ratios[i] = (float)ownTroopsAtContinent[i] / totalTroopsAtContinent[i];
+            if (ratios[i] > maxNum || (maxNum == 0 && totalTroopsAtContinent[i] == 0))
+            {
+                maxNum = ratios[i];
+                maxI = i;
+            }
+        }
+        if(state.turnStage == TurnStage.InitDeploy)
+        {
+            var emptyTerritories = continentTerritories[maxI].Where(x => x.Owner == null).ToArray();
+            if(emptyTerritories.Length == 0)
+            {
+                emptyTerritories = state.map.Territories.Where(x => x.Owner == null).ToArray();
+            }
+            new SetupDeploy(player, emptyTerritories[Random.Range(0, emptyTerritories.Length)]).execute();
+            return;
+        }
+        else
+        {
+            Debug.Log("MaxI: " + maxI);
+            var ownedTerritories = continentTerritories[maxI].Where(x => x.Owner.Equals(player.GetData().playerName)).ToArray();
+            TerritoryData mostThreatened = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
+            TerritoryData highestTroop = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
+            int highestTroopCount = 0;
+            float highestRatio = -1;
+            foreach(var ownedT in ownedTerritories)
+            {
+                if(ownedT.TroopCount > highestTroopCount)
+                {
+                    highestTroopCount = ownedT.TroopCount;
+                    highestTroop = ownedT;
+                }
+                float ratio = TroopRatio(ownedT, state, player);
+                if (ratio > highestRatio)
+                {
+                    highestRatio = ratio;
+                    mostThreatened = ownedT;
+                }
+            }
+            if(highestTroopCount == 1)
+            {
+                new SetupDeploy(player, mostThreatened).execute();
+            }
+            else
+            {
+                new SetupDeploy(player, highestTroop).execute();
+            }
+        }
+    }
     public static void Deploy_MostThreatenedBorder(GameState state, Player player)
     {
         ITerritoryPlayerView[] myTerritories = state.Map().GetOwnedTerritories(player);
