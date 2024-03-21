@@ -34,6 +34,9 @@ public class PlayerSelectorMenu : MonoBehaviour
                 case PlayerType.MCTS:
                     list.Add(new TMP_Dropdown.OptionData("MCTS AI"));
                     break;
+                case PlayerType.MCTSBenchmark:
+                    list.Add(new TMP_Dropdown.OptionData("MCTS Benchmark"));
+                    break;
                 default:
                     break;
             }

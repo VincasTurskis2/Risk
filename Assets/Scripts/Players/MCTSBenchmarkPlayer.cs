@@ -6,18 +6,18 @@ using System;
 using System.Threading;
 
 // An implementation of a player using Monte Carlo tree search.
-public class MCTSPlayer : Player
+public class MCTSBenchmarkPlayer : Player
 {
     public float timeForSearch = 1f;
     public int maxNumOfIterations = 5000;
     //C = 0.5 because Limer et al. suggests so.
-    public double C = 0.4;
+    public double C = 0.5;
     public int depth = 4;
     public MonoBehaviour mono = GameMaster.Instance; // This should allow me to run MCTS as coroutine.
-    public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
+    public MCTSBenchmarkPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
-    public MCTSPlayer(MCTSPlayer oldPlayer, GameState newState) : base(oldPlayer, newState)
+    public MCTSBenchmarkPlayer(MCTSBenchmarkPlayer oldPlayer, GameState newState) : base(oldPlayer, newState)
     {
     }
     public override void StartTurn()

@@ -1,0 +1,26 @@
+Simulation log: 
+
+Number of iterations: 3
+Player data:
+MCTS:
+ Average turn duration: 2.021744s.
+ Average attacks per turn: 2
+ Winrate: 100%
+P1:
+ Winrate: 0%
+P2:
+ Winrate: 0%
+
+GameData:
+Game 0:
+ Winner: MCTS
+ Game duration: 22.58033s
+ Number of turns: 11
+Game 1:
+ Winner: MCTS
+ Game duration: 20.02027s
+ Number of turns: 10
+Game 2:
+ Winner: MCTS
+ Game duration: 28.16045s
+ Number of turns: 14

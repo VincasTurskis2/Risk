@@ -24,7 +24,7 @@ public class PlayerSelectionManager : MonoBehaviour
     // A list of player menus open in the scene. Make sure to drag in the menus that exist in editor before playing!
     [field: SerializeField]
     public List<PlayerSelectorMenu> PlayerMenus{get; private set;}
-    public int simulationRuns = 3;
+    public int simulationRuns = 20;
     public bool simulation = false;
 
     void Start()

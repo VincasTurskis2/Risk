@@ -27,6 +27,7 @@ public class UpdatePlaceableTroops : PlayerAction
             {
                 result += GameMaster.ContinentValues[(int) ownedContinents[i]];
             }
+            if (result < 3) result = 3;
             caller.SetPlaceableTroopNumber(result);
             return true;
         }

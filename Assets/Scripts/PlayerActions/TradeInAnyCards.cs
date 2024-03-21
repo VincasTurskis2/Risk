@@ -41,7 +41,12 @@ public class TradeInAnyCards : PlayerAction
                     result = TradeInCards(cardsToTradeIn, caller);
                     if (result != 0)
                     {
-                        return new TradeInCards(caller, cardsToTradeIn).execute();   
+                        bool success = new TradeInCards(caller, cardsToTradeIn).execute();
+                        if(success & caller.GetCardHand().Count >= 5)
+                        {
+                            new TradeInAnyCards(caller).execute();
+                        }
+                        return success;
                     }
                 }
             }

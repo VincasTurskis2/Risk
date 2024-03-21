@@ -106,6 +106,9 @@ public class GameMaster : MonoBehaviour
                 case PlayerType.MCTS:
                     state.players[i] = new MCTSPlayer(state, players[i], is2PlayerGame);
                     break;
+                case PlayerType.MCTSBenchmark:
+                    state.players[i] = new MCTSBenchmarkPlayer(state, players[i], is2PlayerGame);
+                    break;
                 default:
                     break;
             }

@@ -44,6 +44,9 @@ public class GameState : IGameStatePlayerView
                 case PlayerType.MCTS:
                     players[i] = new MCTSPlayer((MCTSPlayer)oldState.players[i], this);
                     break;
+                case PlayerType.MCTSBenchmark:
+                    players[i] = new MCTSBenchmarkPlayer((MCTSBenchmarkPlayer)oldState.players[i], this);
+                    break;
             }
         }
         map = new Map(oldState.map);

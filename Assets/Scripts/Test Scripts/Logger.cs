@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class Logger : MonoBehaviour
@@ -10,13 +11,24 @@ public class Logger : MonoBehaviour
     public static Logger Instance { get; private set; }
     public List<PlayerLoggingData> playerData = new();
     public List<GameLoggingData> gameData = new();
-
+    private string path;
     public void Awake()
     {
         Instance = this;
     }
+    private void write(string toWrite)
+    {
+        File.AppendAllText(path, toWrite+"\n");
+    }
     public void SetupLogger(PlayerData[] players)
     {
+        int nextNo = 0;
+        while(File.Exists(Application.dataPath + "/Logs/sim_log_" + nextNo + ".txt"))
+        {
+            nextNo++;
+        }
+        path = Application.dataPath + "/Logs/sim_log_" + nextNo + ".txt";
+        File.WriteAllText(path, "Simulation log: \n\n");
         playerData.Clear();
         gameData.Clear();
         foreach (var p in players)
@@ -38,8 +50,28 @@ public class Logger : MonoBehaviour
     }
     public void OutputSimulationResults()
     {
-        var a = playerData;
-        var b = gameData;
+        write("Number of iterations: " + gameData.Count);
+        write("Player data:");
+        foreach (var pd in playerData)
+        {
+            write(pd.playerName + ":");
+            if(pd.cumulativeNoOfTurns > 0)
+            {
+                write(" Average turn duration: " + pd.cumulativeTurnDuration / pd.cumulativeNoOfTurns + "s.");
+                write(" Average attacks per turn: " + (float)pd.cumulativeNoOfAttacks / pd.cumulativeNoOfTurns);
+            }
+            write(" Winrate: " + (float)pd.wins * 100 / gameData.Count +"%");
+        }
+        write("\nGameData:");
+        {
+            foreach (var gd in gameData)
+            {
+                write("Game " + gameData.IndexOf(gd) + ":");
+                write(" Winner: " + gd.winner);
+                write(" Game duration: " + gd.gameTimeSeconds + "s");
+                write(" Number of turns: " + gd.turnCount);
+            }
+        }
         Debug.Log("Printing simulation results");
     }
     public class PlayerLoggingData

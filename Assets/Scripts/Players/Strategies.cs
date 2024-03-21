@@ -198,7 +198,7 @@ public static class Strategies
         float maxRatio = 0;
         if (ownedTerritories.Length == 0)
         {
-            return;
+            ownedTerritories = state.map.Territories.Where(x => x.Owner.Equals(player.GetData().playerName)).ToArray();
         }
         ITerritoryPlayerView toDeploy = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
         for (int i = 0; i < ownedTerritories.Length; i++)
