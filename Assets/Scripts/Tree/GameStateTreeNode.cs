@@ -78,7 +78,7 @@ public class GameStateTreeNode
             from.TroopCount = 1;
             if (newState.map.GetOwnedTerritories(loser).Count() == 0)
             {
-                //GameMaster.Instance.OnPlayerLoss(loser, newState);
+                GameMaster.Instance.OnPlayerLoss(loser, newState);
             }
         }
         return AddChild(newState, attack);
@@ -87,7 +87,7 @@ public class GameStateTreeNode
     public GameStateTreeNode Expand(Player player)
     {
         
-        if (fullyExpanded) // || state.terminalState == true
+        if (fullyExpanded  || state.terminalState == true)
         {
             return this;
         }

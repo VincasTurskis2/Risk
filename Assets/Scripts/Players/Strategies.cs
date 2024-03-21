@@ -112,7 +112,7 @@ public static class Strategies
         ITerritoryPlayerView[] myTerritories = state.Map().GetOwnedTerritories(player);
         if (myTerritories == null || myTerritories.Length == 0)
         {
-            if (GameMaster.Instance.isMCTSSimulation)
+            if (GameMaster.Instance.state.simulationState)
             {
                 state.turnStage = TurnStage.Attack;
             }
@@ -139,7 +139,7 @@ public static class Strategies
                 Debug.Log("Failed!");
             }*/
         }
-        if (GameMaster.Instance.isMCTSSimulation)
+        if (GameMaster.Instance.state.simulationState)
         {
             state.turnStage = TurnStage.Attack;
         }
@@ -218,7 +218,7 @@ public static class Strategies
         {
             success = new Deploy(player, toDeploy).execute();
         }
-        if (GameMaster.Instance.isMCTSSimulation)
+        if (GameMaster.Instance.state.simulationState)
         {
             state.turnStage = TurnStage.Attack;
         }

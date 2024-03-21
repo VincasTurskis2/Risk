@@ -16,6 +16,10 @@ public class Attack : PlayerAction
         TerritoryData from = (TerritoryData) IFrom, to = (TerritoryData) ITo;
         // Guards
         if(from == null || to == null || from.TroopCount <= 1) return false;
+        if(caller == null)
+        {
+            Debug.LogError("Caller is null");
+        }
         if(!caller.IsMyTurn()) return false;
         if(!from.IsANeighbor(to)) return false;
         if(to.Owner.Equals(from.Owner)) return false;
@@ -37,7 +41,7 @@ public class Attack : PlayerAction
                 GameMaster.Instance.OnPlayerLoss(loser, GameMaster.Instance.state);
             }
         }
-        if(!GameMaster.Instance.isMCTSSimulation && !GameMaster.Instance.isAIOnlyGame)
+        if(!GameMaster.Instance.state.simulationState && !GameMaster.Instance.isAIOnlyGame)
         {
             UIManager.Instance.UpdateAttackPanelResults(from, to);
             Debug.Log("Succeeded an attack");
@@ -75,7 +79,7 @@ public class Attack : PlayerAction
             attackerDice[Helpers.ArrayMaxElementIndex(attackerDice)] = 0;
             defenderDice[Helpers.ArrayMaxElementIndex(defenderDice)] = 0;
         }
-        if (GameMaster.Instance.isMCTSSimulation == false)
+        if (GameMaster.Instance.state.simulationState == false)
         {
             UIManager.Instance.UpdateAttackPanelNumbers(diceRolls, result);
         }

@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour
     public static int[] ContinentCount = {0, 0, 0, 0, 0, 0};
 
     public bool is2PlayerGame {get; private set;}
-    public bool isMCTSSimulation { get; set; } = false;
+    //public bool isMCTSSimulation { get; set; } = false;
     public bool isAIOnlyGame { get; set; } = false;
     public int noOfRuns;
     public int currentRun = 0;
@@ -48,8 +48,9 @@ public class GameMaster : MonoBehaviour
         SetupTerritories();
         state.cardDeck.Setup(state.map.Territories);
     }
-    public void RestartGame()
+    public IEnumerator RestartGame()
     {
+        yield return new WaitForSeconds(2);
         turnCount = 1;
         gameTimeElapsedSeconds = 0;
 
@@ -59,6 +60,8 @@ public class GameMaster : MonoBehaviour
         SetupPlayers(_playerData);
         SetupTerritories();
         state.cardDeck.Setup(state.map.Territories);
+        UIManager.Instance.Setup();
+        state.players[0].StartTurn();
     }
     public void Setup()
     {
@@ -166,7 +169,7 @@ public class GameMaster : MonoBehaviour
         {
             state.currentPlayerNo = 0;
             turnCount++;
-            if(!isMCTSSimulation)
+            if(!state.simulationState)
             {
                 Debug.Log("Turn " + turnCount + " starts");
             }
@@ -196,13 +199,15 @@ public class GameMaster : MonoBehaviour
 
     public void OnPlayerLoss(Player player, GameState State)
     {
-        Debug.LogWarning("Entered OnPlayerLoss");
-        if(State.map.GetOwnedTerritories(player).Length != 0) return;
-        if (!isMCTSSimulation)
+        if(State.map.GetOwnedTerritories(player).Length != 0)
+        {
+            Debug.LogError("Called OnPlayerLoss on a non-losing player!");
+        }
+        if (!State.simulationState)
         {
             Debug.Log(player.GetData().playerName + " has lost!");
         }
-        if(isMCTSSimulation)
+        if(State.simulationState)
         {
             State.handlePlayerLoss = true;
         }
@@ -213,7 +218,7 @@ public class GameMaster : MonoBehaviour
         List<Player> newplayers = new();
         for(int i = 0; i < State.players.Length; i++)
         {
-            if(State.players[i] != player)
+            if(!State.players[i].GetData().playerName.Equals(player.GetData().playerName))
             {
                 newplayers.Add(State.players[i]);
             }
@@ -232,20 +237,25 @@ public class GameMaster : MonoBehaviour
         }
         if(State.players.Length == 1 || (State.players.Length == 2 && is2PlayerGame))
         {
-            OnPlayerWin(player, State);
+            foreach (var pl in state.players)
+            {
+                if(pl is not NeutralArmyPlayer)
+                {
+                    OnPlayerWin(pl, State);
+                }
+            }
         }
     }
 
     private void OnPlayerWin(Player player, GameState State)
     {
-        Debug.LogWarning("Entered OnPlayerWin");
         State.terminalState = true;
-        if (!isMCTSSimulation && !isAIOnlyGame)
+        if (!State.simulationState && !isAIOnlyGame)
         {
             Debug.Log(player.GetData().playerName + " Has won!");
             UIManager.Instance.DisplayVictoryPanel(player.GetData().playerName, turnCount, gameTimeElapsedSeconds);
         }
-        if(isAIOnlyGame && !isMCTSSimulation)
+        if(isAIOnlyGame && !State.simulationState)
         {
             Logger.Instance.RecordIterationResults(player.GetData().playerName, gameTimeElapsedSeconds, state);
             if (currentRun >= noOfRuns)
@@ -256,7 +266,7 @@ public class GameMaster : MonoBehaviour
             else
             {
                 Debug.Log("Run " + (currentRun) + " finished. " + player.GetData().playerName + " Has won!");
-                RestartGame();
+                StartCoroutine(RestartGame());
             }
         }
     }

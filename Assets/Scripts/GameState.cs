@@ -13,10 +13,15 @@ public class GameState : IGameStatePlayerView
     public TurnStage turnStage {get; set;}
     public int cardSetRewardStage {get; set;} = 0;
     public bool terminalState = false;
+    public bool simulationState = false;
     public bool handlePlayerLoss = false;
     public GameState()
     {
         cardDeck = new CardDeck();
+        terminalState = false;
+        simulationState = false;
+        handlePlayerLoss = false;
+
     }
 
     public GameState(GameState oldState)
@@ -46,6 +51,7 @@ public class GameState : IGameStatePlayerView
         turnStage = oldState.turnStage;
         cardSetRewardStage = oldState.cardSetRewardStage;
         terminalState = oldState.terminalState;
+        simulationState = oldState.simulationState;
     }
 
     public IOtherPlayer[] Players()

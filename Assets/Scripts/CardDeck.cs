@@ -36,7 +36,6 @@ public class CardDeck
         for(int i = 0; i < territories.Length; i++)
         {
             TerritoryData t = territories[i];
-            Debug.Log(t);
             int rand = Random.Range(1, infantryRem + cavalryRem + artilleryRem + 1);
             TroopType type;
             if(rand - artilleryRem <= 0)

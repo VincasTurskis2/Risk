@@ -12,6 +12,7 @@ public class Map : IMapPlayerView
         for (int i = 0 ; i < Territories.Length ; i++)
         {
             territories[i].Setup();
+            territories[i].gameObject.GetComponent<TerritoryUI>().Setup();
             Territories[i] = territories[i].data; 
         }
     }

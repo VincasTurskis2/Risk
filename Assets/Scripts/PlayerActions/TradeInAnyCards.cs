@@ -10,7 +10,7 @@ public class TradeInAnyCards : PlayerAction
     }
     public override bool execute()
     {
-        if(!GameMaster.Instance.isAIOnlyGame && !GameMaster.Instance.isMCTSSimulation)
+        if(!GameMaster.Instance.isAIOnlyGame && !GameMaster.Instance.state.simulationState)
         {
             Debug.Log("Trading in any cards");
         }

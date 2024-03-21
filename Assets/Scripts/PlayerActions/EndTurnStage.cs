@@ -9,9 +9,9 @@ public class EndTurnStage : PlayerAction
     }
     public override bool execute()
     {
-        if (GameMaster.Instance.CurrentPlayer() != caller)
+        if (!GameMaster.Instance.CurrentPlayer().GetData().playerName.Equals(caller.GetData().playerName))
         {
-            Debug.Log("End turn stage failed: not your turn");
+            Debug.Log("End turn stage failed: not your turn. Caller: " + caller.GetData().playerName + "; current turn: " + GameMaster.Instance.CurrentPlayer().GetData().playerName);
             return false;
         }
         switch(GameMaster.Instance.state.turnStage){

@@ -29,6 +29,7 @@ public class PlayerSelectionManager : MonoBehaviour
 
     void Start()
     {
+        simulationRuns = 3;
         DontDestroyOnLoad(this.gameObject);
         foreach (PlayerSelectorMenu psm in PlayerMenus)
         {

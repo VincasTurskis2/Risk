@@ -17,10 +17,14 @@ public class TerritoryUI : MonoBehaviour
         _territory = gameObject.GetComponent<Territory>().data;
         _territoryNameText.text = _territory.TerritoryName;
     }
+    public void Setup()
+    {
+        _territory = gameObject.GetComponent<Territory>().data;
+    }
 
     void Update()
     {
-        if(!GameMaster.Instance.isMCTSSimulation)
+        if(!GameMaster.Instance.state.simulationState)
         {
            _troopCountText.SetText(_territory.TroopCount.ToString());
            _renderer.color = _territory.territoryColor;

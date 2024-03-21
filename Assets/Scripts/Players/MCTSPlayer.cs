@@ -124,10 +124,10 @@ public class MCTSPlayer : Player
     public IEnumerator RunMCTS()
     {
         List<Attack> result = new();
-        GameStateTreeNode root = new GameStateTreeNode(_gameState, null, null);
-        //float curTime = 0f;
+        var rootState = new GameState((GameState)_gameState);
+        rootState.simulationState = true;
+        GameStateTreeNode root = new GameStateTreeNode(rootState, null, null);
         int curIterationNo = 0;
-        //DateTime startTime = DateTime.Now;
         while (curIterationNo < maxNumOfIterations)//(curTime < timeForSearch)
         {
             GameStateTreeNode nodeToExplore = Select(root);
@@ -222,7 +222,7 @@ public class MCTSPlayer : Player
             }
             if(maxIndex == -1)
             {
-               
+                return node;
             }
             node = node.children[maxIndex];
         }
@@ -241,7 +241,7 @@ public class MCTSPlayer : Player
         GameState curState = new GameState(node.state);
 
         GameMaster.Instance.state = curState;
-        GameMaster.Instance.isMCTSSimulation = true;
+        GameMaster.Instance.state.simulationState = true;
         int curDepth = 0;
         Player toSimulate = curState.players[curState.currentPlayerNo];
         bool cardEligible = false;
@@ -256,12 +256,10 @@ public class MCTSPlayer : Player
                         if (curState.players[j].GetData().playerName.Equals(GetData().playerName))
                         {
                             GameMaster.Instance.state = originalState;
-                            GameMaster.Instance.isMCTSSimulation = false;
                             return 1;
                         }
                     }
                     GameMaster.Instance.state = originalState;
-                    GameMaster.Instance.isMCTSSimulation = false;
                     return 0;
                 }
             {
@@ -278,7 +276,7 @@ public class MCTSPlayer : Player
             curState.players[curState.currentPlayerNo].SetCardEligible(false);
         }
         SimulationReinforce(curState.players[curState.currentPlayerNo], curState);
-        curState.currentPlayerNo += 1;
+        //curState.currentPlayerNo += 1;
         if (curState.currentPlayerNo >= curState.players.Length)
         {
             curState.currentPlayerNo = 0;
@@ -309,12 +307,10 @@ public class MCTSPlayer : Player
                             if (curState.players[j].GetData().playerName.Equals(GetData().playerName))
                             {
                                 GameMaster.Instance.state = originalState;
-                                GameMaster.Instance.isMCTSSimulation = false;
                                 return 1;
                             }
                         }
                         GameMaster.Instance.state = originalState;
-                        GameMaster.Instance.isMCTSSimulation = false;
                         return 0;
                     }
                     curState.handlePlayerLoss = false;
@@ -331,15 +327,7 @@ public class MCTSPlayer : Player
             }
             SimulationReinforce(curState.players[i], curState);
             curState.players[i].SetMyTurn(false);
-            i += 1;
-            if(i < curState.players.Length)
-            {
-                curState.players[i].SetMyTurn(true);
-            }
-            else
-            {
-                curState.players[0].SetMyTurn(true);
-            }
+            curState.players[(i + 1) % curState.players.Length].SetMyTurn(true);
             cardEligible = false;
         }
         curDepth += 1;
@@ -375,12 +363,10 @@ public class MCTSPlayer : Player
                                 if (curState.players[j].GetData().playerName.Equals(GetData().playerName))
                                 {
                                     GameMaster.Instance.state = originalState;
-                                    GameMaster.Instance.isMCTSSimulation = false;
                                     return 1;
                                 }
                             }
                             GameMaster.Instance.state = originalState;
-                            GameMaster.Instance.isMCTSSimulation = false;
                             return 0;
                         }
                         curState.handlePlayerLoss = false;
@@ -397,19 +383,13 @@ public class MCTSPlayer : Player
                 }
                 SimulationReinforce(curState.players[i], curState);
                 curState.players[i].SetMyTurn(false);
-                i += 1;
-                if (i>= curState.players.Length)
-                {
-                    i = 0;
-                }
-                curState.players[i].SetMyTurn(true);
+                curState.players[(i+1)%curState.players.Length].SetMyTurn(true);
                 cardEligible = false;
             }
             curDepth += 1;
         }
         float result = heuristicEvaluation(curState, toSimulate);
         GameMaster.Instance.state = originalState;
-        GameMaster.Instance.isMCTSSimulation = false;
         return result;
     }
 
