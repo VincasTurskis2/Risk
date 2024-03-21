@@ -20,10 +20,10 @@ public class TerritoryUI : MonoBehaviour
 
     void Update()
     {
-        //if(!GameMaster.Instance.isAIOnlyGame)
-        //{
+        if(!GameMaster.Instance.isMCTSSimulation)
+        {
            _troopCountText.SetText(_territory.TroopCount.ToString());
            _renderer.color = _territory.territoryColor;
-        //}
+        }
     }
 }

@@ -194,59 +194,56 @@ public class GameMaster : MonoBehaviour
         state.players[state.currentPlayerNo].StartTurn();
     }
 
-    public void OnPlayerLoss(Player player)
+    public void OnPlayerLoss(Player player, GameState State)
     {
-        if(state.map.GetOwnedTerritories(player).Length != 0) return;
+        Debug.LogWarning("Entered OnPlayerLoss");
+        if(State.map.GetOwnedTerritories(player).Length != 0) return;
         if (!isMCTSSimulation)
         {
             Debug.Log(player.GetData().playerName + " has lost!");
         }
         if(isMCTSSimulation)
         {
-            state.handlePlayerLoss = true;
+            State.handlePlayerLoss = true;
         }
         /*if(player.IsMyTurn())
         {
             player.EndTurn();
         }*/
         List<Player> newplayers = new();
-        int loserNo = 0;
-        for(int i = 0; i < state.players.Length; i++)
+        for(int i = 0; i < State.players.Length; i++)
         {
-            if(state.players[i] != player)
+            if(State.players[i] != player)
             {
-                newplayers.Add(state.players[i]);
-            }
-            else
-            {
-                loserNo = i;
+                newplayers.Add(State.players[i]);
             }
         }
         for (int i = 0; i < newplayers.Count; i++)
         {
-            if (newplayers[i].GetData().playerName.Equals(state.players[state.currentPlayerNo].GetData().playerName))
+            if (newplayers[i].GetData().playerName.Equals(State.players[State.currentPlayerNo].GetData().playerName))
             {
-                state.currentPlayerNo = i;
+                State.currentPlayerNo = i;
             }
         }
-        state.players = newplayers.ToArray();
+        State.players = newplayers.ToArray();
         if(player is NeutralArmyPlayer)
         {
             return;
         }
-        if(state.players.Length == 1 || (state.players.Length == 2 && is2PlayerGame))
+        if(State.players.Length == 1 || (State.players.Length == 2 && is2PlayerGame))
         {
-            OnPlayerWin(player);
+            OnPlayerWin(player, State);
         }
     }
 
-    private void OnPlayerWin(Player player)
+    private void OnPlayerWin(Player player, GameState State)
     {
-        state.terminalState = true;
+        Debug.LogWarning("Entered OnPlayerWin");
+        State.terminalState = true;
         if (!isMCTSSimulation && !isAIOnlyGame)
         {
             Debug.Log(player.GetData().playerName + " Has won!");
-            UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
+            UIManager.Instance.DisplayVictoryPanel(player.GetData().playerName, turnCount, gameTimeElapsedSeconds);
         }
         if(isAIOnlyGame && !isMCTSSimulation)
         {
@@ -258,7 +255,7 @@ public class GameMaster : MonoBehaviour
             }
             else
             {
-                Debug.Log("Run " + (currentRun + 1) + " finished. " + player.GetData().playerName + " Has won!");
+                Debug.Log("Run " + (currentRun) + " finished. " + player.GetData().playerName + " Has won!");
                 RestartGame();
             }
         }

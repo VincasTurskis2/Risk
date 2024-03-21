@@ -110,6 +110,14 @@ public static class Strategies
     public static void Deploy_MostThreatenedBorder(GameState state, Player player)
     {
         ITerritoryPlayerView[] myTerritories = state.Map().GetOwnedTerritories(player);
+        if (myTerritories == null || myTerritories.Length == 0)
+        {
+            if (GameMaster.Instance.isMCTSSimulation)
+            {
+                state.turnStage = TurnStage.Attack;
+            }
+            return;
+        }
         bool success = true;
         while (success)
         {
@@ -178,10 +186,15 @@ public static class Strategies
                 maxI = i;
             }
         }
+        TerritoryData[] ownedTerritories;
+        if(maxI == -1)
+        {
+            Deploy_MostThreatenedBorder(state, player);
+            return;
+        }
 
         //Deploy in most threatened border in the favourite continent
-        bool success = true;
-        var ownedTerritories = continentTerritories[maxI].Where(x => x.Owner.Equals(player.GetData().playerName)).ToArray();
+        ownedTerritories = continentTerritories[maxI].Where(x => x.Owner.Equals(player.GetData().playerName)).ToArray();
         float maxRatio = 0;
         if (ownedTerritories.Length == 0)
         {
@@ -200,6 +213,7 @@ public static class Strategies
                 }
             }
         }
+        bool success = true;
         while (success)
         {
             success = new Deploy(player, toDeploy).execute();

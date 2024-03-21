@@ -112,9 +112,12 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        UpdateCurrentStageText();
-        UpdateCurrentPlayerText();
-        UpdateHelperPanelText();
+        if(!GameMaster.Instance.isMCTSSimulation)
+        {
+            UpdateCurrentStageText();
+            UpdateCurrentPlayerText();
+            UpdateHelperPanelText();
+        }
     }
     public void Setup()
     {

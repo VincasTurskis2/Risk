@@ -72,16 +72,22 @@ public class GameStateTreeNode
         }
         else
         {
+            var loser = newState.getPlayerFromName(to.Owner);
             to.SetOwner(newState.getPlayerFromName(from.Owner), true);
             to.TroopCount = Math.Max(1, attackingTroops - attackingLosses);
             from.TroopCount = 1;
+            if (newState.map.GetOwnedTerritories(loser).Count() == 0)
+            {
+                //GameMaster.Instance.OnPlayerLoss(loser, newState);
+            }
         }
         return AddChild(newState, attack);
     }
 
     public GameStateTreeNode Expand(Player player)
     {
-        if(fullyExpanded)
+        
+        if (fullyExpanded) // || state.terminalState == true
         {
             return this;
         }

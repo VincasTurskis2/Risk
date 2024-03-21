@@ -23,6 +23,9 @@ public class GameLoader : MonoBehaviour
     }
     private void Start()
     {
-        //Logger.Instance.SetupLogger(FindObjectOfType<PlayerSelectionManager>().playerData);
+        if(GameMaster.Instance.isAIOnlyGame)
+        {
+            Logger.Instance.SetupLogger(FindObjectOfType<PlayerSelectionManager>().playerData);
+        }
     }
 }

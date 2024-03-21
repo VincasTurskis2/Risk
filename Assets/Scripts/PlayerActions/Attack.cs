@@ -34,7 +34,7 @@ public class Attack : PlayerAction
             {
                 GameMaster.Instance.state.getPlayerFromName(from.Owner).AddCardsToHand(loser.GetCardHand());
                 new DiscardCards(loser, loser.GetCardHand().ToArray()).execute();
-                GameMaster.Instance.OnPlayerLoss(loser);
+                GameMaster.Instance.OnPlayerLoss(loser, GameMaster.Instance.state);
             }
         }
         if(!GameMaster.Instance.isMCTSSimulation && !GameMaster.Instance.isAIOnlyGame)
