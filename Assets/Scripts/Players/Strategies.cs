@@ -272,18 +272,21 @@ public static class Strategies
         while (possibleAttacks[index] != null)
         {
             Attack attack = possibleAttacks[index];
+            if (attack.ITo.GetOwner().Equals(attack.IFrom.GetOwner()))
+            {
+                Debug.Log("Why is this happening?");
+            }
             bool attackResult;
             do
             {
                 attackResult = attack.execute();
             }
             while (attackResult == true);
-            possibleAttacks = possibleAttacks.Where(x => x == null || x.IFrom.Equals(attack.IFrom) == false).ToList();
             if (attack.ITo.GetOwner().Equals(attack.IFrom.GetOwner()))
             {
                 new Occupy(player, attack.IFrom, attack.ITo, attack.IFrom.TroopCount - 1).execute();
                 cardEligible = true;
-                if(attack.ITo.TroopCount > 1)
+                /*if(attack.ITo.TroopCount > 1)
                 {
                     foreach (var neighbour in state.map.GetRawTerritories(attack.ITo.GetNeighbors()))
                     {
@@ -292,8 +295,16 @@ public static class Strategies
                             possibleAttacks.Add(new Attack(player, attack.ITo, neighbour));
                         }
                     }
-                }
+                }*/
             }
+            legalAttacks = state.getAllPossibleAttacks(player);
+            possibleAttacks = legalAttacks.Where(x => continentTerritories[maxI].Contains(x.ITo)).ToList();
+            if (possibleAttacks.Count == 0)
+            {
+                possibleAttacks = legalAttacks;
+            }
+            possibleAttacks.Add(null);
+            //possibleAttacks = possibleAttacks.Where(x => x == null || x.IFrom.Equals(attack.IFrom) == false).ToList();
             index = rand.Next(0, possibleAttacks.Count);
         }
         state.turnStage = TurnStage.Reinforce;

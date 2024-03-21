@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is 'Report.blg'
-[127] biber-MSWIN64:340> INFO - === 
-[175] Biber.pm:419> INFO - Reading 'Report.bcf'
-[303] Biber.pm:979> INFO - Found 8 citekeys in bib section 0
-[319] Biber.pm:4419> INFO - Processing section 0
-[332] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
-[384] bibtex.pm:1713> INFO - LaTeX decoding ...
-[396] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[465] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[465] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[465] Biber.pm:4239> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[465] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
-[472] bbl.pm:660> INFO - Writing 'Report.bbl' with encoding 'UTF-8'
-[476] bbl.pm:763> INFO - Output to Report.bbl
+[122] biber-MSWIN64:340> INFO - === 
+[165] Biber.pm:419> INFO - Reading 'Report.bcf'
+[294] Biber.pm:979> INFO - Found 16 citekeys in bib section 0
+[310] Biber.pm:4419> INFO - Processing section 0
+[323] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
+[378] bibtex.pm:1713> INFO - LaTeX decoding ...
+[398] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[520] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[520] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[520] Biber.pm:4239> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[520] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[534] bbl.pm:660> INFO - Writing 'Report.bbl' with encoding 'UTF-8'
+[544] bbl.pm:763> INFO - Output to Report.bbl

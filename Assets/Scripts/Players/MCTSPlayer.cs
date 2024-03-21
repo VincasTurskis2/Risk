@@ -135,6 +135,11 @@ public class MCTSPlayer : Player
                 //for debugging
                 curIterationNo++;
             }
+            else if(curIterationNo % 10 == 0)
+            {
+                //for debugging
+                curIterationNo++;
+            }
             else
             {
                 curIterationNo++;
@@ -332,9 +337,9 @@ public class MCTSPlayer : Player
 
     public float heuristicEvaluation(GameState state, Player player)
     {
-        //return (troopSharePercent(state, player) + troopEarningPercent(state, player)) / 2;
+        return (troopSharePercent(state, player) + troopEarningPercent(state, player)) / 2;
         //return troopSharePercent(state, player);
-        return troopEarningPercent(state, player);
+        //return troopEarningPercent(state, player);
         //return UnityEngine.Random.Range(0, 1);
     }
 

@@ -81,7 +81,7 @@ public class GameState : IGameStatePlayerView
         {
             TerritoryData curTerritory = (TerritoryData) curPlayerTerritories[i];
             if(curTerritory.TroopCount == 1) continue;
-            TerritoryData[] unownedNeighbors = map.GetRawTerritories(curTerritory.Neighbors).Where(x => !x.Owner.Equals(curTerritory.Owner)).ToArray();
+            TerritoryData[] unownedNeighbors = map.GetRawTerritories(curTerritory.Neighbors).Where(x => x.Owner.Equals(player.GetData().playerName) == false).ToArray();
             foreach(var neighbor in unownedNeighbors)
             {
                 result.Add(new Attack(getPlayerFromName(curTerritory.Owner), curTerritory, neighbor));

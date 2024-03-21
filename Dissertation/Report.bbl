@@ -44,6 +44,57 @@
       \field{title}{Artificial Intelligence with Graph Neural Networks Applied to a Risk-like Board Game}
       \field{year}{2023}
     \endentry
+    \entry{blomqvist2020playing}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=d151e8bc908fb924de30818629acde6d}{%
+           family={Blomqvist},
+           familyi={B\bibinitperiod},
+           given={Erik},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{d151e8bc908fb924de30818629acde6d}
+      \strng{fullhash}{d151e8bc908fb924de30818629acde6d}
+      \strng{bibnamehash}{d151e8bc908fb924de30818629acde6d}
+      \strng{authorbibnamehash}{d151e8bc908fb924de30818629acde6d}
+      \strng{authornamehash}{d151e8bc908fb924de30818629acde6d}
+      \strng{authorfullhash}{d151e8bc908fb924de30818629acde6d}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Playing the Game of Risk with an AlphaZero Agent}
+      \field{year}{2020}
+    \endentry
+    \entry{coulom2007computing}{article}{}
+      \name{author}{1}{}{%
+        {{hash=ae7c83876ac79093e7c8ec77de300a9c}{%
+           family={Coulom},
+           familyi={C\bibinitperiod},
+           given={Rémi},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IOS Press}%
+      }
+      \strng{namehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{fullhash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{bibnamehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{authorbibnamehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{authornamehash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \strng{authorfullhash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \field{extraname}{1}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ICGA journal}
+      \field{number}{4}
+      \field{title}{Computing “elo ratings” of move patterns in the game of go}
+      \field{volume}{30}
+      \field{year}{2007}
+      \field{pages}{198\bibrangedash 208}
+      \range{pages}{11}
+    \endentry
     \entry{Coulom2007MonteCarlo}{article}{}
       \name{author}{1}{}{%
         {{hash=ae7c83876ac79093e7c8ec77de300a9c}{%
@@ -58,6 +109,7 @@
       \strng{authorbibnamehash}{ae7c83876ac79093e7c8ec77de300a9c}
       \strng{authornamehash}{ae7c83876ac79093e7c8ec77de300a9c}
       \strng{authorfullhash}{ae7c83876ac79093e7c8ec77de300a9c}
+      \field{extraname}{2}
       \field{sortinit}{C}
       \field{sortinithash}{4d103a86280481745c9c897c925753c0}
       \field{labelnamesource}{author}
@@ -72,6 +124,45 @@
       \verb{doi}
       \verb 10.1007/978-3-540-75538-8_7
       \endverb
+    \endentry
+    \entry{cowling2012ensemble}{article}{}
+      \name{author}{3}{}{%
+        {{hash=0471b1002b0c374cbbed5b49bd7d829c}{%
+           family={Cowling},
+           familyi={C\bibinitperiod},
+           given={Peter\bibnamedelima I},
+           giveni={P\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+        {{hash=8317aa1163206ca517774144fe3e782a}{%
+           family={Ward},
+           familyi={W\bibinitperiod},
+           given={Colin\bibnamedelima D},
+           giveni={C\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=2791f2afda2fc7c3043f9a37a46dfe64}{%
+           family={Powley},
+           familyi={P\bibinitperiod},
+           given={Edward\bibnamedelima J},
+           giveni={E\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{08a92d8f0058118c49b033d5189acc30}
+      \strng{fullhash}{08a92d8f0058118c49b033d5189acc30}
+      \strng{bibnamehash}{08a92d8f0058118c49b033d5189acc30}
+      \strng{authorbibnamehash}{08a92d8f0058118c49b033d5189acc30}
+      \strng{authornamehash}{08a92d8f0058118c49b033d5189acc30}
+      \strng{authorfullhash}{08a92d8f0058118c49b033d5189acc30}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Computational Intelligence and AI in Games}
+      \field{number}{4}
+      \field{title}{Ensemble determinization in monte carlo tree search for the imperfect information card game magic: The gathering}
+      \field{volume}{4}
+      \field{year}{2012}
+      \field{pages}{241\bibrangedash 257}
+      \range{pages}{17}
     \endentry
     \entry{riskrules}{misc}{}
       \name{author}{1}{}{%
@@ -92,6 +183,40 @@
       \field{howpublished}{\url{https://www.hasbro.com/common/instruct/risk.pdf}}
       \field{note}{Accessed: 2024-03-06}
       \field{title}{Risk: The World Conquest Game}
+    \endentry
+    \entry{jacobsen2014monte}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=c0cf6da61235b1222d3c431fd780f0f3}{%
+           family={Jacobsen},
+           familyi={J\bibinitperiod},
+           given={Emil\bibnamedelima Juul},
+           giveni={E\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=8cea3871c383aeb1d06e1eb48045a16a}{%
+           family={Greve},
+           familyi={G\bibinitperiod},
+           given={Rasmus},
+           giveni={R\bibinitperiod}}}%
+        {{hash=cbd110b21df9b90cd72ce148aa04de7f}{%
+           family={Togelius},
+           familyi={T\bibinitperiod},
+           given={Julian},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{74a202ccbdbf895ff88707227ec7d84f}
+      \strng{fullhash}{74a202ccbdbf895ff88707227ec7d84f}
+      \strng{bibnamehash}{74a202ccbdbf895ff88707227ec7d84f}
+      \strng{authorbibnamehash}{74a202ccbdbf895ff88707227ec7d84f}
+      \strng{authornamehash}{74a202ccbdbf895ff88707227ec7d84f}
+      \strng{authorfullhash}{74a202ccbdbf895ff88707227ec7d84f}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 2014 annual conference on genetic and evolutionary computation}
+      \field{title}{Monte mario: platforming with mcts}
+      \field{year}{2014}
+      \field{pages}{293\bibrangedash 300}
+      \range{pages}{8}
     \endentry
     \entry{knuth1975analysis}{article}{}
       \name{author}{2}{}{%
@@ -241,6 +366,147 @@
       \field{title}{Monte Carlo Tree Search for Risk}
       \field{year}{2020}
     \endentry
+    \entry{olsson2005multi}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=f615660ee51a2f98c35af8aae1960643}{%
+           family={Olsson},
+           familyi={O\bibinitperiod},
+           given={Fredrik},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{f615660ee51a2f98c35af8aae1960643}
+      \strng{fullhash}{f615660ee51a2f98c35af8aae1960643}
+      \strng{bibnamehash}{f615660ee51a2f98c35af8aae1960643}
+      \strng{authorbibnamehash}{f615660ee51a2f98c35af8aae1960643}
+      \strng{authornamehash}{f615660ee51a2f98c35af8aae1960643}
+      \strng{authorfullhash}{f615660ee51a2f98c35af8aae1960643}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{A multi-agent system for playing the board game risk}
+      \field{year}{2005}
+    \endentry
+    \entry{silver2016mastering}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{10}{}{%
+        {{hash=89dbd30410c2085cd059f32c57d4593e}{%
+           family={Silver},
+           familyi={S\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=ba4b200ce1412a2570cb113366cc9559}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Aja},
+           giveni={A\bibinitperiod}}}%
+        {{hash=7c3126321fcb4553dfda5ae96da928ce}{%
+           family={Maddison},
+           familyi={M\bibinitperiod},
+           given={Chris\bibnamedelima J},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=4131bd14e5ca890278ecd351e356dc34}{%
+           family={Guez},
+           familyi={G\bibinitperiod},
+           given={Arthur},
+           giveni={A\bibinitperiod}}}%
+        {{hash=50d24de916599d306c5cb1a77156e4b9}{%
+           family={Sifre},
+           familyi={S\bibinitperiod},
+           given={Laurent},
+           giveni={L\bibinitperiod}}}%
+        {{hash=b191bc2284a9e448d810afab3553cb9e}{%
+           family={Van\bibnamedelimb Den\bibnamedelima Driessche},
+           familyi={V\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={George},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8fad8df927bc0014c0bd6a9feb7aa71d}{%
+           family={Schrittwieser},
+           familyi={S\bibinitperiod},
+           given={Julian},
+           giveni={J\bibinitperiod}}}%
+        {{hash=af540e84ef1ecdaa70b1f7c90f59fd7d}{%
+           family={Antonoglou},
+           familyi={A\bibinitperiod},
+           given={Ioannis},
+           giveni={I\bibinitperiod}}}%
+        {{hash=1f065703a4f7a60c69ecb59f499d3db3}{%
+           family={Panneershelvam},
+           familyi={P\bibinitperiod},
+           given={Veda},
+           giveni={V\bibinitperiod}}}%
+        {{hash=3075d0e02c0833f6e5fe1addb880898f}{%
+           family={Lanctot},
+           familyi={L\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{4ccacac34637df06f749428b6ec5052e}
+      \strng{fullhash}{69c03a0bfbe9e391fbbd7797a2debcbf}
+      \strng{bibnamehash}{4ccacac34637df06f749428b6ec5052e}
+      \strng{authorbibnamehash}{4ccacac34637df06f749428b6ec5052e}
+      \strng{authornamehash}{4ccacac34637df06f749428b6ec5052e}
+      \strng{authorfullhash}{69c03a0bfbe9e391fbbd7797a2debcbf}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{nature}
+      \field{number}{7587}
+      \field{title}{Mastering the game of Go with deep neural networks and tree search}
+      \field{volume}{529}
+      \field{year}{2016}
+      \field{pages}{484\bibrangedash 489}
+      \range{pages}{6}
+    \endentry
+    \entry{swiechowski2023monte}{article}{}
+      \name{author}{4}{}{%
+        {{hash=332ed462f69f0196a1ef29aa6004e9eb}{%
+           family={Świechowski},
+           familyi={Ś\bibinitperiod},
+           given={Maciej},
+           giveni={M\bibinitperiod}}}%
+        {{hash=9df5ad96f4eb44a01e07c4d212d64974}{%
+           family={Godlewski},
+           familyi={G\bibinitperiod},
+           given={Konrad},
+           giveni={K\bibinitperiod}}}%
+        {{hash=4185c7ee5350bf591989b6cb7edeea79}{%
+           family={Sawicki},
+           familyi={S\bibinitperiod},
+           given={Bartosz},
+           giveni={B\bibinitperiod}}}%
+        {{hash=d5cdee6ec583c792c2f20ddddc2874ff}{%
+           family={Mańdziuk},
+           familyi={M\bibinitperiod},
+           given={Jacek},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{d3741f44919172ce39a408a089354add}
+      \strng{fullhash}{c0bf6d4ea49b1135b05402348c143a0d}
+      \strng{bibnamehash}{d3741f44919172ce39a408a089354add}
+      \strng{authorbibnamehash}{d3741f44919172ce39a408a089354add}
+      \strng{authornamehash}{d3741f44919172ce39a408a089354add}
+      \strng{authorfullhash}{c0bf6d4ea49b1135b05402348c143a0d}
+      \field{sortinit}{Ś}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Artificial Intelligence Review}
+      \field{number}{3}
+      \field{title}{Monte Carlo tree search: A review of recent modifications and applications}
+      \field{volume}{56}
+      \field{year}{2023}
+      \field{pages}{2497\bibrangedash 2562}
+      \range{pages}{66}
+    \endentry
     \entry{winands2017monte}{incollection}{}
       \name{author}{1}{}{%
         {{hash=2c22dd9c8e5834d56c396ce5ade81b81}{%
@@ -267,6 +533,28 @@
       \field{year}{2017}
       \field{pages}{47\bibrangedash 76}
       \range{pages}{30}
+    \endentry
+    \entry{wolf2005intelligent}{article}{}
+      \name{author}{1}{}{%
+        {{hash=aba96a4246f521dcd0f7b0b6c402b9fc}{%
+           family={Wolf},
+           familyi={W\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{aba96a4246f521dcd0f7b0b6c402b9fc}
+      \strng{fullhash}{aba96a4246f521dcd0f7b0b6c402b9fc}
+      \strng{bibnamehash}{aba96a4246f521dcd0f7b0b6c402b9fc}
+      \strng{authorbibnamehash}{aba96a4246f521dcd0f7b0b6c402b9fc}
+      \strng{authornamehash}{aba96a4246f521dcd0f7b0b6c402b9fc}
+      \strng{authorfullhash}{aba96a4246f521dcd0f7b0b6c402b9fc}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Unpublished doctoral dissertation). TU Darmstadt, Knowledge Engineering Group, Darmstadt Germany. http://www. ke. tu-darmstadt. de/bibtex/topics/single/33}
+      \field{title}{An intelligent artificial player for the game of risk}
+      \field{year}{2005}
     \endentry
   \enddatalist
 \endrefsection

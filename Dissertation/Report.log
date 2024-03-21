@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.2.6)  19 MAR 2024 04:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.2.6)  21 MAR 2024 01:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -593,74 +593,68 @@ Package biblatex Info: Reference segment=0 on input line 17.
 \tf@toc=\write4
 \openout4 = `Report.toc'.
 
- [1
+ (Introduction.tex [1
 
 ]
 Chapter 1.
-(Background.tex [2
+[2
 
-]
+]) (Background.tex [3]
 Chapter 2.
-<./Images/RiskGameSet.jpg, id=16, 840.13875pt x 725.71124pt>
+<./Images/RiskGameSet.jpg, id=22, 840.13875pt x 725.71124pt>
 File: ./Images/RiskGameSet.jpg Graphic file (type jpg)
 <use ./Images/RiskGameSet.jpg>
 Package pdftex.def Info: ./Images/RiskGameSet.jpg  used on input line 10.
 (pdftex.def)             Requested size: 376.42575pt x 325.1607pt.
-[3
+[4
 
- <./Images/RiskGameSet.jpg>] [4]
-<./Images/MCTSRollout.png, id=24, 894.34125pt x 286.06876pt>
+ <./Images/RiskGameSet.jpg>] [5]
+<./Images/MCTSRollout.png, id=30, 894.34125pt x 286.06876pt>
 File: ./Images/MCTSRollout.png Graphic file (type png)
 <use ./Images/MCTSRollout.png>
 Package pdftex.def Info: ./Images/MCTSRollout.png  used on input line 54.
 (pdftex.def)             Requested size: 418.25368pt x 133.78447pt.
- [5] [6 <./Images/MCTSRollout.png>])
-(Design.tex [7]
+ [6] [7 <./Images/MCTSRollout.png>])
+(Design.tex [8]
 Chapter 3.
-[8
+[9
 
 ]
-<./Images/player_select_menu.png, id=49, 1541.76pt x 867.24pt>
+<./Images/player_select_menu.png, id=52, 1541.76pt x 867.24pt>
 File: ./Images/player_select_menu.png Graphic file (type png)
 <use ./Images/player_select_menu.png>
-Package pdftex.def Info: ./Images/player_select_menu.png  used on input line 28
+Package pdftex.def Info: ./Images/player_select_menu.png  used on input line 29
 .
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
- [9]
-<./Images/game_screen.png, id=53, 1541.76pt x 867.24pt>
+ [10]
+<./Images/game_screen.png, id=56, 1541.76pt x 867.24pt>
 File: ./Images/game_screen.png Graphic file (type png)
 <use ./Images/game_screen.png>
-Package pdftex.def Info: ./Images/game_screen.png  used on input line 34.
+Package pdftex.def Info: ./Images/game_screen.png  used on input line 35.
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
- [10 <./Images/player_select_menu.png> <./Images/game_screen.png>]
-<./Images/project_class_architecture_updated.png, id=57, 954.56625pt x 693.5912
+ [11 <./Images/player_select_menu.png> <./Images/game_screen.png>]
+<./Images/project_class_architecture_updated.png, id=60, 954.56625pt x 693.5912
 5pt>
 File: ./Images/project_class_architecture_updated.png Graphic file (type png)
 <use ./Images/project_class_architecture_updated.png>
 Package pdftex.def Info: ./Images/project_class_architecture_updated.png  used 
-on input line 48.
+on input line 49.
 (pdftex.def)             Requested size: 418.25368pt x 303.90051pt.
 
-[11 <./Images/project_class_architecture_updated.png>] [12])
-(Implementation.tex [13]
+[12 <./Images/project_class_architecture_updated.png>] [13])
+(Implementation.tex [14]
 Chapter 4.
-[14
+[15
 
-] [15] [16] [17]) [18]
+] [16] [17] [18]) (Evaluation.tex [19]
 Chapter 5.
-[19
+) (Conclusion.tex [20
 
 ]
 Chapter 6.
-[20
+) [21
 
-]
-Overfull \hbox (8.8345pt too wide) in paragraph at lines 39--39
-[]\OT1/cmr/m/n/10.95 R^^Semi Coulom. \  Ef-fi-cient se-lec-tiv-ity and backup o
-p-er-a-tors in Monte-Carlo tree search".
- []
-
-[21
+] [22
 
 ] (Report.aux)
  ***********
@@ -672,10 +666,10 @@ Package logreq Info: Writing requests to 'Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 12498 strings out of 474541
- 234691 string characters out of 5743954
+ 12549 strings out of 474541
+ 236529 string characters out of 5743954
  1935978 words of memory out of 5000000
- 34598 multiletter control sequences out of 15000+600000
+ 34640 multiletter control sequences out of 15000+600000
  567870 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  66i,8n,81p,1407b,1779s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -697,9 +691,9 @@ ype1/public/amsfonts/cm/cmr8.pfb><C:/Users/Vincas/AppData/Local/Programs/MiKTeX
 s/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Vincas/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Vincas/A
 ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Report.pdf (22 pages, 892826 bytes).
+Output written on Report.pdf (23 pages, 904338 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
+ 164 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
