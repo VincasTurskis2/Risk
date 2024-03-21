@@ -158,7 +158,7 @@ public class UIManager : MonoBehaviour
     }
     public void DisplayAttackPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        if(GameMaster.Instance.isSimulation == false)
+        if(GameMaster.Instance.isMCTSSimulation == false && GameMaster.Instance.isAIOnlyGame == false)
         {
             _attackPanel.SetActive(true);
             _cumulativeAttackerLoss = 0;
@@ -203,7 +203,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateAttackPanelNumbers(int[][] diceRolls, int[]diceRollResults)
     {
-        if (GameMaster.Instance.isSimulation == false)
+        if (GameMaster.Instance.isMCTSSimulation == false && GameMaster.Instance.isAIOnlyGame == false)
         {
             _attackerDice.SetText("Dice rolled: " + Helpers.IntArrayToString(diceRolls[0]));
             _attackerTroopLoss.SetText("Troops lost: " + diceRollResults[0]);
@@ -219,7 +219,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateAttackPanelResults(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        if (GameMaster.Instance.isSimulation == false)
+        if (GameMaster.Instance.isMCTSSimulation == false && GameMaster.Instance.isAIOnlyGame == false)
         {
             _attackerRemainingTroops.SetText("Troops remaining: " + (from.TroopCount - 1));
             _defenderRemainingTroops.SetText("Troops Remaining: " + to.TroopCount);
@@ -260,7 +260,7 @@ public class UIManager : MonoBehaviour
     }
     public void DisplayFortifyPanel(ITerritoryPlayerView from, ITerritoryPlayerView to)
     {
-        if (GameMaster.Instance.isSimulation == false)
+        if (GameMaster.Instance.isMCTSSimulation == false && GameMaster.Instance.isAIOnlyGame == false)
         {
             _endStageButton.interactable = false;
             _fortifySliderPanel.SetActive(true);
@@ -277,14 +277,17 @@ public class UIManager : MonoBehaviour
 
     public void AddCardToPanel(TerritoryCard card)
     {
-        if (GameMaster.Instance.isSimulation == false)
+        if (GameMaster.Instance.isMCTSSimulation == false && GameMaster.Instance.isAIOnlyGame == false)
         {
             _cardUIManager.AddCard(card);
         }
     }
     public void RedrawCardPanel(Player player)
     {
-        _cardUIManager.RedrawCardHand(player);
+        if (GameMaster.Instance.isMCTSSimulation == false && GameMaster.Instance.isAIOnlyGame == false)
+        {
+            _cardUIManager.RedrawCardHand(player);
+        }
     }
     public CardUIManager GetCardUIManager()
     {
@@ -293,7 +296,7 @@ public class UIManager : MonoBehaviour
 
     public void DisplayVictoryPanel(string winnerName, int turnCount, float gameTimeSeconds)
     {
-        if (GameMaster.Instance.isSimulation == false)
+        if (GameMaster.Instance.isMCTSSimulation == false && GameMaster.Instance.isAIOnlyGame == false)
         {
             HideAttackPanel();
             HideFortifyPanel();
@@ -337,6 +340,18 @@ public class UIManager : MonoBehaviour
     {
         if(territory == null) return;
         TerritoryData Territory = (TerritoryData) territory;
+        if(territory.GetOwner() == null)
+        {
+            if (toHighlight)
+            {
+                Territory.territoryColor = Helpers.GetHighlighedColorVersion(ColorPreset.White);
+            }
+            else
+            {
+                Territory.territoryColor = ColorPreset.White;
+            }
+            return;
+        }
         if(toHighlight)
         {
             Territory.territoryColor = Helpers.GetHighlighedColorVersion(GameMaster.Instance.state.getPlayerFromName(Territory.Owner).GetData().playerColor);

@@ -37,11 +37,11 @@ public class Attack : PlayerAction
                 GameMaster.Instance.OnPlayerLoss(loser);
             }
         }
-        if(GameMaster.Instance.isSimulation == false)
+        if(!GameMaster.Instance.isMCTSSimulation && !GameMaster.Instance.isAIOnlyGame)
         {
             UIManager.Instance.UpdateAttackPanelResults(from, to);
+            Debug.Log("Succeeded an attack");
         }
-        Debug.Log("Succeeded an attack");
         return true;
     }
     private int[] RollDice(TerritoryData from, TerritoryData to)
@@ -75,7 +75,7 @@ public class Attack : PlayerAction
             attackerDice[Helpers.ArrayMaxElementIndex(attackerDice)] = 0;
             defenderDice[Helpers.ArrayMaxElementIndex(defenderDice)] = 0;
         }
-        if (GameMaster.Instance.isSimulation == false)
+        if (GameMaster.Instance.isMCTSSimulation == false)
         {
             UIManager.Instance.UpdateAttackPanelNumbers(diceRolls, result);
         }

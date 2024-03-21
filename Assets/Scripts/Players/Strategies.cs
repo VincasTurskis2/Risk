@@ -78,7 +78,6 @@ public static class Strategies
         }
         else
         {
-            Debug.Log("MaxI: " + maxI);
             var ownedTerritories = continentTerritories[maxI].Where(x => x.Owner.Equals(player.GetData().playerName)).ToArray();
             TerritoryData mostThreatened = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
             TerritoryData highestTroop = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
@@ -132,7 +131,7 @@ public static class Strategies
                 Debug.Log("Failed!");
             }*/
         }
-        if (GameMaster.Instance.isSimulation)
+        if (GameMaster.Instance.isMCTSSimulation)
         {
             state.turnStage = TurnStage.Attack;
         }
@@ -186,7 +185,6 @@ public static class Strategies
         float maxRatio = 0;
         if (ownedTerritories.Length == 0)
         {
-            Debug.Log(player.GetData().playerName + " has attempted to deploy troops, even though they have no territories");
             return;
         }
         ITerritoryPlayerView toDeploy = ownedTerritories[Random.Range(0, ownedTerritories.Length)];
@@ -206,7 +204,7 @@ public static class Strategies
         {
             success = new Deploy(player, toDeploy).execute();
         }
-        if (GameMaster.Instance.isSimulation)
+        if (GameMaster.Instance.isMCTSSimulation)
         {
             state.turnStage = TurnStage.Attack;
         }
@@ -308,7 +306,6 @@ public static class Strategies
             index = rand.Next(0, possibleAttacks.Count);
         }
         state.turnStage = TurnStage.Reinforce;
-        Debug.Log("Attacking in the simulation");
         return cardEligible;
     }
 }

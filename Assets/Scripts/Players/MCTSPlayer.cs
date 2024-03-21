@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using System.Threading;
 
 // An implementation of a player using Monte Carlo tree search.
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 5000;
+    public int maxNumOfIterations = 500;
     //C = 0.5 because Limer et al. suggests so.
     public double C = 0.5;
-    public int depth = 6;
+    public int depth = 2;
+    public MonoBehaviour mono = GameMaster.Instance; // This should allow me to run MCTS as coroutine.
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
     }
@@ -20,7 +22,10 @@ public class MCTSPlayer : Player
     }
     public override void StartTurn()
     {
-        Debug.Log(_data.playerName + " starting turn");
+        if (!GameMaster.Instance.isAIOnlyGame)
+        {
+            Debug.Log(_data.playerName + " starting turn");
+        }
         _isMyTurn = true;
 
         if (_gameState.turnStage == TurnStage.InitDeploy || _gameState.turnStage == TurnStage.InitReinforce)
@@ -31,9 +36,7 @@ public class MCTSPlayer : Player
         {
             new UpdatePlaceableTroops(this).execute();
             DeployTroops();
-            AttackWithMCTS();
-            Fortify();
-            _isMyTurn = false;
+            mono.StartCoroutine(RunMCTS());
         }
     }
 
@@ -117,7 +120,7 @@ public class MCTSPlayer : Player
 
 
 
-    public void AttackWithMCTS()
+    public IEnumerator RunMCTS()
     {
         List<Attack> result = new();
         GameStateTreeNode root = new GameStateTreeNode(_gameState, null, null);
@@ -130,20 +133,9 @@ public class MCTSPlayer : Player
             var expandedNode = nodeToExplore.Expand(nodeToExplore.state.players[nodeToExplore.state.currentPlayerNo]);
             float newResult = Simulate(expandedNode);
             Backpropagate(expandedNode, newResult);
-            if(curIterationNo % 50 == 0)
-            {
-                //for debugging
-                curIterationNo++;
-            }
-            else if(curIterationNo % 10 == 0)
-            {
-                //for debugging
-                curIterationNo++;
-            }
-            else
-            {
-                curIterationNo++;
-            }
+            curIterationNo++;
+            Debug.Log("Completed MCTS iteration");
+            yield return null;
         }
         var curNode = root;
         while (curNode.sourceMove != null || curNode.parent == null)
@@ -173,12 +165,17 @@ public class MCTSPlayer : Player
             if (curMove == null)
             {
                 new EndTurnStage(this).execute();
-                return;
+                Fortify();
+                _isMyTurn = false;
+                yield break;
             }
             bool success = true;
             var from = _gameState.Map().GetTerritory(curMove.IFrom.TerritoryName);
             var to = _gameState.Map().GetTerritory(curMove.ITo.TerritoryName);
-            Debug.Log(GetData().playerName + ": Attacking from " + from.TerritoryName + " to " + to.TerritoryName);
+            if (!GameMaster.Instance.isAIOnlyGame)
+            {
+                Debug.Log(GetData().playerName + ": Attacking from " + from.TerritoryName + " to " + to.TerritoryName);
+            }
             while (success)
             {
                 var attack = new Attack(this, from, to);
@@ -193,6 +190,8 @@ public class MCTSPlayer : Player
         {
             new EndTurnStage(this).execute();
         }
+        Fortify();
+        _isMyTurn = false;
     }
     public GameStateTreeNode Select(GameStateTreeNode node)
     {
@@ -224,7 +223,7 @@ public class MCTSPlayer : Player
         GameState curState = new GameState(node.state);
 
         GameMaster.Instance.state = curState;
-        GameMaster.Instance.isSimulation = true;
+        GameMaster.Instance.isMCTSSimulation = true;
         int curDepth = 0;
         Player toSimulate = curState.players[curState.currentPlayerNo];
         bool cardEligible = false;
@@ -250,11 +249,24 @@ public class MCTSPlayer : Player
         // Finish the current turn
         for (int i = curState.currentPlayerNo; i < curState.players.Length; i++)
         {
+            string curPlayerName = curState.players[i].GetData().playerName;
             curState.players[i].SetMyTurn(true);
             if (curState.players[i].GetType() != typeof(NeutralArmyPlayer))
             {
                 SimulationDeploy(curState.players[i], curState);
                 cardEligible = SimulationAttack(curState.players[i], curState);
+                if (curState.handlePlayerLoss)
+                {
+                    for (int j = 0; j < curState.players.Length; j++)
+                    {
+                        if (curState.players[j].GetData().playerName.Equals(curPlayerName))
+                        {
+                            i = j;
+                            break;
+                        }
+                    }
+                    curState.handlePlayerLoss = false;
+                }
                 if (cardEligible)
                 {
                     List<TerritoryCard> newCard = new()
@@ -275,6 +287,7 @@ public class MCTSPlayer : Player
         {
             for (int i = 0; i < curState.players.Length; i++)
             {
+                string curPlayerName = curState.players[i].GetData().playerName;
                 curState.players[i].SetMyTurn(true);
                 if (curState.players[i].GetType() != typeof(NeutralArmyPlayer))
                 {
@@ -283,6 +296,18 @@ public class MCTSPlayer : Player
                     if (curState.terminalState == true)
                     {
                         break;
+                    }
+                    if (curState.handlePlayerLoss)
+                    {
+                        for(int j = 0; j < curState.players.Length; j++)
+                        {
+                            if (curState.players[j].GetData().playerName.Equals(curPlayerName))
+                            {
+                                i = j;
+                                break;
+                            }
+                        }
+                        curState.handlePlayerLoss = false;
                     }
                     if (cardEligible)
                     {
@@ -305,17 +330,9 @@ public class MCTSPlayer : Player
             }
             curDepth += 1;
         }
-        if(curState.terminalState == true)
-        {
-            Debug.Log("Reached the end at depth " + curDepth);
-        }
-        if(curState.map.GetOwnedTerritories(toSimulate).Length == 0)
-        {
-            Debug.Log("Lost at depth " + curDepth);
-        }
         float result = heuristicEvaluation(curState, toSimulate);
         GameMaster.Instance.state = originalState;
-        GameMaster.Instance.isSimulation = false;
+        GameMaster.Instance.isMCTSSimulation = false;
         return result;
     }
 

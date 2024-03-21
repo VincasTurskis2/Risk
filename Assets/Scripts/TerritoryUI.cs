@@ -16,13 +16,14 @@ public class TerritoryUI : MonoBehaviour
         _renderer = gameObject.GetComponent<SpriteRenderer>();
         _territory = gameObject.GetComponent<Territory>().data;
         _territoryNameText.text = _territory.TerritoryName;
-        Debug.Log(_territory);
-        
     }
 
     void Update()
     {
-        _troopCountText.SetText(_territory.TroopCount.ToString());
-        _renderer.color = _territory.territoryColor;
+        //if(!GameMaster.Instance.isAIOnlyGame)
+        //{
+           _troopCountText.SetText(_territory.TroopCount.ToString());
+           _renderer.color = _territory.territoryColor;
+        //}
     }
 }

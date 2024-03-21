@@ -10,7 +10,10 @@ public class TradeInAnyCards : PlayerAction
     }
     public override bool execute()
     {
-        Debug.Log("Trading in any cards");
+        if(!GameMaster.Instance.isAIOnlyGame && !GameMaster.Instance.isMCTSSimulation)
+        {
+            Debug.Log("Trading in any cards");
+        }
         if (caller == null) return false;
         if(caller.GetCardHand().Count < 3) return false;
 

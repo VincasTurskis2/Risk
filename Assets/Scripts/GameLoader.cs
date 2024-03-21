@@ -16,9 +16,13 @@ public class GameLoader : MonoBehaviour
         }
         else
         {
-            GameMaster.Instance.Setup(psm.playerData);
+            GameMaster.Instance.Setup(psm.playerData, psm.simulation, psm.simulationRuns);
         }
         _UIManager.Setup();
         GameMaster.Instance.state.players[0].StartTurn();
+    }
+    private void Start()
+    {
+        Logger.Instance.SetupLogger(FindObjectOfType<PlayerSelectionManager>().playerData);
     }
 }

@@ -59,8 +59,8 @@ public class Map : IMapPlayerView
 
     public ITerritoryPlayerView[] GetOwnedTerritories(Player owner)
     {
-        return  (from t in Territories
-                where t.GetOwner().Equals(owner.GetData().playerName)
-                select t).ToArray();
+        var t = Territories.Where(t => t.GetOwner() != null && t.GetOwner().Equals(owner.GetData().playerName));
+        //if (!t.Any() || t == null) return new ITerritoryPlayerView[0];
+        return t.ToArray();
     }
 }

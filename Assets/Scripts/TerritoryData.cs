@@ -80,6 +80,11 @@ public class TerritoryData : ITerritoryPlayerView
         {
             newOwner.SetCardEligible(true);
         }
+        if(newOwner == null)
+        {
+            Owner = null;
+            return;
+        }
         Owner = newOwner.GetData().playerName;
         if(Owner != null)
         {

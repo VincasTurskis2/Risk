@@ -13,6 +13,7 @@ public class GameState : IGameStatePlayerView
     public TurnStage turnStage {get; set;}
     public int cardSetRewardStage {get; set;} = 0;
     public bool terminalState = false;
+    public bool handlePlayerLoss = false;
     public GameState()
     {
         cardDeck = new CardDeck();

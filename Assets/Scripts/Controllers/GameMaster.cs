@@ -16,6 +16,7 @@ public class GameMaster : MonoBehaviour
     {
         
     }
+    private PlayerData[] _playerData;
     public GameState state;
 
     public static readonly int[] ContinentValues = {2, 3, 7, 5, 5, 2};
@@ -23,18 +24,39 @@ public class GameMaster : MonoBehaviour
     public static int[] ContinentCount = {0, 0, 0, 0, 0, 0};
 
     public bool is2PlayerGame {get; private set;}
-    public bool isSimulation { get; set; } = false;
+    public bool isMCTSSimulation { get; set; } = false;
+    public bool isAIOnlyGame { get; set; } = false;
+    public int noOfRuns;
+    public int currentRun = 0;
 
     public float gameTimeElapsedSeconds {get; private set;} = 0;
 
     public int turnCount {get; private set;} = 1;
 
 
-    public void Setup(PlayerData[] playerData)
+    public void Setup(PlayerData[] playerData, bool isSimulation, int simulationRuns)
     {
+        currentRun = 1;
+        _playerData = playerData;
+        isAIOnlyGame = isSimulation;
+        noOfRuns = simulationRuns;
+        turnCount = 1;
+        gameTimeElapsedSeconds = 0;
         state = new GameState();
         is2PlayerGame = false;
-        Setupplayers(playerData);
+        SetupPlayers(playerData);
+        SetupTerritories();
+        state.cardDeck.Setup(state.map.Territories);
+    }
+    public void RestartGame()
+    {
+        turnCount = 1;
+        gameTimeElapsedSeconds = 0;
+
+        currentRun++;
+        state = new GameState();
+        is2PlayerGame = false;
+        SetupPlayers(_playerData);
         SetupTerritories();
         state.cardDeck.Setup(state.map.Territories);
     }
@@ -45,12 +67,12 @@ public class GameMaster : MonoBehaviour
         PlayerData[] players = new PlayerData[2];
         players[0] = new PlayerData("Vince", PlayerType.Human, ColorPreset.Green);
         players[1] = new PlayerData("JohnGPT", PlayerType.MCTS, ColorPreset.Pink);
-        Setupplayers(players);
+        SetupPlayers(players);
         SetupTerritories();
         state.cardDeck.Setup(state.map.Territories);
 
     }
-    public void Setupplayers(PlayerData[] players)
+    public void SetupPlayers(PlayerData[] players)
     {
         GameObject playerObject;
         if(players.Length == 2)
@@ -144,6 +166,10 @@ public class GameMaster : MonoBehaviour
         {
             state.currentPlayerNo = 0;
             turnCount++;
+            if(!isMCTSSimulation)
+            {
+                Debug.Log("Turn " + turnCount + " starts");
+            }
         }
         if(state.turnStage == TurnStage.InitDeploy)
         {
@@ -171,7 +197,14 @@ public class GameMaster : MonoBehaviour
     public void OnPlayerLoss(Player player)
     {
         if(state.map.GetOwnedTerritories(player).Length != 0) return;
-        Debug.Log(player.GetData().playerName + " has lost!");
+        if (!isMCTSSimulation)
+        {
+            Debug.Log(player.GetData().playerName + " has lost!");
+        }
+        if(isMCTSSimulation)
+        {
+            state.handlePlayerLoss = true;
+        }
         /*if(player.IsMyTurn())
         {
             player.EndTurn();
@@ -189,22 +222,44 @@ public class GameMaster : MonoBehaviour
                 loserNo = i;
             }
         }
-        state.players = newplayers.ToArray();
-        if(state.currentPlayerNo >= loserNo)
+        for (int i = 0; i < newplayers.Count; i++)
         {
-            state.currentPlayerNo--;
+            if (newplayers[i].GetData().playerName.Equals(state.players[state.currentPlayerNo].GetData().playerName))
+            {
+                state.currentPlayerNo = i;
+            }
         }
+        state.players = newplayers.ToArray();
         if(player is NeutralArmyPlayer)
         {
             return;
         }
         if(state.players.Length == 1 || (state.players.Length == 2 && is2PlayerGame))
         {
-            Debug.Log(state.players[0].GetData().playerName + " Has won!");
-            state.terminalState = true;
-            if(!isSimulation)
+            OnPlayerWin(player);
+        }
+    }
+
+    private void OnPlayerWin(Player player)
+    {
+        state.terminalState = true;
+        if (!isMCTSSimulation && !isAIOnlyGame)
+        {
+            Debug.Log(player.GetData().playerName + " Has won!");
+            UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
+        }
+        if(isAIOnlyGame && !isMCTSSimulation)
+        {
+            Logger.Instance.RecordIterationResults(player.GetData().playerName, gameTimeElapsedSeconds, state);
+            if (currentRun >= noOfRuns)
             {
-                UIManager.Instance.DisplayVictoryPanel(state.players[0].GetData().playerName, turnCount, gameTimeElapsedSeconds);
+                Logger.Instance.OutputSimulationResults();
+                return;
+            }
+            else
+            {
+                Debug.Log("Run " + (currentRun + 1) + " finished. " + player.GetData().playerName + " Has won!");
+                RestartGame();
             }
         }
     }
@@ -225,8 +280,8 @@ public class GameMaster : MonoBehaviour
         state.turnStage = TurnStage.Deploy;
         turnCount = 1;
     }
-    void Update()
+    void FixedUpdate()
     {
-        gameTimeElapsedSeconds += Time.deltaTime;
+        gameTimeElapsedSeconds += Time.fixedDeltaTime;
     }
 }

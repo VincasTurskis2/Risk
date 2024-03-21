@@ -15,7 +15,10 @@ public class PassiveAIPlayer : Player
     }
     public override void StartTurn()
     {
-        Debug.Log(_data.playerName + " starting turn");
+        if (!GameMaster.Instance.isAIOnlyGame)
+        {
+            Debug.Log(_data.playerName + " starting turn");
+        }
         _isMyTurn = true;
         new UpdatePlaceableTroops(this).execute();
         if(_gameState.turnStage == TurnStage.InitDeploy || _gameState.turnStage == TurnStage.InitReinforce)

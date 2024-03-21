@@ -99,7 +99,10 @@ public abstract class Player : IOtherPlayer
     // Function called by other objects when a player's turn should end (eg. they make a non-attacking troop move)
     public void EndTurn()
     {
-        Debug.Log(_data.playerName + " ending turn");
+        if(!GameMaster.Instance.isAIOnlyGame)
+        {
+            Debug.Log(_data.playerName + " ending turn");
+        }
         _isMyTurn = false;
         new EndTurn(this).execute();
     }
