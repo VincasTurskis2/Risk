@@ -9,10 +9,10 @@ using System.Threading;
 public class MCTSPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 500;
+    public int maxNumOfIterations = 5000;
     //C = 0.5 because Limer et al. suggests so.
     public double C = 0.5;
-    public int depth = 2;
+    public int depth = 6;
     public MonoBehaviour mono = GameMaster.Instance; // This should allow me to run MCTS as coroutine.
     public MCTSPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
@@ -472,7 +472,16 @@ public class MCTSPlayer : Player
             return;
         }
         new Fortify(player, strongestInlandTerritory, toFortify, strongestInlandTerritory.TroopCount - 1).execute(false);
+        /*if (state.players[state.currentPlayerNo].GetData().playerName.Equals(GetData().playerName))
+        {
+            new EndTurnStage(this).execute();
+        }*/
         state.turnStage = TurnStage.Deploy;
+        state.currentPlayerNo++;
+        if(state.currentPlayerNo >= state.players.Count())
+        {
+            state.currentPlayerNo = 0;
+        }
     }
 
     public void SimulationDeploy(Player player, GameState state)

@@ -23,6 +23,6 @@ public class GameLoader : MonoBehaviour
     }
     private void Start()
     {
-        Logger.Instance.SetupLogger(FindObjectOfType<PlayerSelectionManager>().playerData);
+        //Logger.Instance.SetupLogger(FindObjectOfType<PlayerSelectionManager>().playerData);
     }
 }
