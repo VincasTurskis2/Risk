@@ -1,0 +1,103 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{appendix}
+\usepackage{array}
+\usepackage{dirtytalk}
+\usepackage{graphicx}
+\usepackage{hyphenat}
+\usepackage{indentfirst}
+\usepackage{fancyref}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{todonotes}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+
+\usepackage[textheight=24.5cm, textwidth=15cm]{geometry}
+
+\usepackage[british,UKenglish,USenglish,american]{babel}
+\usepackage{csquotes}
+\usepackage[backend=biber, style=numeric, natbib=true, sorting=nty, sortcites=true, pluralothers=true]{biblatex}
+
+\setlength {\marginparwidth }{2cm}
+\setlength\intextsep{0pt}
+\captionsetup{justification=centering}
+
+\newcommand {\dd}{\mathop{}\,\mathrm{d}}
+
+\bibstyle{numeric}
+\graphicspath{{./images/}}
+
+\begin{document}
+\pagenumbering{gobble}
+\noindent
+
+\vspace*{4.5cm}
+
+\centering
+\huge
+\textbf{Implementing a Monte Carlo Tree Search Computer Player for "Risk"}\\
+\vspace*{1cm}
+\Large
+
+\textbf{Vincas Turskis}\\
+\vspace*{0.4cm}
+
+
+\vspace*{5cm}
+
+\large
+Supervisor: Dr. Fabio Papacchini \\
+\vspace*{0.25cm}
+B.Sc. (Hons) Computer Science \\
+\vspace*{1.2cm}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{lancaster-university-leipzig-logo.pdf}
+\end{figure}
+\vspace*{1.2cm}
+School of Computing and Communications \\
+\vspace*{0.25cm}
+Lancaster University Leipzig \\ 
+\vspace*{0.25cm}
+March 2024\\
+\newpage
+
+\centering
+\Large
+\textbf{Declaration of Originality}\\
+\vspace*{1cm}
+\normalsize
+
+\begin{minipage}[c]{0.7\linewidth}
+I certify that the material contained in this dissertation is my own work and does not contain
+unreferenced or unacknowledged material. I also warrant that the above statement applies to the
+implementation of the project and all associated documentation. Regarding the electronically
+submitted work, I consent to this being stored electronically and copied for assessment purposes,
+including the School's use of plagiarism detection systems in order to check the integrity of
+assessed work.\\
+
+I agree to my dissertation being placed in the public domain, with my name explicitly included
+as the author of the work.\\
+
+Name: Vincas Turskis\\ 
+Date: March 22\textsuperscript{nd} 2024
+\end{minipage}
+\newpage
+
+\topskip0pt
+\vspace*{\fill}
+\Large
+\textbf{Abstract}\\
+\vspace*{1cm}
+\normalsize
+\begin{minipage}[c]{0.9\linewidth}
+This paper describes the development of a digital game client and a computer player for the strategy board game "Risk". The computer player utilizes a combination of Monte Carlo tree search (MCTS) and rule-based approaches. It regularly makes reasonable, logical moves, but is computationally inefficient, and therefore sometimes fails to find a good move. The game client is a minimal, but full-featured program that allows for player vs computer, computer vs computer, and player vs player (hotseat) play. The paper showcases the design features and implementation steps of both the client and the computer player, and describes the evaluation process together with its results. Finally, this report provides suggestions for future work, both on this project and possible future projects in the same problem space, and outlines lessons learned.
+\end{minipage}
+\vspace*{\fill}
+\end{document}

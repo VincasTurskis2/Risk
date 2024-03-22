@@ -2,32 +2,32 @@
 \chapter{Introduction}
 \label{introduction}
 
-\textit{Risk} is a 2-6 strategy game about world conquest. Created in the mid-20\textsuperscript{th} century, it is one of the most popular and well-known modern board games in the world, along the likes of \textit{Monopoly} and \textit{Settlers of Catan}. The game is known for being long, straining friendships, and being heavily reliant on luck via dice rolls. What distinguishes \textit{Risk} from most other board games of its popularity and calibre is the way its simple rules facilitate emergent behaviour and strategies. Similar to chess, the rules of Risk are low-level - mostly governing the way pieces can move, what the victory condition is, and how to resolve conflicts (piece captures in chess, territory attacks in Risk). These simple rules allow for patterns to emerge - concepts such as "frontlines" (restricting the number of your territories that touch enemy territories to minimize their vectors of attack) or "turtling" (Choosing to avoid attacks to gather strength and allow your opponents to weaken each other) are not mentioned in the rules, yet frequently emerge from them as patterns of optimal play.
+\textit{Risk} is a 2-6 strategy game about world conquest. Created in the mid-20\textsuperscript{th} century, it is one of the most popular and well-known modern board games in the world, along the likes of \textit{Monopoly} and \textit{Settlers of Catan}. The game is known for being long, straining friendships, and being heavily reliant on luck via dice rolls. What distinguishes Risk from most other board games of its popularity and calibre is the way its simple rules facilitate emergent behaviour and strategies. Similar to chess, the rules of Risk are low-level - mostly governing the way pieces can move, what the victory condition is, and how to resolve conflicts (piece captures in chess, territory attacks in Risk). These simple rules allow for patterns to emerge - concepts such as "frontlines" (restricting the number of your territories that touch enemy territories to minimize their vectors of attack) or "turtling" (Choosing to avoid attacks to gather strength and allow your opponents to weaken each other) are not mentioned in the rules, yet frequently appear as patterns of optimal play.
 
-This aspect also makes \textit{Risk} attractive for making artificial players. The comparison to chess is still apt - the emergent complexity of chess is a big factor why there is so much research into chess playing computers, which famously eclipsed human players in skill in the 1990's. \textit{Risk} has similar potential, but it is significantly less popular as a field of research. This is most likely due to the heavy influence of randomness and the fact it can be played with more than 2 players - meaning, even the most optimal computer player is likely to lose if other players collude against it.
+This aspect also makes Risk attractive for making artificial players. The comparison to chess remains apt - the emergent complexity of chess is a big factor why there is so much research into chess playing computers, which famously eclipsed human players in skill in the 1990's. Risk has similar potential, but it is significantly less popular as a field of research. This is most likely due to the heavy influence of randomness and the fact it can be played with more than 2 players - meaning, even the most optimal computer player is likely to lose if other players collude against it.
 
-Despite these drawbacks, \textit{Risk} and computer players for it remain an interesting area of effect. One could even argue such research is more useful on \textit{Risk} than on games such as chess, as most real-world situations are not fully fair, deterministic, and transparent. There is also a gap in the existing research into computer players for \textit{Risk}. There have been some previous attempts to make a rule-based player for Risk, such as \cite{wolf2005intelligent}, as well as a significant amount of research into making deep learning, neural network, or otherwise learning-based computer players \cite{bauer2023artificial,blomqvist2020playing,olsson2005multi}. Search-based computer players are the middle-ground in terms of complexity between rule-based and learning approaches, and this is where previous research for \textit{Risk} is lacking.
+Despite these drawbacks, Risk and computer players for it remain an interesting area of study. One could even argue such research is more useful on Risk than on games such as chess, as most real-world situations are not fully fair, deterministic, and transparent. There is also a gap in the existing research into computer players for Risk. There have been some previous attempts to make a rule-based player for Risk, such as \cite{wolf2005intelligent}, as well as a significant amount of research into making deep learning, neural network, or otherwise learning-based computer players \cite{bauer2023artificial,blomqvist2020playing,olsson2005multi}. Search-based computer players are the middle-ground in terms of complexity between rule-based and learning approaches, and this is where previous research for Risk is lacking.
 
-This project attempts to create a search-based computer player for \textit{Risk} - specifically, one that utilizes a hybrid of Monte Carlo Tree Search (MCTS) \cite{Coulom2007MonteCarlo} and rule-based approaches. The hybrid approach was necessary, as \textit{Risk}'s branching factor and depth are too large for any search based approach without action pruning. This, along with the reasons for choosing MCTS will be elaborated on in Chapters \ref{background} and \ref{design}. Besides the computer player, this project features a digital implementation of \textit{Risk}, as a platform to run, test and evaluate the computer player, as well as to let human players play the game digitally (against the computer player or each other).
+This project attempts to create a search-based computer player for Risk - specifically, one that utilizes a hybrid of Monte Carlo Tree Search (MCTS) \cite{Coulom2007MonteCarlo} and rule-based approaches. The hybrid approach was necessary, as Risk's branching factor and depth are too large for any search based approach without action pruning. This, along with the reasons for choosing MCTS will be elaborated on in Chapters \ref{background} and \ref{design}. Besides the computer player, this project features a digital implementation of Risk, as a platform to run, test and evaluate the computer player, as well as to let human players play the game digitally (against the computer player or each other).
 
 \section{Aims and Objectives}
 \label{aimsAndObjectives}
 
 The aims of the project are:
 \begin{itemize}
-\item Implement a game client that allows human players to play the game of \textit{Risk} on a computer.
+\item Implement a game client that allows human players to play the game of Risk on a computer.
 \item Implement a computer player based on Monte Carlo Tree Search.
 \end{itemize}
 The objectives for implementing the game client are:
 \begin{itemize}
-\item Create a program which implements all the rules of \textit{Risk} \cite{riskrules}.
+\item Create a program which implements all the rules of Risk.
 \item Ensure that, at any point, the program allows players to take any legal actions (as per the rules), and restricts them from taking any illegal actions.
 \item Allow players to set-up a game to their liking - set the number of players, assign identifiers to each player, and select whether each player should be a human or computer-based.
 \end{itemize}
 The objectives for implementing the computer player are:
 \begin{itemize}
 \item Create a program that is capable of playing the game and utilizes a mixture of rule-based decisions and Monte Carlo Tree Search to find optimal moves.
-\item Have the program exhibit some level of emergent strategies - for example, turtling or minimizing the frontline.
+\item Have the program exhibit some level of emergent strategies - for example, turtling or harassing other players' continents.
 \end{itemize}
 
 \section{Report Structure}
@@ -35,9 +35,9 @@ The objectives for implementing the computer player are:
 
 The remainder of this report is structured as follows:
 \begin{itemize}
-\item \textbf{Chapter \ref{background} - Background} provides some background about the rules of \textit{Risk}, the theory of MCTS, and previous research into using MCTS for \textit{Risk} and games that share some of the same complications.
+\item \textbf{Chapter \ref{background} - Background} provides some background about the rules of Risk, the theory of MCTS, and previous research into using MCTS for Risk and games that share some of the same complications.
 \item \textbf{Chapter \ref{design} - Design} describes the final version of the game client and the MCTS player, and provides reasoning behind some of the decisions made for both.
 \item \textbf{Chapter \ref{implementation} - Implementation} delves more in depth into the details of the program, the process of creating it, and, for the MCTS player, the parameters and strategies used.
-\item \textbf{Chapter \ref{evaluation} - Evaluation} discusses the process of evaluating the computer player, shows the results, and discusses whether it met the aims of the project.
-\item \textbf{Chapter \ref{conclusion} - Conclusion} summarizes the project, and contains some final remarks.
+\item \textbf{Chapter \ref{evaluation} - Evaluation} discusses the process of evaluating the computer player and shows the results.
+\item \textbf{Chapter \ref{conclusion} - Conclusion} summarizes the project, describes learning outcomes, proposes some possible future work, and contains some final remarks.
 \end{itemize}

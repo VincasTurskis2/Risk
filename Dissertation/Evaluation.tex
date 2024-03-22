@@ -1,6 +1,64 @@
 \graphicspath{ {./Images/} }
 \chapter{Evaluation}
 \label{evaluation}
-\section{Overview}
-\label{evalOverview}
-The evaluation of this project focuses on the performance of the computer player. The main method of evaluation is test runs - running the game with certain players/parameters and gathering data about the performance of the player being tested. No user evaluation was done, for either the game client or the computer player. In terms of the game client, usability was not one of the goals. As for the computer player, it is not strong enough to be evaluated in terms of the quality of the moves it makes. This becomes evident quickly when playing against it - it rarely makes good moves, skewing heavily towards making few attacks per turn, even passing over obvious opportunities to gain an advantage - such as capturing a continent with little to no risk or cost.
+\section{A Note On The Circumstances}
+\label{circumstanceNote}
+
+This evaluation section - and the report in general - was, for the majority of the time spent working on it, going to be about a much poorer version of the computer player. I was operating under the assumption that the performance of the algorithm was poor due to bad rule-based strategies and inefficient code performance. However, during final checks of the code, I discovered several major bugs in the MCTS simulation code. Fixing them dramatically increased the performance and playing ability of the computer player and completely changed the nature of this section, with only a few days left to work on it. The original evaluation for the bugged version was focused mostly on computational performance, as it was pretty clear it could not win against a human player, making user or win rate evaluations not very useful. Unfortunately, due to the fact this breakthrough came so late in the process, there was no chance to run these evaluations properly on the new and improved version.
+
+This chapter, therefore, focuses on the computational performance part and the process with which the parameters of the computer player were finalized. It still contains some evaluation on how well the algorithm performs in terms of quality of play, but this evaluation is done without rigorous structure, and mostly through playing against the computer myself.
+
+\section{Efficiency Tests}
+\label{efficiencyTests}
+
+I ran tests to evaluate the impact of increasing the number of MCTS rollouts and the depth of simulation on computation time. The tests were executed by running simulation games, with 1 MCTS player with preset number of rollouts and depth, and 2 passive players (which would not make any attacks). Each simulation game was run 3 times, and the average time to perform a turn recorded for the MCTS player. By running such simulations for different values of rollouts and depth, I was able to gather the necessary data. Note: all data was gathered on my personal desktop computer. Run times can and do vary based on hardware.
+
+\begin{figure}[H]
+\includegraphics[width=0.8\textwidth]{RolloutsGraph}
+\caption{A graph showing the test results for different rollout values against average turn time}
+\label{fig:RolloutsGraph}
+\end{figure}
+
+Figure \ref{fig:RolloutsGraph} shows the results of the testing for rollouts. In the games with 1000 rollouts, the MCTS player took on average around 16 seconds to make a move. This value increased linearly for each 1000 extra rollouts by 16 seconds. This is as expected, considering rollouts encompass all parts of the MCTS algorithm. However, 16 seconds per 1000 rollouts per turn is a high value - the algorithm usually needs at least 3000 rollouts to start consistently making logical moves, meaning for each move, the MCTS player will "think" for 48 seconds. In a game of 20 turns, this will add up to almost 10 minutes of MCTS calculation time - and each extra MCTS player will add another 48 seconds to a turn.
+
+\begin{figure}[H]
+\includegraphics[width=0.8\textwidth]{DepthGraph}
+\caption{A graph showing the test results for different depth values against average turn time}
+\label{fig:DepthGraph}
+\end{figure}
+
+Figure \ref{fig:DepthGraph} shows the results of testing for simulation depth. The increase is still linear, but it is much flatter than for rollouts. Theoretically, the simulation should be one of the most expensive parts of MCTS, as it makes multiple moves per rollout. Most literature about MCTS emphasizes that it is critical to have a computationally cheap simulation strategy. However, these test results seem to indicate that, for my implementation, the most computationally expensive part is not the simulation. The other likely candidate is the action of cloning the complex game state of Risk in order to assemble the search tree. This would confirm my suspicions that the cloning code is very inefficient, and a major bottleneck of the program. This also means that it could be optimized, which could sharply increase the number of rollouts MCTS can perform in a period of time and greatly increase the abilities of the computer player.
+
+\section{Play Quality Evaluation}
+\label{playQualityEvaluation}
+
+I evaluated the computer player by playing games against it, in both 2-player mode and with multiple passive players. While playing against it, I was looking for consistent logical moves from the MCTS player - that is, moves that appear to have purpose, such as securing a continent, or breaking another player's hold over one. Besides this, I was looking for emergent patterns, such as turtling or consistent frontlines. 
+
+Overall, I observed all of these aspects, and the computer player exceeded my expectations. The computer player would prioritize taking continents when they were available, and would exploit gaps in my frontline to make incursions into continents controlled by me. It would avoid attacks where it would be at a disadvantage - without any rules implemented that restrict it from making such attacks. It would also usually end its turn right after conquering a continent, even with a large number of troops available to continue marching, in order to avoid overextending.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{FrontlineExample}
+\caption{A screenshot showing a game between 2 versions of the MCTS player with clear frontlines}
+\label{fig:FrontlineExample}
+\end{figure}
+
+The computer player would also showcase the aforementioned emergent patterns, which can the seen in Figure \ref{fig:FrontlineExample}. This figure is a screenshot from a simulation game I ran with no human player, 2 MCTS players (green and red, both have rollouts = 5000 and depth = 4) and 2 passive players (purple and already eliminated cyan). The image clearly shows a frontline that has formed between the 2 MCTS players, as well as some turtling from the green player with its troops in Siam, protecting its last continent. The frontline is not very well manned by troops, however, that is more the fault of the rule-based aspect of the computer player, as deployment of troops is governed by rules rather than MCTS.
+
+What is not shown (and what I unfortunately failed to screenshot) is the next move of the green player. It seems that the simulation realized that, with no players left to distract the red player, turtling is no longer a viable strategy. Therefore, it (coincidentally) deployed a few more troops to Siam, and then sent them all on a chain of attacks that took the shortest path to Brazil. It is clear the logic is to cut down on the red player's troop income, and this move broke the red player's hold over 2 continents. Unfortunately, the red player had too much of an advantage, as it recaptured it's territories the next turn and proceeded to crush the green player and win the game.
+
+Finally, I observed an interesting change in the computer player's strategy based on the number of players in the game. It is important to note that the computer player is not aware that any passive players in the game are, in fact, passive. During the rollout simulation step, all players, except the special "neutral" player that appears in 2-player games, follow the same logic. Therefore, the MCTS simulation has no way of knowing which players are human, passive, or MCTS.
+
+This meant that the MCTS player was playing much more cautiously in games with a total of 4, 5, or 6 players. It would attempt to secure a continent, but after it did, it would often spend several turns not attacking at all, only deploying troops on their border. Then, when it became substantially stronger than the passive players (which have been doing nothing the whole time), it would push out its borders and try to take the next adjacent continent.
+
+\section{Parameter Evaluation}
+\label{parameterEvaluation}
+
+The main aspects of the MCTS algorithm that require evaluation the \texttt{c} value of the UCT algorithm, the number of rollouts, the depth of the simulation, the heuristic function. I evaluated them and chose the optimal value by, once again, playing against the different versions of the algorithm myself.
+
+The final UCT \texttt{c} value I chose was \texttt{0.4}, as my experience during games against the computer player showed this value has the highest chance of making logical moves consistently. It is lower that the value of \texttt{0.5} suggested by \cite{limer2020monte}, and it therefore has a higher risk of converging on an incorrect path, however, this allows the computer player to make a final move chain that is 1-2 moves longer than the players with \texttt{c=0.5}, as it "loses" less rollouts along the way. This is important, as the number of rollouts is very limited due to their inefficiency, as described in Section \ref{efficiencyTests}.
+
+The final rollout cap value I settled on was 4000. At this value, the computer player showcases moves that seem to have purpose consistently. As for time, turns with 4000 rollouts get computed in around 1 to 1.5 minutes, which is satisfactory for games with even several MCTS players. The performance gains of raising the rollout number above 4000 are very noticeable, however, with those values, it becomes very frustrating to play a game if there are even 2 MCTS players in it. Therefore, I found 4000 rollouts to be a good balance.
+
+The simulation depth I settled on was 7. As seen in Figure \ref{fig:DepthGraph}, depth is rather computationally cheap, and the improvement in play quality was noticeable up to this depth. Above that, however, the play quality starts to plateau, and depth still has a noticeable computational cost.
+
+Finally, the heuristic function I found to be best is the average of the troops owned percentage and the troops earned percentage. The troops owned percentage is calculated by dividing the sum total of troops that you own by the total number of troops on the map. The troops earned percentage is calculated by dividing the troops a player would earn in the current game state by the total possible number of troops they could earn if they controlled every territory and continent (38). I experimented with using these percentages as the heuristic function separately, however, I found that the average of them works best. The main theory is that these evaluation functions incentivize different types of play - the troops owned percentage will be higher if one does not fight and lets the opponents weaken each other, while the troops earned percentage is higher the more territories and continents you capture. Averaging them as the heuristic function balances these styles of play and allows for the computer player to choose either.

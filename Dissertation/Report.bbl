@@ -65,6 +65,55 @@
       \field{title}{Playing the Game of Risk with an AlphaZero Agent}
       \field{year}{2020}
     \endentry
+    \entry{chaslot2008progressive}{article}{}
+      \name{author}{5}{}{%
+        {{hash=f8c7685e182393539183796d385094be}{%
+           family={Chaslot},
+           familyi={C\bibinitperiod},
+           given={Guillaume\bibnamedelimb M\bibnamedelima Jb},
+           giveni={G\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=2c22dd9c8e5834d56c396ce5ade81b81}{%
+           family={Winands},
+           familyi={W\bibinitperiod},
+           given={Mark\bibnamedelima HM},
+           giveni={M\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=01b03005a8c78154382505744496f160}{%
+           family={Herik},
+           familyi={H\bibinitperiod},
+           given={H\bibnamedelima Jaap\bibnamedelimb van\bibnamedelima den},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim v\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=185c8e1042bed469d5d81ddfd543cf4b}{%
+           family={Uiterwijk},
+           familyi={U\bibinitperiod},
+           given={Jos\bibnamedelima WHM},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=20ab7b8a671a6e965d0f27450bafbde1}{%
+           family={Bouzy},
+           familyi={B\bibinitperiod},
+           given={Bruno},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {World Scientific}%
+      }
+      \strng{namehash}{345ae6ffa1694c3bc0df3f0ac3c1367d}
+      \strng{fullhash}{912bfd56268b660cbc656324603904a4}
+      \strng{bibnamehash}{345ae6ffa1694c3bc0df3f0ac3c1367d}
+      \strng{authorbibnamehash}{345ae6ffa1694c3bc0df3f0ac3c1367d}
+      \strng{authornamehash}{345ae6ffa1694c3bc0df3f0ac3c1367d}
+      \strng{authorfullhash}{912bfd56268b660cbc656324603904a4}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{New Mathematics and Natural Computation}
+      \field{number}{03}
+      \field{title}{Progressive strategies for Monte-Carlo tree search}
+      \field{volume}{4}
+      \field{year}{2008}
+      \field{pages}{343\bibrangedash 357}
+      \range{pages}{15}
+    \endentry
     \entry{coulom2007computing}{article}{}
       \name{author}{1}{}{%
         {{hash=ae7c83876ac79093e7c8ec77de300a9c}{%

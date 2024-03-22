@@ -1,0 +1,26 @@
+Simulation log: 
+
+Number of iterations: 3
+Player data:
+B3000/3:
+ Average turn duration: 40.85651s.
+ Average attacks per turn: 2.783784
+ Winrate: 100%
+P1:
+ Winrate: 0%
+P2:
+ Winrate: 0%
+
+GameData:
+Game 0:
+ Winner: B3000/3
+ Game duration: 273.6082s
+ Number of turns: 7
+Game 1:
+ Winner: B3000/3
+ Game duration: 564.148s
+ Number of turns: 14
+Game 2:
+ Winner: B3000/3
+ Game duration: 673.9351s
+ Number of turns: 16

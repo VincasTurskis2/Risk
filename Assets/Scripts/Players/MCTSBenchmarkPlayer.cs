@@ -9,10 +9,10 @@ using System.Threading;
 public class MCTSBenchmarkPlayer : Player
 {
     public float timeForSearch = 1f;
-    public int maxNumOfIterations = 5000;
-    //C = 0.5 because Limer et al. suggests so.
-    public double C = 0.5;
-    public int depth = 4;
+    public int maxNumOfIterations = 4000;
+    //Limer et al suggest c=0.5, but picked 0.4 based on testing
+    public double C = 0.4;
+    public int depth = 7;
     public MonoBehaviour mono = GameMaster.Instance; // This should allow me to run MCTS as coroutine.
     public MCTSBenchmarkPlayer(GameState state, PlayerData data, bool is2PlayerGame) : base(state, data, is2PlayerGame)
     {
@@ -163,7 +163,10 @@ public class MCTSBenchmarkPlayer : Player
             result.Add(maxNode.sourceMove);
             curNode = maxNode;
         }
-        Logger.Instance.RecordTurnData(GetData().playerName, timeDiff, result.Count - 1);
+        if (GameMaster.Instance.isAIOnlyGame)
+        {
+            Logger.Instance.RecordTurnData(GetData().playerName, timeDiff, result.Count - 1);
+        }
         for (int i = 0; i < result.Count(); i++)
         {
             var curMove = result[i];

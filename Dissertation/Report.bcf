@@ -2367,22 +2367,23 @@
     <bcf:citekey order="2" intorder="3">olsson2005multi</bcf:citekey>
     <bcf:citekey order="3" intorder="1">Coulom2007MonteCarlo</bcf:citekey>
     <bcf:citekey order="4" intorder="1">riskrules</bcf:citekey>
-    <bcf:citekey order="5" intorder="1">riskrules</bcf:citekey>
-    <bcf:citekey order="6" intorder="1">Coulom2007MonteCarlo</bcf:citekey>
-    <bcf:citekey order="7" intorder="1">kocsis2006bandit</bcf:citekey>
-    <bcf:citekey order="8" intorder="1">knuth1975analysis</bcf:citekey>
-    <bcf:citekey order="9" intorder="1">bauer2023artificial</bcf:citekey>
-    <bcf:citekey order="10" intorder="1">swiechowski2023monte</bcf:citekey>
-    <bcf:citekey order="11" intorder="1">silver2016mastering</bcf:citekey>
-    <bcf:citekey order="11" intorder="2">coulom2007computing</bcf:citekey>
-    <bcf:citekey order="12" intorder="1">cowling2012ensemble</bcf:citekey>
-    <bcf:citekey order="13" intorder="1">jacobsen2014monte</bcf:citekey>
-    <bcf:citekey order="14" intorder="1">limer2020monte</bcf:citekey>
-    <bcf:citekey order="15" intorder="1">kocsis2006bandit</bcf:citekey>
-    <bcf:citekey order="16" intorder="1">kowalski2022split</bcf:citekey>
-    <bcf:citekey order="17" intorder="1">bauer2023artificial</bcf:citekey>
-    <bcf:citekey order="18" intorder="1">winands2017monte</bcf:citekey>
-    <bcf:citekey order="19" intorder="1">limer2020monte</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">Coulom2007MonteCarlo</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">kocsis2006bandit</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">knuth1975analysis</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">bauer2023artificial</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">swiechowski2023monte</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">silver2016mastering</bcf:citekey>
+    <bcf:citekey order="10" intorder="2">coulom2007computing</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">cowling2012ensemble</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">jacobsen2014monte</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">limer2020monte</bcf:citekey>
+    <bcf:citekey order="14" intorder="1">kocsis2006bandit</bcf:citekey>
+    <bcf:citekey order="15" intorder="1">kowalski2022split</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">chaslot2008progressive</bcf:citekey>
+    <bcf:citekey order="17" intorder="1">kowalski2022split</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">bauer2023artificial</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">winands2017monte</bcf:citekey>
+    <bcf:citekey order="19" intorder="2">limer2020monte</bcf:citekey>
     <bcf:citekey order="20" intorder="1">limer2020monte</bcf:citekey>
     <bcf:citekey order="21" intorder="1">limer2020monte</bcf:citekey>
     <bcf:citekey order="22" intorder="1">limer2020monte</bcf:citekey>

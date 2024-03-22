@@ -8,7 +8,8 @@ The approach I took to implementing both the game client and the computer player
 
 Overall, implementing the computer player took far longer and was much more difficult than I had anticipated. In order to make it work, I had to do extensive refactoring on the game client/game logic code that I had already written. Besides that, the lack of existing literature on how to specifically implement MCTS for Risk made creating such an implementation difficult, and optimizing/fine-tuning it even more so.
 
-The final result is essentially a minimal version of MCTS - a computer player that runs MCTS successfully, but which is too inefficient - searches take a long time to execute, and usually do not result in a useful move. For example, one of the experiments run by \cite{limer2020monte} used the values of \texttt{rollouts = 5000, depth = 6, c = 0.5}, which resulted in a winrate of 67\%. In my implementation, a single move with these parameters takes just under 3 minutes to execute, and does not converge on a good move, with all first order children of the root having between 100 and 200 rollouts.
+The final result is a viable implementation of MCTS - a computer player that runs MCTS successfully, and, while inefficient, usually produces a useful move. However, this version of the algorithm only came to existence after a few last-minute bug fixes. Before that, the computer player would almost never produce a useful move, as due to bugs in the simulation code, it was heavily biased against making attacking moves.
+
 
 \section{Game Client Implementation}
 \label{gameClientImplementation}
@@ -62,9 +63,12 @@ The final approach to deploying troops takes into account the player's strength 
 
 The strategy for making the 1 reinforcing move is simpler - find all territories that have more than 1 troop and are surrounded by friendly territories, from that list, get the territory with the most troops in it, and move those troops to the neighbour with the lowest troop ratio as described by step 5 in the list above.
 
-Both of these strategies are used in the real deployment and reinforcement of troops, as well as in the MCTS simulation step. The simulation also requires a strategy for making the attacks. I started with the attacks in the simulation being completely random, however, this appeared to be insufficient, as simulations would never reach an end state in the game (even at extreme depths). My initial hypothesis was that, without trying to capture continents, no player would ever get an advantage - each player starts with the same number of troops and the same troop income, and the battles they fight are mostly balanced in terms of losses. The dice roll randomness would create some variance, but the rolls would average out over multiple moves.
+\subsection{MCTS Parameters}
+\label{MCTSParameters}
 
-To avoid this, I created a new attack strategy that took continents into account, similar to the deploy strategy above. However, in the process of implementing this, I discovered multiple critical bugs in the simulation code, meaning that the never-ending simulation was most likely the result of the simulation not properly running due to these bugs. I decided to use the newer version of the attack strategy anyway, as it is not too computationally expensive, and it is more reflective of a real strategy a player might employ. The precise simulation attack strategy is as follows:
+Both of the strategies mentioned in the previous section are used in the real deployment and reinforcement of troops, as well as in the MCTS simulation step. The simulation also requires a strategy for making the attacks. I started with the attacks in the simulation being completely random, however, this appeared to be insufficient, as simulations would never reach an end state in the game (even at extreme depths). My initial hypothesis was that, without trying to capture continents, no player would ever get an advantage - each player starts with the same number of troops and the same troop income, and the battles they fight are mostly balanced in terms of losses. The dice roll randomness would create some variance, but the rolls would average out over multiple moves.
+
+To avoid this, I created a new attack strategy that took continents into account, similar to the deploy strategy above. However, in the process of implementing this, I discovered multiple critical bugs in the simulation code (not the same set of bugs that caused the last minute performance breakthrough), meaning that the never-ending simulation was most likely the result of the simulation not properly running due to these bugs. I decided to use the newer version of the attack strategy anyway, as it is not too computationally expensive, and it is more reflective of a real strategy a player might employ. The precise simulation attack strategy is as follows:
 \begin{enumerate}
 \item For the player that is making the attack, find the strongest continent, as described in steps 1-4 of the deployment strategy.
 \item Get all possible attacks on the map that the player can make. From this list, get the attacks whose target is in the strongest continent. If this filtered list is empty, reset the list to all possible attacks.
@@ -75,3 +79,12 @@ To avoid this, I created a new attack strategy that took continents into account
 \end{enumerate}
 
 As said previously, this strategy is close to how a human player would play the game - deploying and attacking in the continent they are strongest in. It is also not very computationally expensive - the most expensive part is getting all possible attacks for a player, which would be required even if the strategy was "random attacks".
+
+Besides an attack strategy, my implementation of MCTS requires several other parameters - namely, the \texttt{c} value of UCT, the number of rollouts done during a turn, the depth of simulation, and a heuristic function. The values I ended up choosing are:
+\begin{itemize}
+\item UCT \texttt{c} value = 0.4
+\item Number of rollouts = 4000
+\item Simulation depth = 7
+\item Heuristic function - the average of the troops owned percentage (number of owned troops on the map divided by total number of troops) and the troops earned percentage (number of new troops the player could deploy in the evaluated game state divided by 38 - the maximum number of troops that could be earned in one turn).
+\end{itemize}
+These values were mostly chosen empirically and through experiments. The process and reasoning behind these choices is described in more detail in Section \ref{parameterEvaluation}.

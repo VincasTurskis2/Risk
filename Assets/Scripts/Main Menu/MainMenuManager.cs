@@ -7,7 +7,7 @@ public class MainMenuManager : MonoBehaviour
 {
     [SerializeField]
 
-    private GameObject _playerSelectionPanel, _playButton, _simulationButton, _exitButton, _titleText, _simulationSettingsPanel;
+    private GameObject _playerSelectionPanel, _playButton, _exitButton, _titleText, _simulationSettingsPanel;
     
     void Start()
     {
@@ -26,7 +26,6 @@ public class MainMenuManager : MonoBehaviour
         _titleText.SetActive(false);
         _playerSelectionPanel.SetActive(false);
         _simulationSettingsPanel.SetActive(false);
-        _simulationButton.SetActive(false);
     }
     public void ShowMainMenu()
     {
@@ -34,7 +33,6 @@ public class MainMenuManager : MonoBehaviour
         _playButton.SetActive(true);
         _exitButton.SetActive(true);
         _titleText.SetActive(true);
-        _simulationButton.SetActive(true);
     }
     public void ShowPlayerSelectionPanel()
     {

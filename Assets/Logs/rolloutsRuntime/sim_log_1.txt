@@ -1,0 +1,26 @@
+Simulation log: 
+
+Number of iterations: 3
+Player data:
+B2000/5:
+ Average turn duration: 32.01081s.
+ Average attacks per turn: 3.214286
+ Winrate: 100%
+P1:
+ Winrate: 0%
+P2:
+ Winrate: 0%
+
+GameData:
+Game 0:
+ Winner: B2000/5
+ Game duration: 255.4177s
+ Number of turns: 8
+Game 1:
+ Winner: B2000/5
+ Game duration: 291.2785s
+ Number of turns: 9
+Game 2:
+ Winner: B2000/5
+ Game duration: 349.6064s
+ Number of turns: 11
