@@ -26,3 +26,6 @@
 \contentsline {chapter}{\numberline {5}Evaluation}{20}{}%
 \contentsline {section}{\numberline {5.1}Overview}{20}{}%
 \contentsline {chapter}{\numberline {6}Conclusion}{21}{}%
+\contentsline {section}{\numberline {6.1}Review of Aims}{21}{}%
+\contentsline {section}{\numberline {6.2}Learning Process}{21}{}%
+\contentsline {section}{\numberline {6.3}Future Work}{22}{}%
